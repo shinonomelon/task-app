@@ -2,10 +2,10 @@
 
 import { toggleTodoCompleted } from "@/actions/todo";
 
-interface ToggleButtonProps {
+type ToggleButtonProps = {
   id: number;
   completed: boolean;
-}
+};
 
 export function ToggleButton({ id, completed }: ToggleButtonProps) {
   const handleToggle = async () => {

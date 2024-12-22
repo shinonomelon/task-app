@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
 import { Todo } from "@/types/todo";
 import { format } from "date-fns";
 import { Suspense } from "react";
@@ -6,6 +6,7 @@ import { ToggleButton } from "./toggle-button";
 import { DeleteButton } from "./delete-buton";
 
 export async function TodoList() {
+  const supabase = await createClient();
   const { data, error } = await supabase.from("todos").select("*");
 
   if (error) {

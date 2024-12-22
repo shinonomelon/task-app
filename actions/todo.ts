@@ -1,11 +1,10 @@
 "use server";
 
 import { ActionResponse, Todo } from "../types/todo";
-import { supabase } from "../lib/supabase";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
+import { createClient } from "@/lib/supabase/server";
 
-// Validation schema for todo
 const todoSchema = z.object({
   text: z.string().min(1, "Text is required"),
 });
@@ -28,6 +27,8 @@ export async function addTodo(
         errors: validatedData.error.flatten().fieldErrors,
       };
     }
+
+    const supabase = await createClient();
 
     // Insert validated data into the database
     const { error } = await supabase
@@ -71,6 +72,7 @@ export async function deleteTodo(id: number): Promise<ActionResponse> {
       };
     }
 
+    const supabase = await createClient();
     const { error } = await supabase
       .from("todos")
       .delete()
@@ -115,6 +117,8 @@ export async function toggleTodoCompleted(
         },
       };
     }
+
+    const supabase = await createClient();
 
     const { error } = await supabase
       .from("todos")
