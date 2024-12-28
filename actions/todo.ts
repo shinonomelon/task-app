@@ -14,12 +14,29 @@ export async function addTodo(
   formData: FormData
 ): Promise<ActionResponse> {
   try {
+    const supabase = await createClient();
+
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      return {
+        success: false,
+        message: "Authentication failed. Please log in again.",
+      };
+    }
+
     // Extract and validate input
     const rawData: Pick<Todo, "text"> = {
       text: formData.get("text") as string,
     };
 
     const validatedData = todoSchema.safeParse(rawData);
+
+    console.log("validatedData", validatedData);
+
     if (!validatedData.success) {
       return {
         success: false,
@@ -28,12 +45,10 @@ export async function addTodo(
       };
     }
 
-    const supabase = await createClient();
-
     // Insert validated data into the database
     const { error } = await supabase
       .from("todos")
-      .insert([{ text: validatedData.data.text }])
+      .insert([{ text: validatedData.data.text, user_id: user.id }])
       .select();
 
     if (error) {
@@ -45,6 +60,7 @@ export async function addTodo(
         },
       };
     }
+
     revalidatePath("/");
 
     return {
@@ -73,6 +89,7 @@ export async function deleteTodo(id: number): Promise<ActionResponse> {
     }
 
     const supabase = await createClient();
+
     const { error } = await supabase
       .from("todos")
       .delete()

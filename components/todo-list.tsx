@@ -1,13 +1,14 @@
 import { createClient } from "@/lib/supabase/server";
 import { Todo } from "@/types/todo";
-import { format } from "date-fns";
 import { Suspense } from "react";
-import { ToggleButton } from "./toggle-button";
-import { DeleteButton } from "./delete-buton";
+import { TodoItem } from "./todo-item";
 
 export async function TodoList() {
   const supabase = await createClient();
-  const { data, error } = await supabase.from("todos").select("*");
+  const { data, error } = await supabase
+    .from("todos")
+    .select("*")
+    .order("created_at", { ascending: false });
 
   if (error) {
     return (
@@ -28,31 +29,15 @@ export async function TodoList() {
         </div>
       }
     >
-      <ul className="space-y-3" role="list">
+      <ul className="space-y-3 mt-8" role="list">
         {data?.map((todo: Todo) => (
-          <li
+          <TodoItem
             key={todo.id}
-            className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg shadow"
-          >
-            <div className="flex items-center space-x-3">
-              <ToggleButton id={todo.id} completed={todo.completed} />
-              <span
-                className={`${
-                  todo.completed
-                    ? "line-through text-gray-500 dark:text-gray-400"
-                    : "text-gray-700 dark:text-white"
-                } text-sm sm:text-base`}
-              >
-                {todo.text}
-              </span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                {format(new Date(todo.created_at), "yyyy年MM月dd日")}
-              </span>
-              <DeleteButton id={todo.id} />
-            </div>
-          </li>
+            id={todo.id}
+            text={todo.text}
+            created_at={todo.created_at}
+            completed={todo.completed}
+          />
         ))}
       </ul>
     </Suspense>
