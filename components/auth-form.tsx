@@ -1,32 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import { signIn, signUp } from "@/actions/auth";
+import { handleAuth } from "@/actions/auth";
 
 export default function AuthForm({ type }: { type: "signIn" | "signUp" }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
-
+  const actionSubmit = async (formData: FormData) => {
     if (type === "signIn") {
-      await signIn(formData);
+      await handleAuth(formData, "signIn");
     } else {
-      await signUp(formData);
+      await handleAuth(formData, "signUp");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form action={actionSubmit} className="space-y-4">
       <div>
         <label className="block text-sm font-medium">メールアドレス</label>
         <input
           type="email"
           value={email}
+          name="email"
           onChange={(e) => setEmail(e.target.value)}
           required
           className="mt-1 block w-full border-gray-300 rounded-md"
@@ -37,6 +33,7 @@ export default function AuthForm({ type }: { type: "signIn" | "signUp" }) {
         <input
           type="password"
           value={password}
+          name="password"
           onChange={(e) => setPassword(e.target.value)}
           required
           className="mt-1 block w-full border-gray-300 rounded-md"

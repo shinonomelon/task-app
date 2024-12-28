@@ -31,6 +31,7 @@ export function TodoItem({ id, text, completed, created_at }: TodoItemProps) {
 
     try {
       await toggleTodoCompleted(id, !optimisticCompleted);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       startTransition(() => {
         setOptimisticCompleted(completed);
