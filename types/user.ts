@@ -1,6 +1,9 @@
 import { User } from "@supabase/supabase-js";
 
-export type AuthUser = User | null;
+export type AuthFormData = {
+  email: string;
+  password: string;
+};
 
 export interface AuthActionResponse {
   success: boolean;

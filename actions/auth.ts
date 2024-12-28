@@ -1,10 +1,10 @@
-// actions/authActions.ts
 "use server";
 
-import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
+import { AuthActionResponse, AuthFormData } from "@/types/user";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { z } from "zod";
 
 const authUserSchema = z.object({
   email: z
@@ -13,51 +13,76 @@ const authUserSchema = z.object({
   password: z.string().min(6, { message: "パスワードは最低6文字必要です。" }),
 });
 
-export async function handleAuth(
-  formData: FormData,
-  authType: "signIn" | "signUp"
-) {
-  // バリデーション
-  const parsedData = authUserSchema.safeParse({
-    email: formData.get("email"),
-    password: formData.get("password"),
-  });
+export async function signin(
+  prevState: AuthActionResponse | null,
+  formData: FormData
+): Promise<AuthActionResponse> {
+  const rawData: AuthFormData = {
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+  };
 
-  if (!parsedData.success) {
-    const errorMessage = encodeURIComponent(
-      parsedData.error.errors.map((err) => err.message).join(", ")
-    );
-    redirect(`/error?message=${errorMessage}`);
+  // Validate the form data
+  const validatedData = authUserSchema.safeParse(rawData);
+
+  if (!validatedData.success) {
+    return {
+      success: false,
+      message: "Please fix the errors in the form",
+      errors: validatedData.error.flatten().fieldErrors,
+    };
   }
 
-  const { email, password } = parsedData.data;
+  const { email, password } = validatedData.data;
 
   const supabase = await createClient();
 
-  let response;
-  if (authType === "signIn") {
-    response = await supabase.auth.signInWithPassword({ email, password });
-  } else {
-    response = await supabase.auth.signUp({ email, password });
-  }
-
-  const { error } = response;
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
   if (error) {
-    if (authType === "signIn" && error.message === "ユーザーが見つかりません") {
-      // エラーメッセージは実際のSupabaseのメッセージに合わせてください
-      // ユーザーが存在しない場合、サインアップページにリダイレクト
-      redirect(`/signup?email=${encodeURIComponent(email)}`);
-    } else {
-      // その他のエラーの場合、エラーページにリダイレクト
-      const errorMessage = encodeURIComponent(error.message);
-      redirect(`/error?message=${errorMessage}`);
-    }
+    redirect("/error");
   }
 
-  // キャッシュの再検証
-  revalidatePath("/");
+  revalidatePath("/", "layout");
+  redirect("/");
+}
 
-  // ホームページにリダイレクト
+export async function signup(
+  prevState: AuthActionResponse | null,
+  formData: FormData
+): Promise<AuthActionResponse> {
+  const rawData: AuthFormData = {
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+  };
+
+  // Validate the form data
+  const validatedData = authUserSchema.safeParse(rawData);
+
+  if (!validatedData.success) {
+    return {
+      success: false,
+      message: "Please fix the errors in the form",
+      errors: validatedData.error.flatten().fieldErrors,
+    };
+  }
+
+  const { email, password } = validatedData.data;
+
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.signUp({
+    email,
+    password,
+  });
+
+  if (error) {
+    redirect("/error");
+  }
+
+  revalidatePath("/", "layout");
   redirect("/");
 }

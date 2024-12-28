@@ -1,4 +1,3 @@
-// components/LogoutButton.jsx
 "use client";
 
 import { createClient } from "@/lib/supabase/client";
@@ -13,12 +12,15 @@ export function LogoutButton() {
     if (error) {
       console.error("ログアウトに失敗しました:", error.message);
     } else {
-      router.push("/auth/sign-in"); // クライアントサイドでリダイレクト
+      router.push("/auth/sign-in");
     }
   };
 
   return (
-    <button onClick={handleLogout} className="text-red-500 hover:text-red-700">
+    <button
+      onClick={handleLogout}
+      className="text-red-500 hover:text-red-700 border-red-500 hover:border-red-700"
+    >
       ログアウト
     </button>
   );
