@@ -118,17 +118,15 @@ export function TodoItem({ id, text: defaultValue, completed, created_at }: Todo
         {
           isEditorMode ? (
             <input
-            className="rounded border border-gray-300 p-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-green-300"
-            autoFocus
-            defaultValue={
-              optimisticText
-            }
-            onBlur={handleBlur}
-          />
+              className="rounded border border-gray-300 p-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-green-300"
+              autoFocus
+              defaultValue={optimisticText}
+              onBlur={handleBlur}
+            />
           ) : (
-            <p className="px-4 py-2">{
-              optimisticText
-            }</p>
+            <p className={`px-4 py-2 ${optimisticCompleted ? 'line-through' : ''}`}>
+              {optimisticText}
+            </p>
           )
         }
 
