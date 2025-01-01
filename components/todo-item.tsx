@@ -1,8 +1,10 @@
 "use client";
 
-import { deleteTodo, toggleTodoCompleted } from "@/actions/todo";
-import { format } from "date-fns";
-import { useOptimistic, useTransition } from "react";
+import { deleteTodo, editTodo, toggleTodoCompleted } from "@/actions/todo";
+import { FocusEvent, useOptimistic, useState, useTransition } from "react";
+import { formatDistance } from 'date-fns';
+import { ja } from "date-fns/locale";
+import { Tooltip } from "./tooltip";
 
 type TodoItemProps = {
   id: number;
@@ -11,18 +13,44 @@ type TodoItemProps = {
   created_at: string;
 };
 
-export function TodoItem({ id, text, completed, created_at }: TodoItemProps) {
+export function TodoItem({ id, text: defaultValue, completed, created_at }: TodoItemProps) {
   const [optimisticCompleted, setOptimisticCompleted] = useOptimistic(
     completed,
-    (prev, next: boolean) => next
+    (_, next: boolean) => next
   );
 
   const [optimisticDeleted, setOptimisticDeleted] = useOptimistic(
     false,
-    (prev, next: boolean) => next
+    (_, next: boolean) => next
   );
 
+  const [ optimisticText, setOptimisticText ] = useOptimistic(
+    defaultValue,
+    (_, next: string) => next
+  );
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isPending, startTransition] = useTransition();
+
+
+  const [isEditorMode, setIsEditorMode] = useState(false);
+
+  const handleBlur =async (e: FocusEvent<HTMLInputElement>) => {
+    startTransition(() => {
+      setOptimisticText(e.target.value);
+    })
+    const inputText = e.target.value;
+    setIsEditorMode(false);
+    if (inputText === defaultValue) return;
+    try {
+      await editTodo(id, inputText);
+    } catch (error) {
+      startTransition(() => {
+        setOptimisticText(defaultValue);
+      });
+      console.error("Delete failed:", error);
+    }
+  };
 
   const handleToggle = async () => {
     startTransition(() => {
@@ -31,11 +59,12 @@ export function TodoItem({ id, text, completed, created_at }: TodoItemProps) {
 
     try {
       await toggleTodoCompleted(id, !optimisticCompleted);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     } catch (error) {
       startTransition(() => {
         setOptimisticCompleted(completed);
       });
+      console.error("Delete failed:", error);
     }
   };
 
@@ -66,7 +95,6 @@ export function TodoItem({ id, text, completed, created_at }: TodoItemProps) {
       <div className="flex items-center space-x-3">
         <button
           onClick={handleToggle}
-          disabled={isPending}
           className={`w-5 h-5 rounded-full border-2 ${
             optimisticCompleted
               ? "bg-blue-500 border-blue-500"
@@ -87,25 +115,41 @@ export function TodoItem({ id, text, completed, created_at }: TodoItemProps) {
             </svg>
           )}
         </button>
+        {
+          isEditorMode ? (
+            <input
+            className="rounded border border-gray-300 p-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-green-300"
+            autoFocus
+            defaultValue={
+              optimisticText
+            }
+            onBlur={handleBlur}
+          />
+          ) : (
+            <p className="px-4 py-2">{
+              optimisticText
+            }</p>
+          )
+        }
 
-        <span
-          className={`${
-            optimisticCompleted
-              ? "line-through text-gray-500 dark:text-gray-400"
-              : "text-gray-700 dark:text-white"
-          } text-sm sm:text-base`}
-        >
-          {text}
-        </span>
       </div>
+
       <div className="flex items-center space-x-2">
         <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-          {format(new Date(created_at), "yyyy年MM月dd日")}
+          {formatDistance(new Date(created_at), new Date(), {addSuffix: true, locale: ja})}
         </span>
+        <Tooltip label="Edit">
 
         <button
+              className="rounded bg-green-200 px-2 py-1 text-gray-400 shadow-md hover:opacity-70"
+              onClick={() => setIsEditorMode(true)}
+            >
+              🖊️
+        </button>
+        </Tooltip>
+        <Tooltip label="Delete">
+        <button
           onClick={handleDelete}
-          disabled={isPending}
           className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition-colors duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-500 rounded-full p-1"
         >
           <svg
@@ -121,6 +165,7 @@ export function TodoItem({ id, text, completed, created_at }: TodoItemProps) {
             />
           </svg>
         </button>
+        </Tooltip>
       </div>
     </li>
   );

@@ -166,3 +166,52 @@ export async function toggleTodoCompleted(
     };
   }
 }
+
+export async function editTodo(
+  id: number,
+  text: string
+): Promise<ActionResponse> {
+  try {
+    if (typeof id !== "number" || typeof text !== "string" || text.trim() === "") {
+      return {
+        success: false,
+        message: "Failed to edit todo",
+        errors: {
+          id: ["Valid ID is required"],
+          text: ["Text is required"],
+        },
+      };
+    }
+
+    const supabase = await createClient();
+
+    const { error } = await supabase
+      .from("todos")
+      .update({ text: text })
+      .eq("id", id)
+      .select();
+
+    if (error) {
+      return {
+        success: false,
+        message: "Failed to edit todo",
+        errors: {
+          text: [error.message],
+        },
+      };
+    }
+
+    revalidatePath("/");
+
+    return {
+      success: true,
+      message: "Todo edited successfully",
+    };
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return {
+      success: false,
+      message: "An unexpected error occurred",
+    };
+  }
+}
