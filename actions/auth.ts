@@ -1,16 +1,16 @@
-"use server";
+'use server';
 
-import { createClient } from "@/lib/supabase/server";
-import { AuthActionResponse, AuthFormData } from "@/types/user";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { z } from "zod";
+import { createClient } from '@/lib/supabase/server';
+import { AuthActionResponse, AuthFormData } from '@/types/user';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
+import { z } from 'zod';
 
 const authUserSchema = z.object({
   email: z
     .string()
-    .email({ message: "有効なメールアドレスを入力してください。" }),
-  password: z.string().min(6, { message: "パスワードは最低6文字必要です。" }),
+    .email({ message: '有効なメールアドレスを入力してください。' }),
+  password: z.string().min(6, { message: 'パスワードは最低6文字必要です。' })
 });
 
 export async function signin(
@@ -18,8 +18,8 @@ export async function signin(
   formData: FormData
 ): Promise<AuthActionResponse> {
   const rawData: AuthFormData = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
+    email: formData.get('email') as string,
+    password: formData.get('password') as string
   };
 
   // Validate the form data
@@ -28,8 +28,8 @@ export async function signin(
   if (!validatedData.success) {
     return {
       success: false,
-      message: "Please fix the errors in the form",
-      errors: validatedData.error.flatten().fieldErrors,
+      message: 'Please fix the errors in the form',
+      errors: validatedData.error.flatten().fieldErrors
     };
   }
 
@@ -39,15 +39,15 @@ export async function signin(
 
   const { error } = await supabase.auth.signInWithPassword({
     email,
-    password,
+    password
   });
 
   if (error) {
-    redirect("/error");
+    redirect('/error');
   }
 
-  revalidatePath("/", "layout");
-  redirect("/");
+  revalidatePath('/', 'layout');
+  redirect('/');
 }
 
 export async function signup(
@@ -55,8 +55,8 @@ export async function signup(
   formData: FormData
 ): Promise<AuthActionResponse> {
   const rawData: AuthFormData = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
+    email: formData.get('email') as string,
+    password: formData.get('password') as string
   };
 
   // Validate the form data
@@ -65,8 +65,8 @@ export async function signup(
   if (!validatedData.success) {
     return {
       success: false,
-      message: "Please fix the errors in the form",
-      errors: validatedData.error.flatten().fieldErrors,
+      message: 'Please fix the errors in the form',
+      errors: validatedData.error.flatten().fieldErrors
     };
   }
 
@@ -76,13 +76,13 @@ export async function signup(
 
   const { error } = await supabase.auth.signUp({
     email,
-    password,
+    password
   });
 
   if (error) {
-    redirect("/error");
+    redirect('/error');
   }
 
-  revalidatePath("/", "layout");
-  redirect("/");
+  revalidatePath('/', 'layout');
+  redirect('/');
 }

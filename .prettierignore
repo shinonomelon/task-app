@@ -1,0 +1,6 @@
+# Build artifacts
+.next/
+
+# Dependency directories
+pnpm-lock.yaml
+node_modules/

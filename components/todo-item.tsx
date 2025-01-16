@@ -1,10 +1,12 @@
-"use client";
+'use client';
 
-import { deleteTodo, editTodo, toggleTodoCompleted } from "@/actions/todo";
-import { FocusEvent, useOptimistic, useState, useTransition } from "react";
 import { formatDistance } from 'date-fns';
-import { ja } from "date-fns/locale";
-import { Tooltip } from "./tooltip";
+import { ja } from 'date-fns/locale';
+import { FocusEvent, useOptimistic, useState, useTransition } from 'react';
+
+import { Tooltip } from './tooltip';
+
+import { deleteTodo, editTodo, toggleTodoCompleted } from '@/actions/todo';
 
 type TodoItemProps = {
   id: number;
@@ -13,7 +15,14 @@ type TodoItemProps = {
   created_at: string;
 };
 
-export function TodoItem({ id, text: defaultValue, completed, created_at }: TodoItemProps) {
+export function TodoItem({
+  id,
+  text: defaultValue,
+  completed,
+  created_at
+}: TodoItemProps) {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const [optimisticCompleted, setOptimisticCompleted] = useOptimistic(
     completed,
     (_, next: boolean) => next
@@ -24,31 +33,34 @@ export function TodoItem({ id, text: defaultValue, completed, created_at }: Todo
     (_, next: boolean) => next
   );
 
-  const [ optimisticText, setOptimisticText ] = useOptimistic(
+  const [optimisticText, setOptimisticText] = useOptimistic(
     defaultValue,
     (_, next: string) => next
   );
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isPending, startTransition] = useTransition();
-
+  const [_, startTransition] = useTransition();
 
   const [isEditorMode, setIsEditorMode] = useState(false);
 
-  const handleBlur =async (e: FocusEvent<HTMLInputElement>) => {
-    startTransition(() => {
-      setOptimisticText(e.target.value);
-    })
+  const handleBlur = async (e: FocusEvent<HTMLInputElement>) => {
     const inputText = e.target.value;
     setIsEditorMode(false);
+
     if (inputText === defaultValue) return;
+
+    startTransition(() => {
+      setOptimisticText(inputText);
+    });
+
     try {
       await editTodo(id, inputText);
     } catch (error) {
+      setErrorMessage('編集に失敗しました。もう一度お試しください。');
       startTransition(() => {
         setOptimisticText(defaultValue);
       });
-      console.error("Delete failed:", error);
+      console.error('Edit failed:', error);
     }
   };
 
@@ -59,12 +71,12 @@ export function TodoItem({ id, text: defaultValue, completed, created_at }: Todo
 
     try {
       await toggleTodoCompleted(id, !optimisticCompleted);
-
     } catch (error) {
+      setErrorMessage('完了ステータスの変更に失敗しました。');
       startTransition(() => {
         setOptimisticCompleted(completed);
       });
-      console.error("Delete failed:", error);
+      console.error('Toggle failed:', error);
     }
   };
 
@@ -76,10 +88,11 @@ export function TodoItem({ id, text: defaultValue, completed, created_at }: Todo
     try {
       await deleteTodo(id);
     } catch (error) {
+      setErrorMessage('削除に失敗しました。');
       startTransition(() => {
         setOptimisticDeleted(false);
       });
-      console.error("Delete failed:", error);
+      console.error('Delete failed:', error);
     }
   };
 
@@ -90,33 +103,39 @@ export function TodoItem({ id, text: defaultValue, completed, created_at }: Todo
   return (
     <li
       key={id}
-      className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg shadow"
+      className="flex flex-col gap-1 rounded-lg bg-white p-4 shadow dark:bg-gray-800"
     >
-      <div className="flex items-center space-x-3">
-        <button
-          onClick={handleToggle}
-          className={`w-5 h-5 rounded-full border-2 ${
-            optimisticCompleted
-              ? "bg-blue-500 border-blue-500"
-              : "bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600"
-          }`}
-        >
-          {optimisticCompleted && (
-            <svg
-              className="w-3 h-3 text-white mx-auto"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              viewBox="0 0 24 24"
-            >
-              <path d="M5 13l4 4L19 7" />
-            </svg>
-          )}
-        </button>
-        {
-          isEditorMode ? (
+      {errorMessage && (
+        <div className="mb-2 rounded bg-red-100 p-2 text-red-700">
+          {errorMessage}
+        </div>
+      )}
+
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-3">
+          <button
+            onClick={handleToggle}
+            className={`size-5 rounded-full border-2 ${
+              optimisticCompleted
+                ? 'border-blue-500 bg-blue-500'
+                : 'border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-700'
+            }`}
+          >
+            {optimisticCompleted && (
+              <svg
+                className="mx-auto size-3 text-white"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                viewBox="0 0 24 24"
+              >
+                <path d="M5 13l4 4L19 7" />
+              </svg>
+            )}
+          </button>
+          {isEditorMode ? (
             <input
               className="rounded border border-gray-300 p-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-green-300"
               autoFocus
@@ -124,46 +143,51 @@ export function TodoItem({ id, text: defaultValue, completed, created_at }: Todo
               onBlur={handleBlur}
             />
           ) : (
-            <p className={`px-4 py-2 ${optimisticCompleted ? 'line-through' : ''}`}>
+            <p
+              className={`px-4 py-2 ${
+                optimisticCompleted ? 'line-through' : ''
+              }`}
+            >
               {optimisticText}
             </p>
-          )
-        }
+          )}
+        </div>
 
-      </div>
-
-      <div className="flex items-center space-x-2">
-        <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-          {formatDistance(new Date(created_at), new Date(), {addSuffix: true, locale: ja})}
-        </span>
-        <Tooltip label="Edit">
-
-        <button
+        <div className="flex items-center space-x-2">
+          <span className="text-xs text-gray-500 dark:text-gray-400 sm:text-sm">
+            {formatDistance(new Date(created_at), new Date(), {
+              addSuffix: true,
+              locale: ja
+            })}
+          </span>
+          <Tooltip label="Edit">
+            <button
               className="rounded bg-green-200 px-2 py-1 text-gray-400 shadow-md hover:opacity-70"
               onClick={() => setIsEditorMode(true)}
             >
               🖊️
-        </button>
-        </Tooltip>
-        <Tooltip label="Delete">
-        <button
-          onClick={handleDelete}
-          className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition-colors duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-500 rounded-full p-1"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
-        </Tooltip>
+            </button>
+          </Tooltip>
+          <Tooltip label="Delete">
+            <button
+              onClick={handleDelete}
+              className="rounded-full p-1 text-red-600 transition-colors duration-150 ease-in-out hover:text-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 dark:text-red-400 dark:hover:text-red-300"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="size-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+          </Tooltip>
+        </div>
       </div>
     </li>
   );

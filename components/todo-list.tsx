@@ -1,19 +1,22 @@
-import { createClient } from "@/lib/supabase/server";
-import { Todo } from "@/types/todo";
-import { Suspense } from "react";
-import { TodoItem } from "./todo-item";
+import { Suspense } from 'react';
+
+import { TodoItem } from './todo-item';
+
+import { Todo } from '@/types/todo';
+
+import { createClient } from '@/lib/supabase/server';
 
 export async function TodoList() {
   const supabase = await createClient();
   const { data, error } = await supabase
-    .from("todos")
-    .select("*")
-    .order("created_at", { ascending: false });
+    .from('todos')
+    .select('*')
+    .order('created_at', { ascending: false });
 
   if (error) {
     return (
       <div
-        className="text-red-500 bg-red-100 dark:bg-red-900 p-4 rounded-lg"
+        className="rounded-lg bg-red-100 p-4 text-red-500 dark:bg-red-900"
         role="alert"
       >
         エラーが発生しました: {error.message}
@@ -24,12 +27,12 @@ export async function TodoList() {
   return (
     <Suspense
       fallback={
-        <div className="text-gray-500 dark:text-gray-400 text-center">
+        <div className="text-center text-gray-500 dark:text-gray-400">
           読み込み中...
         </div>
       }
     >
-      <ul className="space-y-3 mt-8" role="list">
+      <ul className="mt-8 space-y-3" role="list">
         {data?.map((todo: Todo) => (
           <TodoItem
             key={todo.id}

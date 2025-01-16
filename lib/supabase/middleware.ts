@@ -1,9 +1,9 @@
-import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
+import { createServerClient } from '@supabase/ssr';
+import { NextResponse, type NextRequest } from 'next/server';
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
-    request,
+    request
   });
 
   const supabase = createServerClient(
@@ -19,13 +19,13 @@ export async function updateSession(request: NextRequest) {
             request.cookies.set(name, value)
           );
           supabaseResponse = NextResponse.next({
-            request,
+            request
           });
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
           );
-        },
-      },
+        }
+      }
     }
   );
 
@@ -36,17 +36,17 @@ export async function updateSession(request: NextRequest) {
   // IMPORTANT: DO NOT REMOVE auth.getUser()
 
   const {
-    data: { user },
+    data: { user }
   } = await supabase.auth.getUser();
 
-  if (!user && !request.nextUrl.pathname.startsWith("/auth")) {
+  if (!user && !request.nextUrl.pathname.startsWith('/auth')) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
-    url.pathname = "/auth/sign-in";
+    url.pathname = '/auth/sign-in';
     return NextResponse.redirect(url);
-  } else if (user && request.nextUrl.pathname.startsWith("/auth")) {
+  } else if (user && request.nextUrl.pathname.startsWith('/auth')) {
     const url = request.nextUrl.clone();
-    url.pathname = "/";
+    url.pathname = '/';
     return NextResponse.redirect(url);
   }
 
