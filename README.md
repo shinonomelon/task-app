@@ -1,10 +1,10 @@
-# Todo App
+# Task App
 
 このプロジェクトは、Next.jsを使用して構築されたシンプルなToDoアプリケーションです。
 
 ## デモ
 
-https://todo-app-next15.vercel.app
+https://task-app-next15.vercel.app
 
 ## 機能
 

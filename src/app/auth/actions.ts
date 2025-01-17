@@ -60,8 +60,8 @@ export async function signin(
     };
   }
 
-  revalidatePath('/', 'layout');
-  redirect('/');
+  revalidatePath('/app', 'layout');
+  redirect('/app');
 }
 
 export async function signup(
@@ -101,29 +101,6 @@ export async function signup(
     };
   }
 
-  revalidatePath('/', 'layout');
-  redirect('/');
-}
-
-export async function signInWithGoogle() {
-  const supabase = await createClient();
-
-  const {
-    data: { url },
-    error
-  } = await supabase.auth.signInWithOAuth({
-    provider: 'google'
-  });
-
-  if (error) {
-    console.error('Error during Google sign-in:', error.message);
-    redirect('/error?message=authentication-failed');
-  }
-
-  if (!url) {
-    console.error('No URL returned from signInWithOAuth');
-    redirect('/error?message=authentication-failed');
-  }
-
-  redirect(url);
+  revalidatePath('/app', 'layout');
+  redirect('/app');
 }

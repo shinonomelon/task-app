@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
-import { ActionResponse, Todo } from '../types/todo';
+import { ActionResponse, Task } from '../types/task';
 
 import { createClient } from '@/src/lib/supabase/server';
 
@@ -31,7 +31,7 @@ export async function addTodo(
     }
 
     // Extract and validate input
-    const rawData: Pick<Todo, 'text'> = {
+    const rawData: Pick<Task, 'text'> = {
       text: formData.get('text') as string
     };
 
@@ -42,7 +42,7 @@ export async function addTodo(
     if (!validatedData.success) {
       return {
         success: false,
-        message: 'Failed to add todo',
+        message: 'Failed to add task',
         errors: validatedData.error.flatten().fieldErrors
       };
     }
@@ -56,7 +56,7 @@ export async function addTodo(
     if (error) {
       return {
         success: false,
-        message: 'Failed to add todo',
+        message: 'Failed to add task',
         errors: {
           text: [error.message]
         }
@@ -67,7 +67,7 @@ export async function addTodo(
 
     return {
       success: true,
-      message: 'Todo added successfully'
+      message: 'Task added successfully'
     };
   } catch (error) {
     console.error('Unexpected error:', error);
@@ -83,7 +83,7 @@ export async function deleteTodo(id: number): Promise<ActionResponse> {
     if (typeof id !== 'number') {
       return {
         success: false,
-        message: 'Failed to delete todo',
+        message: 'Failed to delete task',
         errors: {
           id: ['ID is required']
         }
@@ -101,7 +101,7 @@ export async function deleteTodo(id: number): Promise<ActionResponse> {
     if (error) {
       return {
         success: false,
-        message: 'Failed to delete todo',
+        message: 'Failed to delete task',
         errors: {
           id: [error.message]
         }
@@ -111,7 +111,7 @@ export async function deleteTodo(id: number): Promise<ActionResponse> {
 
     return {
       success: true,
-      message: 'Todo deleted successfully'
+      message: 'Task deleted successfully'
     };
   } catch (error) {
     console.error('Unexpected error:', error);
@@ -130,7 +130,7 @@ export async function toggleTodoCompleted(
     if (typeof id !== 'number') {
       return {
         success: false,
-        message: 'Failed to update todo',
+        message: 'Failed to update task',
         errors: {
           id: ['ID is required']
         }
@@ -148,7 +148,7 @@ export async function toggleTodoCompleted(
     if (error) {
       return {
         success: false,
-        message: 'Failed to update todo',
+        message: 'Failed to update task',
         errors: {
           id: [error.message]
         }
@@ -158,7 +158,7 @@ export async function toggleTodoCompleted(
 
     return {
       success: true,
-      message: 'Todo updated successfully'
+      message: 'Task updated successfully'
     };
   } catch (error) {
     console.error('Unexpected error:', error);
@@ -181,7 +181,7 @@ export async function editTodo(
     ) {
       return {
         success: false,
-        message: 'Failed to edit todo',
+        message: 'Failed to edit task',
         errors: {
           id: ['Valid ID is required'],
           text: ['Text is required']
@@ -200,7 +200,7 @@ export async function editTodo(
     if (error) {
       return {
         success: false,
-        message: 'Failed to edit todo',
+        message: 'Failed to edit task',
         errors: {
           text: [error.message]
         }
@@ -211,7 +211,7 @@ export async function editTodo(
 
     return {
       success: true,
-      message: 'Todo edited successfully'
+      message: 'Task edited successfully'
     };
   } catch (error) {
     console.error('Unexpected error:', error);

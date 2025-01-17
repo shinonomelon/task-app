@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Todo App',
+  title: 'Task App',
   description: 'Created by Next.js and Supabase'
 };
 

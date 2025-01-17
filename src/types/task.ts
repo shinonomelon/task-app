@@ -1,4 +1,4 @@
-export type Todo = {
+export type Task = {
   id: number;
   text: string;
   user_id: string;
@@ -10,6 +10,6 @@ export interface ActionResponse {
   success: boolean;
   message: string;
   errors?: {
-    [K in keyof Todo]?: string[];
+    [K in keyof Task]?: string[];
   };
 }

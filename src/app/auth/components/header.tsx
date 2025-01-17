@@ -4,7 +4,7 @@ export const Header = ({ type }: { type: 'signin' | 'signup' }) => {
   return (
     <header className="flex items-center justify-between py-4">
       <Link href="/" className="flex items-center gap-2">
-        <span className="text-xl font-bold">Todo App</span>
+        <span className="text-xl font-bold">Task App</span>
       </Link>
       {type === 'signin' ? (
         <Link

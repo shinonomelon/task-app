@@ -2,24 +2,20 @@
 
 import { useActionState } from 'react';
 
-import { addTodo } from '../actions/todo';
-import { ActionResponse } from '../types/todo';
-
-import { LoadingSpinner } from './loading-spinner';
+import { addTodo } from '../../../../actions/task';
+import { LoadingSpinner } from '../../../../components/loading-spinner';
+import { ActionResponse } from '../../../../types/task';
 
 const initialState: ActionResponse = {
   success: false,
   message: ''
 };
 
-export const TodoForm = () => {
+export const TaskForm = () => {
   const [state, action, isPending] = useActionState(addTodo, initialState);
 
   return (
-    <div className="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
-      <h2 className="mb-4 text-xl font-semibold text-gray-800 dark:text-white">
-        新しいTodoを追加
-      </h2>
+    <div className="rounded-lg bg-white p-6 dark:bg-gray-800">
       <form action={action} className="space-y-4">
         <div>
           <input
