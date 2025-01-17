@@ -2,36 +2,10 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { z } from 'zod';
 
-import { createClient } from '../lib/supabase/server';
+import { signInSchema, signUpSchema } from './schema';
 
-export const signUpSchema = z
-  .object({
-    email: z
-      .string()
-      .email({ message: '有効なメールアドレスを入力してください' }),
-    password: z.string().min(12, { message: 'パスワードは最低12文字必要です' }),
-    confirmPassword: z
-      .string()
-      .min(12, { message: '確認用のパスワードを入力してください' })
-  })
-  .superRefine(({ confirmPassword, password }, ctx) => {
-    if (confirmPassword !== password) {
-      ctx.addIssue({
-        code: 'custom',
-        message: 'パスワードが一致しません',
-        path: ['confirmPassword']
-      });
-    }
-  });
-
-export const signInSchema = z.object({
-  email: z
-    .string()
-    .email({ message: '有効なメールアドレスを入力してください' }),
-  password: z.string().min(12, { message: 'パスワードは最低12文字必要です' })
-});
+import { createClient } from '@/src/lib/supabase/server';
 
 type SignupFormData = {
   email: string;
@@ -86,8 +60,8 @@ export async function signin(
     };
   }
 
-  revalidatePath('/app', 'layout');
-  redirect('/app');
+  revalidatePath('/', 'layout');
+  redirect('/');
 }
 
 export async function signup(
@@ -127,6 +101,29 @@ export async function signup(
     };
   }
 
-  revalidatePath('/app', 'layout');
-  redirect('/app');
+  revalidatePath('/', 'layout');
+  redirect('/');
+}
+
+export async function signInWithGoogle() {
+  const supabase = await createClient();
+
+  const {
+    data: { url },
+    error
+  } = await supabase.auth.signInWithOAuth({
+    provider: 'google'
+  });
+
+  if (error) {
+    console.error('Error during Google sign-in:', error.message);
+    redirect('/error?message=authentication-failed');
+  }
+
+  if (!url) {
+    console.error('No URL returned from signInWithOAuth');
+    redirect('/error?message=authentication-failed');
+  }
+
+  redirect(url);
 }
