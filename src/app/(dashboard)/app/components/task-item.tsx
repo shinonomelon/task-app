@@ -1,5 +1,7 @@
 'use client';
 
+import { formatDistance } from 'date-fns';
+import { ja } from 'date-fns/locale';
 import { FocusEvent, useOptimistic, useState, useTransition } from 'react';
 
 import { deleteTodo, editTodo, toggleTodoCompleted } from '@/src/actions/task';
@@ -152,13 +154,18 @@ export const TaskItem = ({
         </div>
 
         <div className="flex items-center space-x-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <span className="text-xs text-gray-500 dark:text-gray-400 sm:text-sm">
+            {formatDistance(new Date(created_at), new Date(), {
+              addSuffix: true,
+              locale: ja
+            })}
+          </span>
           <button
             className="rounded bg-green-200 px-2 py-1 text-gray-400 shadow-md hover:opacity-70"
             onClick={() => setIsEditorMode(true)}
           >
             🖊️
           </button>
-
           <button
             onClick={handleDelete}
             className="rounded-full p-1 text-red-600 transition-colors duration-150 ease-in-out hover:text-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 dark:text-red-400 dark:hover:text-red-300"
