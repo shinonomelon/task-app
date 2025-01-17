@@ -2,11 +2,10 @@ import { Suspense } from 'react';
 
 import { TodoItem } from './todo-item';
 
+import { createClient } from '@/src/lib/supabase/server';
 import { Todo } from '@/src/types/todo';
 
-import { createClient } from '@/src/lib/supabase/server';
-
-export async function TodoList() {
+export const TodoList = async () => {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from('todos')
@@ -45,4 +44,4 @@ export async function TodoList() {
       </ul>
     </Suspense>
   );
-}
+};

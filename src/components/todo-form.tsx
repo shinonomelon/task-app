@@ -12,7 +12,7 @@ const initialState: ActionResponse = {
   message: ''
 };
 
-export function TodoForm() {
+export const TodoForm = () => {
   const [state, action, isPending] = useActionState(addTodo, initialState);
 
   return (
@@ -54,4 +54,4 @@ export function TodoForm() {
       </form>
     </div>
   );
-}
+};

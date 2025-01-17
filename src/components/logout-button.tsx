@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import { createClient } from '@/src/lib/supabase/client';
 
-export function LogoutButton() {
+export const LogoutButton = () => {
   const router = useRouter();
   const supabase = createClient();
 
@@ -21,4 +21,4 @@ export function LogoutButton() {
       ログアウト
     </button>
   );
-}
+};

@@ -15,12 +15,12 @@ type TodoItemProps = {
   created_at: string;
 };
 
-export function TodoItem({
+export const TodoItem = ({
   id,
   text: defaultValue,
   completed,
   created_at
-}: TodoItemProps) {
+}: TodoItemProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [optimisticCompleted, setOptimisticCompleted] = useOptimistic(
@@ -191,4 +191,4 @@ export function TodoItem({
       </div>
     </li>
   );
-}
+};

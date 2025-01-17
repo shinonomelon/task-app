@@ -4,9 +4,8 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
-import { AuthActionResponse, AuthFormData } from '@/src/types/user';
-
 import { createClient } from '@/src/lib/supabase/server';
+import { AuthActionResponse, AuthFormData } from '@/src/types/user';
 
 const authUserSchema = z.object({
   email: z

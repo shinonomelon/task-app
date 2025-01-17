@@ -2,11 +2,10 @@
 
 import Link from 'next/link';
 
+import { Button } from '@/src/components/ui/button';
 import { createClient } from '@/src/lib/supabase/client';
 
-import { Button } from '@/src/components/ui/button';
-
-export function Header() {
+export const Header = () => {
   const handleSignOut = async () => {
     const supabase = await createClient();
     const { error } = await supabase.auth.signOut();
@@ -56,4 +55,4 @@ export function Header() {
       </div>
     </header>
   );
-}
+};
