@@ -13,28 +13,14 @@ function Header() {
         </Link>
         <div className="flex gap-4">
           <Button variant="ghost" className="rounded-xl font-bold" asChild>
-            <Link
-              href={{
-                pathname: '/auth',
-                query: { type: 'signin' }
-              }}
-            >
-              ログイン
-            </Link>
+            <Link href="/auth/sign-in">ログイン</Link>
           </Button>
           <Button
             variant="default"
             className="rounded-xl bg-zinc-800 font-bold"
             asChild
           >
-            <Link
-              href={{
-                pathname: '/auth',
-                query: { type: 'signup' }
-              }}
-            >
-              新規登録
-            </Link>
+            <Link href="/auth/sign-up">新規登録</Link>
           </Button>
         </div>
       </div>
