@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useActionState } from 'react';
 
-import { signin } from '@/actions/auth';
+import { signin } from '@/src/actions/auth';
 
 export default function SignInPage() {
   const [, action, isPending] = useActionState(signin, null);

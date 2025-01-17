@@ -2,18 +2,9 @@
 
 import Link from 'next/link';
 
-import { createClient } from '@/lib/supabase/client';
+import { Button } from '@/src/components/ui/button';
 
-import { Button } from '@/components/ui/button';
-
-export function Header() {
-  const handleSignOut = async () => {
-    const supabase = await createClient();
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error(error);
-    }
-  };
+function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 bg-white/80 backdrop-blur-sm">
       <div className="container mx-auto flex items-center justify-between p-4">
@@ -21,13 +12,6 @@ export function Header() {
           <span className="text-xl font-bold">Todo App</span>
         </Link>
         <div className="flex gap-4">
-          <Button
-            variant="ghost"
-            className="rounded-xl font-bold"
-            onClick={handleSignOut}
-          >
-            ログアウト
-          </Button>
           <Button variant="ghost" className="rounded-xl font-bold" asChild>
             <Link
               href={{
@@ -55,5 +39,14 @@ export function Header() {
         </div>
       </div>
     </header>
+  );
+}
+
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <main className="min-h-screen bg-[#f2f9f2]">
+      <Header />
+      {children}
+    </main>
   );
 }

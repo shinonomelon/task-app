@@ -2,9 +2,9 @@ import { Suspense } from 'react';
 
 import { TodoItem } from './todo-item';
 
-import { Todo } from '@/types/todo';
+import { Todo } from '@/src/types/todo';
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/src/lib/supabase/server';
 
 export async function TodoList() {
   const supabase = await createClient();

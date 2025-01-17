@@ -6,7 +6,7 @@ import { FocusEvent, useOptimistic, useState, useTransition } from 'react';
 
 import { Tooltip } from './tooltip';
 
-import { deleteTodo, editTodo, toggleTodoCompleted } from '@/actions/todo';
+import { deleteTodo, editTodo, toggleTodoCompleted } from '@/src/actions/todo';
 
 type TodoItemProps = {
   id: number;

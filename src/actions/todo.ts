@@ -1,9 +1,9 @@
 'use server';
 
-import { ActionResponse, Todo } from '../types/todo';
-import { z } from 'zod';
+import { createClient } from '@/src/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
-import { createClient } from '@/lib/supabase/server';
+import { z } from 'zod';
+import { ActionResponse, Todo } from '../types/todo';
 
 const todoSchema = z.object({
   text: z.string().min(1, 'Text is required')

@@ -1,6 +1,6 @@
-import { LogoutButton } from '@/components/logout-button';
-import { TodoForm } from '@/components/todo-form';
-import { TodoList } from '@/components/todo-list';
+import { LogoutButton } from '@/src/components/logout-button';
+import { TodoForm } from '@/src/components/todo-form';
+import { TodoList } from '@/src/components/todo-list';
 
 export default async function Page() {
   return (

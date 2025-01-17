@@ -1,10 +1,12 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
-import { AuthActionResponse, AuthFormData } from '@/types/user';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
+
+import { AuthActionResponse, AuthFormData } from '@/src/types/user';
+
+import { createClient } from '@/src/lib/supabase/server';
 
 const authUserSchema = z.object({
   email: z
