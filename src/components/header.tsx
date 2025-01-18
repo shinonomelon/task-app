@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 
-import { Button } from '@/src/components/ui/button';
-import { createClient } from '@/src/lib/supabase/client';
+import { createClient } from '@/lib/supabase/client';
+
+import { Button } from '@/components/ui/button';
 
 export const Header = () => {
   const handleSignOut = async () => {

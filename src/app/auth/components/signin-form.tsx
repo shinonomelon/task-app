@@ -5,8 +5,8 @@ import { useActionState } from 'react';
 
 import { signin } from '../actions';
 
-import { Button } from '@/src/components/ui/button';
-import { Input } from '@/src/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 export const SignInForm = () => {
   const [state, formAction, isPending] = useActionState(signin, undefined);

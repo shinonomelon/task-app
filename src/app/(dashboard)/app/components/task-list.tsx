@@ -2,9 +2,9 @@ import { Suspense } from 'react';
 
 import { TaskForm } from './task-form';
 import { TaskItem } from './task-item';
+import { Task } from './types';
 
-import { createClient } from '@/src/lib/supabase/server';
-import { Task } from '@/src/types/task';
+import { createClient } from '@/lib/supabase/server';
 
 export const TaskList = async () => {
   const supabase = await createClient();
@@ -25,16 +25,14 @@ export const TaskList = async () => {
   }
 
   return (
-    <div className="p-6 pl-80">
-      <h1 className="text-2xl font-bold">インボックス</h1>
+    <div className="p-6 pb-24 pl-80">
+      <h1 className="mb-4 text-2xl font-bold">インボックス</h1>
       <Suspense
         fallback={
-          <div className="text-center text-gray-500 dark:text-gray-400">
-            読み込み中...
-          </div>
+          <div className="text-center text-gray-500">読み込み中...</div>
         }
       >
-        <ul className="mt-4">
+        <ul>
           {data?.map((task: Task) => (
             <TaskItem
               key={task.id}

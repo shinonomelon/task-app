@@ -5,9 +5,9 @@ import { useActionState } from 'react';
 
 import { signup } from '../actions';
 
-import { Alert, AlertDescription } from '@/src/components/ui/alert';
-import { Button } from '@/src/components/ui/button';
-import { Input } from '@/src/components/ui/input';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 export const SignUpForm = () => {
   const [state, formAction, isPending] = useActionState(signup, undefined);

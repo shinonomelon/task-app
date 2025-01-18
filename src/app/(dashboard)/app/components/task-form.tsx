@@ -3,9 +3,11 @@
 import { LoaderCircle, Plus } from 'lucide-react';
 import { useActionState, useState } from 'react';
 
-import { addTodo } from '@/src/actions/task';
-import { Button } from '@/src/components/ui/button';
-import { ActionResponse } from '@/src/types/task';
+import { addTodo } from './actions';
+import { ActionResponse } from './types';
+
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 const initialState: ActionResponse = {
   success: false,
@@ -40,14 +42,13 @@ export const TaskForm = () => {
       {showForm && (
         <form action={action} className="mt-4 space-y-4">
           <div>
-            <input
+            <Input
               type="text"
               name="text"
               minLength={2}
               maxLength={100}
               required
-              className="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-              placeholder="新しいTodoを入力してください"
+              placeholder="新しいタスクを入力してください"
             />
             {state.errors?.text && (
               <div className="mt-1 text-sm text-red-500" role="alert">
@@ -56,7 +57,7 @@ export const TaskForm = () => {
             )}
           </div>
           <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={handleCancel}>
+            <Button variant="outline" type="button" onClick={handleCancel}>
               キャンセル
             </Button>
             <Button

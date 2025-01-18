@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 
 import { signInSchema, signUpSchema } from './schema';
 
-import { createClient } from '@/src/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 
 type SignupFormData = {
   email: string;

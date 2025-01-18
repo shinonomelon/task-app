@@ -5,9 +5,11 @@ import { ja } from 'date-fns/locale';
 import { Pencil, Trash } from 'lucide-react';
 import { FocusEvent, useOptimistic, useState, useTransition } from 'react';
 
-import { deleteTodo, editTodo, toggleTodoCompleted } from '@/src/actions/task';
-import { Button } from '@/src/components/ui/button';
-import { Checkbox } from '@/src/components/ui/checkbox';
+import { deleteTodo, editTodo, toggleTodoCompleted } from './actions';
+
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
 
 type TodoItemProps = {
   id: number;
@@ -104,7 +106,7 @@ export const TaskItem = ({
   return (
     <li
       key={id}
-      className="group relative flex flex-col gap-1 border-b bg-white px-4 py-1 dark:bg-gray-800"
+      className="group relative flex flex-col gap-1 border-b bg-white py-1 dark:bg-gray-800"
     >
       {errorMessage && (
         <div className="mb-2 bg-red-100 p-2 text-red-700">{errorMessage}</div>
@@ -133,20 +135,20 @@ export const TaskItem = ({
           </Checkbox>
 
           {isEditorMode ? (
-            <input
-              className="rounded border border-gray-300 p-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-green-300"
+            <Input
+              className="px-4 py-2"
               autoFocus
               defaultValue={optimisticText}
               onBlur={handleBlur}
             />
           ) : (
-            <p
+            <div
               className={`px-4 py-2 ${
                 optimisticCompleted ? 'line-through' : ''
               }`}
             >
               {optimisticText}
-            </p>
+            </div>
           )}
         </div>
 
