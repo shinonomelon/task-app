@@ -2,9 +2,11 @@
 
 import { formatDistance } from 'date-fns';
 import { ja } from 'date-fns/locale';
+import { Pencil, Trash } from 'lucide-react';
 import { FocusEvent, useOptimistic, useState, useTransition } from 'react';
 
 import { deleteTodo, editTodo, toggleTodoCompleted } from '@/src/actions/task';
+import { Button } from '@/src/components/ui/button';
 import { Checkbox } from '@/src/components/ui/checkbox';
 
 type TodoItemProps = {
@@ -155,29 +157,16 @@ export const TaskItem = ({
               locale: ja
             })}
           </span>
-          <button
-            className="rounded bg-green-200 px-2 py-1 text-gray-400 shadow-md hover:opacity-70"
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => setIsEditorMode(true)}
           >
-            🖊️
-          </button>
-          <button
-            onClick={handleDelete}
-            className="rounded-full p-1 text-red-600 transition-colors duration-150 ease-in-out hover:text-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 dark:text-red-400 dark:hover:text-red-300"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="size-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
+            <Pencil />
+          </Button>
+          <Button variant="ghost" size="icon" onClick={handleDelete}>
+            <Trash />
+          </Button>
         </div>
       </div>
     </li>
