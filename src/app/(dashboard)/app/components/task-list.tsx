@@ -25,7 +25,8 @@ export const TaskList = async () => {
   }
 
   return (
-    <div>
+    <div className="p-6 pl-80">
+      <h1 className="text-2xl font-bold">インボックス</h1>
       <Suspense
         fallback={
           <div className="text-center text-gray-500 dark:text-gray-400">
