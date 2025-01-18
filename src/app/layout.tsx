@@ -1,34 +1,29 @@
-import { Geist, Geist_Mono } from 'next/font/google';
-
 import type { Metadata } from 'next';
+
+import { UserProvider } from '@/lib/auth';
+import { createClient } from '@/lib/supabase/server';
 import './globals.css';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin']
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin']
-});
 
 export const metadata: Metadata = {
   title: 'Task App',
   description: 'Created by Next.js and Supabase'
 };
 
-export default function RootLayout({
+const getUser = async () => {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+  return data?.user || null;
+};
+
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="ja">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body>
+        <UserProvider userPromise={getUser()}>{children}</UserProvider>
       </body>
     </html>
   );
