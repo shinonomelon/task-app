@@ -1,10 +1,12 @@
 'use client';
 
+import { Plus } from 'lucide-react';
 import { useActionState } from 'react';
 
-import { addTodo } from '../../../../actions/task';
-import { LoadingSpinner } from '../../../../components/loading-spinner';
-import { ActionResponse } from '../../../../types/task';
+import { addTodo } from '@/src/actions/task';
+import { LoadingSpinner } from '@/src/components/loading-spinner';
+import { Button } from '@/src/components/ui/button';
+import { ActionResponse } from '@/src/types/task';
 
 const initialState: ActionResponse = {
   success: false,
@@ -15,7 +17,7 @@ export const TaskForm = () => {
   const [state, action, isPending] = useActionState(addTodo, initialState);
 
   return (
-    <div className="rounded-lg bg-white p-6 dark:bg-gray-800">
+    <div className="p-6">
       <form action={action} className="space-y-4">
         <div>
           <input
@@ -33,20 +35,26 @@ export const TaskForm = () => {
             </div>
           )}
         </div>
-        <button
-          type="submit"
-          disabled={isPending}
-          className="w-full rounded-md bg-blue-500 px-4 py-2 font-semibold text-white transition duration-150 ease-in-out hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-blue-600 dark:hover:bg-blue-700"
-        >
-          {isPending ? (
-            <div className="flex items-center justify-center">
-              <LoadingSpinner />
-              <span className="ml-2">送信中</span>
-            </div>
-          ) : (
-            '追加'
-          )}
-        </button>
+        <div className="flex justify-end gap-2">
+          <Button variant="outline">キャンセル</Button>
+          <Button
+            type="submit"
+            disabled={isPending}
+            className="gap-2 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isPending ? (
+              <>
+                <LoadingSpinner />
+                <span>追加中</span>
+              </>
+            ) : (
+              <>
+                <Plus className="size-4" />
+                <span>タスクを追加</span>
+              </>
+            )}
+          </Button>
+        </div>
       </form>
     </div>
   );
