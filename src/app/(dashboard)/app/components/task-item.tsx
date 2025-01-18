@@ -5,6 +5,7 @@ import { ja } from 'date-fns/locale';
 import { FocusEvent, useOptimistic, useState, useTransition } from 'react';
 
 import { deleteTodo, editTodo, toggleTodoCompleted } from '@/src/actions/task';
+import { Checkbox } from '@/src/components/ui/checkbox';
 
 type TodoItemProps = {
   id: number;
@@ -101,24 +102,18 @@ export const TaskItem = ({
   return (
     <li
       key={id}
-      // groupクラスを付与し、hover時のスタイルをまとめて扱えるようにする
-      className="group relative flex flex-col gap-1 rounded-lg bg-white px-4 py-2 dark:bg-gray-800"
+      className="group relative flex flex-col gap-1 border-b bg-white px-4 py-1 dark:bg-gray-800"
     >
       {errorMessage && (
-        <div className="mb-2 rounded bg-red-100 p-2 text-red-700">
-          {errorMessage}
-        </div>
+        <div className="mb-2 bg-red-100 p-2 text-red-700">{errorMessage}</div>
       )}
 
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <button
+          <Checkbox
             onClick={handleToggle}
-            className={`size-5 rounded-full border-2 ${
-              optimisticCompleted
-                ? 'border-blue-500 bg-blue-500'
-                : 'border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-700'
-            }`}
+            checked={optimisticCompleted}
+            className="size-5 rounded-full border-2"
           >
             {optimisticCompleted && (
               <svg
@@ -133,7 +128,7 @@ export const TaskItem = ({
                 <path d="M5 13l4 4L19 7" />
               </svg>
             )}
-          </button>
+          </Checkbox>
 
           {isEditorMode ? (
             <input
