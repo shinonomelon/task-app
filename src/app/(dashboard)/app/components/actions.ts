@@ -3,9 +3,9 @@
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
-import { ActionResponse, Task } from '../types/task';
+import { ActionResponse, Task } from './types';
 
-import { createClient } from '@/src/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 
 const todoSchema = z.object({
   text: z.string().min(1, 'Text is required')
