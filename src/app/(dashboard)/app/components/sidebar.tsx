@@ -1,11 +1,29 @@
-import { Inbox } from 'lucide-react';
+'use client';
+
+import { Clock, Inbox } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import { useUser } from '@/lib/auth';
+import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
 
+const NAV_ITEMS = [
+  {
+    title: 'インボックス',
+    href: '/app',
+    icon: Inbox
+  },
+  {
+    title: '今日',
+    href: '/app/today',
+    icon: Clock
+  }
+];
+
 export const Sidebar = () => {
+  const pathname = usePathname();
   const { user } = useUser();
 
   return (
@@ -21,13 +39,19 @@ export const Sidebar = () => {
         </Button>
       )}
       <nav className="space-y-1">
-        <Link
-          href="/app"
-          className="flex items-center gap-2 rounded-md bg-muted/50 px-2 py-1.5"
-        >
-          <Inbox className="size-4" />
-          インボックス
-        </Link>
+        {NAV_ITEMS.map((item) => (
+          <Link
+            key={item.title}
+            href={item.href}
+            className={cn(
+              'flex items-center gap-2 rounded-md px-2 py-1.5',
+              pathname == item.href && 'bg-muted'
+            )}
+          >
+            <item.icon className="size-4" />
+            {item.title}
+          </Link>
+        ))}
       </nav>
     </div>
   );
