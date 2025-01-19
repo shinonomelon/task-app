@@ -28,7 +28,7 @@ export const TaskForm = () => {
   };
 
   return (
-    <div>
+    <div className="mb-4">
       {!showForm && (
         <Button
           variant="ghost"
