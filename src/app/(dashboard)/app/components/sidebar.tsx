@@ -1,5 +1,3 @@
-'use client';
-
 import { Inbox } from 'lucide-react';
 import Link from 'next/link';
 
@@ -7,7 +5,7 @@ import { useUser } from '@/lib/auth';
 
 import { Button } from '@/components/ui/button';
 
-export function Sidebar() {
+export const Sidebar = () => {
   const { user } = useUser();
 
   return (
@@ -33,4 +31,4 @@ export function Sidebar() {
       </nav>
     </div>
   );
-}
+};
