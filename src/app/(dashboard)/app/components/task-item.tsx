@@ -5,7 +5,7 @@ import { ja } from 'date-fns/locale';
 import { Pencil, Trash } from 'lucide-react';
 import { FocusEvent, useOptimistic, useState, useTransition } from 'react';
 
-import { deleteTodo, editTodo, toggleTodoCompleted } from './actions';
+import { deleteTodo, editTodo, toggleTodoCompleted } from '../actions';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';

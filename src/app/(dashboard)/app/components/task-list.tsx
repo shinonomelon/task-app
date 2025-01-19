@@ -1,8 +1,9 @@
 import { Suspense } from 'react';
 
+import { Task } from '../types';
+
 import { TaskForm } from './task-form';
 import { TaskItem } from './task-item';
-import { Task } from './types';
 
 import { createClient } from '@/lib/supabase/server';
 

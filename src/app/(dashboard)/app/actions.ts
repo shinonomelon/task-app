@@ -221,3 +221,8 @@ export async function editTodo(
     };
   }
 }
+
+export async function signOut() {
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+}

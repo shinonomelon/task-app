@@ -3,8 +3,8 @@
 import { LoaderCircle, Plus } from 'lucide-react';
 import { useActionState, useState } from 'react';
 
-import { addTodo } from './actions';
-import { ActionResponse } from './types';
+import { addTodo } from '../actions';
+import { ActionResponse } from '../types';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -48,6 +48,7 @@ export const TaskForm = () => {
               minLength={2}
               maxLength={100}
               required
+              autoFocus
               placeholder="新しいタスクを入力してください"
             />
             {state.errors?.text && (
