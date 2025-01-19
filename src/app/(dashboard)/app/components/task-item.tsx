@@ -1,29 +1,25 @@
 'use client';
 
-import { formatDistance } from 'date-fns';
-import { ja } from 'date-fns/locale';
-import { Pencil, Trash } from 'lucide-react';
+import { format, isSameYear, isToday, isTomorrow, isYesterday } from 'date-fns';
+import { Trash } from 'lucide-react';
 import { FocusEvent, useOptimistic, useState, useTransition } from 'react';
 
 import { deleteTask, editTask, toggleTaskCompleted } from '../actions';
+import { Task } from '../types';
+
+import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 
-type TaskItemProps = {
-  id: number;
-  text: string;
-  completed: boolean;
-  created_at: string;
-};
-
 export const TaskItem = ({
   id,
   text: defaultValue,
   completed,
-  created_at
-}: TaskItemProps) => {
+  deadline,
+  priority
+}: Task) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [optimisticCompleted, setOptimisticCompleted] = useOptimistic(
@@ -117,7 +113,11 @@ export const TaskItem = ({
           <Checkbox
             onClick={handleToggle}
             checked={optimisticCompleted}
-            className="size-5 rounded-full border-2"
+            className={cn('size-5 rounded-full border-2 border-gray-500', {
+              'border-red-600': priority === 3,
+              'border-red-400': priority === 2,
+              'opacity-40': optimisticCompleted
+            })}
           >
             {optimisticCompleted && (
               <svg
@@ -142,28 +142,49 @@ export const TaskItem = ({
               onBlur={handleBlur}
             />
           ) : (
-            <div
-              className={`py-2 ${optimisticCompleted ? 'line-through' : ''}`}
+            <span
+              className={`py-2 ${optimisticCompleted ? 'opacity-40' : ''} cursor-pointer`}
+              onClick={() => setIsEditorMode(true)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  setIsEditorMode(true);
+                }
+              }}
             >
               {optimisticText}
-            </div>
+            </span>
           )}
         </div>
+        <div className="flex items-center space-x-2">
+          {deadline && (
+            <span
+              className={cn({
+                'text-blue-500': isToday(new Date(deadline)),
+                'text-red-500':
+                  new Date(deadline).getDate() < new Date().getDate(),
+                'text-gray-700':
+                  new Date(deadline).getDate() > new Date().getDate()
+              })}
+            >
+              {(() => {
+                const deadlineDate = new Date(deadline);
 
-        <div className="flex items-center space-x-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          <span className="text-xs text-gray-500 dark:text-gray-400 sm:text-sm">
-            {formatDistance(new Date(created_at), new Date(), {
-              addSuffix: true,
-              locale: ja
-            })}
-          </span>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsEditorMode(true)}
-          >
-            <Pencil />
-          </Button>
+                if (isToday(deadlineDate)) {
+                  return '今日';
+                } else if (isTomorrow(deadlineDate)) {
+                  return '明日';
+                } else if (isYesterday(deadlineDate)) {
+                  return '昨日';
+                } else if (isSameYear(deadlineDate, new Date())) {
+                  return format(deadlineDate, 'MM月dd日');
+                } else {
+                  return format(deadlineDate, 'yyyy年MM月dd日');
+                }
+              })()}
+            </span>
+          )}
           <Button variant="ghost" size="icon" onClick={handleDelete}>
             <Trash />
           </Button>

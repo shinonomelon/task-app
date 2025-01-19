@@ -1,9 +1,11 @@
 export type Task = {
-  id: number;
+  id: string;
   text: string;
   user_id: string;
   completed: boolean;
   created_at: string;
+  deadline?: string;
+  priority: 1 | 2 | 3;
 };
 
 export interface ActionResponse {
