@@ -36,8 +36,6 @@ export async function addTask(
 
     const validatedData = taskSchema.safeParse(rawData);
 
-    console.log('validatedData', validatedData);
-
     if (!validatedData.success) {
       return {
         success: false,
@@ -76,14 +74,14 @@ export async function addTask(
   }
 }
 
-export async function deleteTask(id: number): Promise<ActionResponse> {
+export async function deleteTask(id: string): Promise<ActionResponse> {
   try {
-    if (typeof id !== 'number') {
+    if (typeof id !== 'string') {
       return {
         success: false,
         message: 'Failed to delete task',
         errors: {
-          id: ['ID is required']
+          id: ['IDが必要です']
         }
       };
     }
@@ -99,7 +97,7 @@ export async function deleteTask(id: number): Promise<ActionResponse> {
     if (error) {
       return {
         success: false,
-        message: 'Failed to delete task',
+        message: 'タスクの削除に失敗しました',
         errors: {
           id: [error.message]
         }
@@ -109,7 +107,7 @@ export async function deleteTask(id: number): Promise<ActionResponse> {
 
     return {
       success: true,
-      message: 'Task deleted successfully'
+      message: 'タスクを削除しました'
     };
   } catch (error) {
     console.error('Unexpected error:', error);
@@ -121,16 +119,16 @@ export async function deleteTask(id: number): Promise<ActionResponse> {
 }
 
 export async function toggleTaskCompleted(
-  id: number,
+  id: string,
   completed: boolean
 ): Promise<ActionResponse> {
   try {
-    if (typeof id !== 'number') {
+    if (typeof id !== 'string') {
       return {
         success: false,
-        message: 'Failed to update task',
+        message: 'タスクの更新に失敗しました',
         errors: {
-          id: ['ID is required']
+          id: ['IDが必要です']
         }
       };
     }
@@ -146,7 +144,7 @@ export async function toggleTaskCompleted(
     if (error) {
       return {
         success: false,
-        message: 'Failed to update task',
+        message: 'タスクの更新に失敗しました',
         errors: {
           id: [error.message]
         }
@@ -156,7 +154,7 @@ export async function toggleTaskCompleted(
 
     return {
       success: true,
-      message: 'Task updated successfully'
+      message: 'タスクを更新しました'
     };
   } catch (error) {
     console.error('Unexpected error:', error);
@@ -168,21 +166,21 @@ export async function toggleTaskCompleted(
 }
 
 export async function editTask(
-  id: number,
+  id: string,
   text: string
 ): Promise<ActionResponse> {
   try {
     if (
-      typeof id !== 'number' ||
+      typeof id !== 'string' ||
       typeof text !== 'string' ||
       text.trim() === ''
     ) {
       return {
         success: false,
-        message: 'Failed to edit task',
+        message: 'タスクの編集に失敗しました',
         errors: {
-          id: ['Valid ID is required'],
-          text: ['Text is required']
+          id: ['IDが必要です'],
+          text: ['テキストが必要です']
         }
       };
     }
@@ -198,7 +196,7 @@ export async function editTask(
     if (error) {
       return {
         success: false,
-        message: 'Failed to edit task',
+        message: 'タスクの編集に失敗しました',
         errors: {
           text: [error.message]
         }
@@ -209,13 +207,13 @@ export async function editTask(
 
     return {
       success: true,
-      message: 'Task edited successfully'
+      message: 'タスクを編集しました'
     };
   } catch (error) {
-    console.error('Unexpected error:', error);
+    console.error('予期せぬエラーが発生しました:', error);
     return {
       success: false,
-      message: 'An unexpected error occurred'
+      message: '予期せぬエラーが発生しました'
     };
   }
 }
