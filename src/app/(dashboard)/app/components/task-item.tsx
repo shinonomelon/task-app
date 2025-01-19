@@ -5,13 +5,13 @@ import { ja } from 'date-fns/locale';
 import { Pencil, Trash } from 'lucide-react';
 import { FocusEvent, useOptimistic, useState, useTransition } from 'react';
 
-import { deleteTodo, editTodo, toggleTodoCompleted } from '../actions';
+import { deleteTask, editTask, toggleTaskCompleted } from '../actions';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 
-type TodoItemProps = {
+type TaskItemProps = {
   id: number;
   text: string;
   completed: boolean;
@@ -23,7 +23,7 @@ export const TaskItem = ({
   text: defaultValue,
   completed,
   created_at
-}: TodoItemProps) => {
+}: TaskItemProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [optimisticCompleted, setOptimisticCompleted] = useOptimistic(
@@ -57,7 +57,7 @@ export const TaskItem = ({
     });
 
     try {
-      await editTodo(id, inputText);
+      await editTask(id, inputText);
     } catch (error) {
       setErrorMessage('編集に失敗しました。もう一度お試しください。');
       startTransition(() => {
@@ -73,7 +73,7 @@ export const TaskItem = ({
     });
 
     try {
-      await toggleTodoCompleted(id, !optimisticCompleted);
+      await toggleTaskCompleted(id, !optimisticCompleted);
     } catch (error) {
       setErrorMessage('完了ステータスの変更に失敗しました。');
       startTransition(() => {
@@ -89,7 +89,7 @@ export const TaskItem = ({
     });
 
     try {
-      await deleteTodo(id);
+      await deleteTask(id);
     } catch (error) {
       setErrorMessage('削除に失敗しました。');
       startTransition(() => {
@@ -106,7 +106,7 @@ export const TaskItem = ({
   return (
     <li
       key={id}
-      className="group relative flex flex-col gap-1 border-b bg-white py-1 dark:bg-gray-800"
+      className="group relative ml-2 flex flex-col gap-1 border-b bg-white py-1 dark:bg-gray-800"
     >
       {errorMessage && (
         <div className="mb-2 bg-red-100 p-2 text-red-700">{errorMessage}</div>

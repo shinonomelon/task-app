@@ -4,13 +4,14 @@ import { Task } from '../types';
 
 import { TaskForm } from './task-form';
 import { TaskItem } from './task-item';
+import { TaskSection } from './task-selection';
 
 import { createClient } from '@/lib/supabase/server';
 
 export const TaskList = async () => {
   const supabase = await createClient();
   const { data, error } = await supabase
-    .from('todos')
+    .from('tasks')
     .select('*')
     .order('created_at', { ascending: true });
 
@@ -33,17 +34,19 @@ export const TaskList = async () => {
           <div className="text-center text-gray-500">読み込み中...</div>
         }
       >
-        <ul>
-          {data?.map((task: Task) => (
-            <TaskItem
-              key={task.id}
-              id={task.id}
-              text={task.text}
-              created_at={task.created_at}
-              completed={task.completed}
-            />
-          ))}
-        </ul>
+        <TaskSection title="遅延" count={3}>
+          <ul>
+            {data?.map((task: Task) => (
+              <TaskItem
+                key={task.id}
+                id={task.id}
+                text={task.text}
+                created_at={task.created_at}
+                completed={task.completed}
+              />
+            ))}
+          </ul>
+        </TaskSection>
       </Suspense>
       <TaskForm />
     </div>

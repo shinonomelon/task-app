@@ -3,7 +3,7 @@
 import { LoaderCircle, Plus } from 'lucide-react';
 import { useActionState, useState } from 'react';
 
-import { addTodo } from '../actions';
+import { addTask } from '../actions';
 import { ActionResponse } from '../types';
 
 import { Button } from '@/components/ui/button';
@@ -15,7 +15,7 @@ const initialState: ActionResponse = {
 };
 
 export const TaskForm = () => {
-  const [state, action, isPending] = useActionState(addTodo, initialState);
+  const [state, action, isPending] = useActionState(addTask, initialState);
 
   const [showForm, setShowForm] = useState(false);
 

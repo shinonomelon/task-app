@@ -7,11 +7,11 @@ import { ActionResponse, Task } from './types';
 
 import { createClient } from '@/lib/supabase/server';
 
-const todoSchema = z.object({
+const taskSchema = z.object({
   text: z.string().min(1, 'Text is required')
 });
 
-export async function addTodo(
+export async function addTask(
   prevState: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
@@ -30,12 +30,11 @@ export async function addTodo(
       };
     }
 
-    // Extract and validate input
     const rawData: Pick<Task, 'text'> = {
       text: formData.get('text') as string
     };
 
-    const validatedData = todoSchema.safeParse(rawData);
+    const validatedData = taskSchema.safeParse(rawData);
 
     console.log('validatedData', validatedData);
 
@@ -47,9 +46,8 @@ export async function addTodo(
       };
     }
 
-    // Insert validated data into the database
     const { error } = await supabase
-      .from('todos')
+      .from('tasks')
       .insert([{ text: validatedData.data.text, user_id: user.id }])
       .select();
 
@@ -78,7 +76,7 @@ export async function addTodo(
   }
 }
 
-export async function deleteTodo(id: number): Promise<ActionResponse> {
+export async function deleteTask(id: number): Promise<ActionResponse> {
   try {
     if (typeof id !== 'number') {
       return {
@@ -93,7 +91,7 @@ export async function deleteTodo(id: number): Promise<ActionResponse> {
     const supabase = await createClient();
 
     const { error } = await supabase
-      .from('todos')
+      .from('tasks')
       .delete()
       .eq('id', id)
       .select();
@@ -122,7 +120,7 @@ export async function deleteTodo(id: number): Promise<ActionResponse> {
   }
 }
 
-export async function toggleTodoCompleted(
+export async function toggleTaskCompleted(
   id: number,
   completed: boolean
 ): Promise<ActionResponse> {
@@ -140,7 +138,7 @@ export async function toggleTodoCompleted(
     const supabase = await createClient();
 
     const { error } = await supabase
-      .from('todos')
+      .from('tasks')
       .update({ completed: completed })
       .eq('id', id)
       .select();
@@ -169,7 +167,7 @@ export async function toggleTodoCompleted(
   }
 }
 
-export async function editTodo(
+export async function editTask(
   id: number,
   text: string
 ): Promise<ActionResponse> {
@@ -192,7 +190,7 @@ export async function editTodo(
     const supabase = await createClient();
 
     const { error } = await supabase
-      .from('todos')
+      .from('tasks')
       .update({ text: text })
       .eq('id', id)
       .select();
