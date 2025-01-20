@@ -16,12 +16,12 @@ interface TaskSectionProps {
   defaultOpen?: boolean;
 }
 
-export function TaskSection({
+export const TaskSection = ({
   title,
   count,
   children,
   defaultOpen = true
-}: TaskSectionProps) {
+}: TaskSectionProps) => {
   return (
     <Collapsible defaultOpen={defaultOpen} className="space-y-2">
       <CollapsibleTrigger asChild>
@@ -37,4 +37,4 @@ export function TaskSection({
       <CollapsibleContent className="space-y-2">{children}</CollapsibleContent>
     </Collapsible>
   );
-}
+};
