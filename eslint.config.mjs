@@ -53,7 +53,7 @@ const eslintConfig = [
     }
   },
   {
-    files: ['src/components/**/*.{js,jsx,ts,tsx}'],
+    files: ['**/components/*.{js,jsx,ts,tsx}'],
     rules: {
       'react/function-component-definition': [
         'error',
