@@ -1,19 +1,17 @@
-import { Suspense } from 'react';
-
+import { fetchTasks, FilterBy } from '../queries';
 import { Task } from '../types';
 
-import { TaskForm } from './task-form';
 import { TaskItem } from './task-item';
 import { TaskSection } from './task-selection';
 
-import { createClient } from '@/lib/supabase/server';
+interface TaskListProps {
+  filterBy: FilterBy;
+}
 
-export const TaskList = async () => {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from('tasks')
-    .select('*')
-    .order('created_at', { ascending: true });
+export const TaskList = async ({ filterBy }: TaskListProps) => {
+  const title = getTitle(filterBy);
+
+  const { tasks, error } = await fetchTasks(filterBy);
 
   if (error) {
     return (
@@ -23,55 +21,30 @@ export const TaskList = async () => {
     );
   }
 
-  const completedTasks: Task[] = data?.filter((task) => task.completed);
-  const pendingTasks: Task[] = data?.filter((task) => !task.completed);
+  if (!tasks || tasks.length === 0) {
+    return null;
+  }
 
   return (
-    <div className="p-6 pb-24 pl-80">
-      <h1 className="mb-4 text-2xl font-bold">インボックス</h1>
-      <Suspense
-        fallback={
-          <div className="text-center text-gray-500">読み込み中...</div>
-        }
-      >
-        <ul>
-          {pendingTasks?.map((task: Task) => (
-            <TaskItem
-              key={task.id}
-              id={task.id}
-              user_id={task.user_id}
-              text={task.text}
-              created_at={task.created_at}
-              completed={task.completed}
-              deadline={task.deadline}
-              priority={task.priority}
-            />
-          ))}
-        </ul>
-      </Suspense>
-      <TaskForm />
-      <TaskSection title="完了" count={completedTasks?.length}>
-        <Suspense
-          fallback={
-            <div className="text-center text-gray-500">読み込み中...</div>
-          }
-        >
-          <ul>
-            {completedTasks?.map((task: Task) => (
-              <TaskItem
-                key={task.id}
-                id={task.id}
-                user_id={task.user_id}
-                text={task.text}
-                created_at={task.created_at}
-                completed={task.completed}
-                deadline={task.deadline}
-                priority={task.priority}
-              />
-            ))}
-          </ul>
-        </Suspense>
-      </TaskSection>
-    </div>
+    <TaskSection title={title} count={tasks.length}>
+      <ul>
+        {tasks &&
+          tasks.map((task: Task) => <TaskItem key={task.id} {...task} />)}
+      </ul>
+    </TaskSection>
   );
+};
+
+const getTitle = (filterBy: FilterBy): string => {
+  switch (filterBy) {
+    case 'completed':
+      return '完了したタスク';
+    case 'today':
+      return '今日のタスク';
+    case 'overdue':
+      return '期限切れのタスク';
+    case 'all':
+    default:
+      return 'すべてのタスク';
+  }
 };

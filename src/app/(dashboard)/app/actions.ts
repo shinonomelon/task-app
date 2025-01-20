@@ -9,13 +9,13 @@ import { createClient } from '@/lib/supabase/server';
 
 const addTaskSchema = z.object({
   text: z.string().min(1, 'Text is required'),
-  deadline: z.string().datetime().optional(),
+  deadline: z.string().nullable(),
   priority: z.number().min(1).max(3, '優先度は1から3の間で選択してください')
 });
 
 type AddTaskFormData = {
   text: string;
-  deadline?: string;
+  deadline: string | null;
   priority: number;
 };
 
@@ -40,12 +40,14 @@ export async function addTask(
 
     const rawData: AddTaskFormData = {
       text: formData.get('text') as string,
-      deadline: formData.get('deadline') as string,
+      deadline:
+        formData.get('deadline') === ''
+          ? null
+          : (formData.get('deadline') as string),
       priority: parseInt(formData.get('priority') as string, 10)
     };
 
     const validatedData = addTaskSchema.safeParse(rawData);
-
     if (!validatedData.success) {
       return {
         success: false,
@@ -84,7 +86,7 @@ export async function addTask(
       message: 'タスクを追加しました'
     };
   } catch (error) {
-    console.error('Unexpected error:', error);
+    console.error('予期せぬエラーが発生しました:', error);
     return {
       success: false,
       message: '予期せぬエラーが発生しました'
@@ -128,7 +130,7 @@ export async function deleteTask(id: string): Promise<ActionResponse> {
       message: 'タスクを削除しました'
     };
   } catch (error) {
-    console.error('Unexpected error:', error);
+    console.error('予期せぬエラーが発生しました:', error);
     return {
       success: false,
       message: '予期せぬエラーが発生しました'
@@ -175,7 +177,7 @@ export async function toggleTaskCompleted(
       message: 'タスクを更新しました'
     };
   } catch (error) {
-    console.error('Unexpected error:', error);
+    console.error('予期せぬエラーが発生しました:', error);
     return {
       success: false,
       message: '予期せぬエラーが発生しました'
