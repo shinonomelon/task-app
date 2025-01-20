@@ -3,16 +3,24 @@
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
-import { ActionResponse, Task } from './types';
+import { ActionResponse } from './types';
 
 import { createClient } from '@/lib/supabase/server';
 
-const taskSchema = z.object({
-  text: z.string().min(1, 'Text is required')
+const addTaskSchema = z.object({
+  text: z.string().min(1, 'Text is required'),
+  deadline: z.string().datetime().optional(),
+  priority: z.number().min(1).max(3, '優先度は1から3の間で選択してください')
 });
 
+type AddTaskFormData = {
+  text: string;
+  deadline?: string;
+  priority: number;
+};
+
 export async function addTask(
-  prevState: ActionResponse | null,
+  _: ActionResponse | null,
   formData: FormData
 ): Promise<ActionResponse> {
   try {
@@ -26,33 +34,43 @@ export async function addTask(
     if (userError || !user) {
       return {
         success: false,
-        message: 'Authentication failed. Please log in again.'
+        message: '認証に失敗しました。再度ログインしてください。'
       };
     }
 
-    const rawData: Pick<Task, 'text'> = {
-      text: formData.get('text') as string
+    const rawData: AddTaskFormData = {
+      text: formData.get('text') as string,
+      deadline: formData.get('deadline') as string,
+      priority: parseInt(formData.get('priority') as string, 10)
     };
 
-    const validatedData = taskSchema.safeParse(rawData);
+    const validatedData = addTaskSchema.safeParse(rawData);
 
     if (!validatedData.success) {
       return {
         success: false,
-        message: 'Failed to add task',
+        message: 'フォームのエラーを修正してください',
         errors: validatedData.error.flatten().fieldErrors
       };
     }
 
+    const { text, deadline, priority } = validatedData.data;
     const { error } = await supabase
       .from('tasks')
-      .insert([{ text: validatedData.data.text, user_id: user.id }])
+      .insert([
+        {
+          text,
+          user_id: user.id,
+          deadline,
+          priority
+        }
+      ])
       .select();
 
     if (error) {
       return {
         success: false,
-        message: 'Failed to add task',
+        message: 'タスクの追加に失敗しました',
         errors: {
           text: [error.message]
         }
@@ -63,13 +81,13 @@ export async function addTask(
 
     return {
       success: true,
-      message: 'Task added successfully'
+      message: 'タスクを追加しました'
     };
   } catch (error) {
     console.error('Unexpected error:', error);
     return {
       success: false,
-      message: 'An unexpected error occurred'
+      message: '予期せぬエラーが発生しました'
     };
   }
 }
@@ -79,7 +97,7 @@ export async function deleteTask(id: string): Promise<ActionResponse> {
     if (typeof id !== 'string') {
       return {
         success: false,
-        message: 'Failed to delete task',
+        message: 'タスクの削除に失敗しました',
         errors: {
           id: ['IDが必要です']
         }
@@ -113,7 +131,7 @@ export async function deleteTask(id: string): Promise<ActionResponse> {
     console.error('Unexpected error:', error);
     return {
       success: false,
-      message: 'An unexpected error occurred'
+      message: '予期せぬエラーが発生しました'
     };
   }
 }
@@ -160,7 +178,7 @@ export async function toggleTaskCompleted(
     console.error('Unexpected error:', error);
     return {
       success: false,
-      message: 'An unexpected error occurred'
+      message: '予期せぬエラーが発生しました'
     };
   }
 }
