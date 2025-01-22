@@ -1,6 +1,7 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
 import { ActionResponse } from './types';
@@ -48,6 +49,7 @@ export async function addTask(
     };
 
     const validatedData = addTaskSchema.safeParse(rawData);
+
     if (!validatedData.success) {
       return {
         success: false,
@@ -57,6 +59,7 @@ export async function addTask(
     }
 
     const { text, deadline, priority } = validatedData.data;
+
     const { error } = await supabase
       .from('tasks')
       .insert([
@@ -79,7 +82,7 @@ export async function addTask(
       };
     }
 
-    revalidatePath('/');
+    revalidateTag('supabase');
 
     return {
       success: true,
@@ -123,7 +126,7 @@ export async function deleteTask(id: string): Promise<ActionResponse> {
         }
       };
     }
-    revalidatePath('/');
+    revalidateTag('supabase');
 
     return {
       success: true,
@@ -170,7 +173,7 @@ export async function toggleTaskCompleted(
         }
       };
     }
-    revalidatePath('/');
+    revalidateTag('supabase');
 
     return {
       success: true,
@@ -223,7 +226,7 @@ export async function editTask(
       };
     }
 
-    revalidatePath('/');
+    revalidateTag('supabase');
 
     return {
       success: true,
@@ -241,4 +244,7 @@ export async function editTask(
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();
+
+  revalidateTag('supabase');
+  redirect('/');
 }
