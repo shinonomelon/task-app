@@ -10,6 +10,8 @@ export type Task = {
 
 export type Priority = 'low' | 'medium' | 'high';
 
+export type DisplayTask = Omit<Task, 'user_id' | 'created_at'>;
+
 export type AddTask = Omit<Task, 'id' | 'created_at' | 'completed'>;
 
 export type DeleteTask = Omit<

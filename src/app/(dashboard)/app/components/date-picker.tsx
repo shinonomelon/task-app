@@ -16,12 +16,16 @@ import {
   PopoverTrigger
 } from '@/components/ui/popover';
 
-export const DatePicker = () => {
+export const DatePicker = ({
+  defaultValue
+}: {
+  defaultValue?: string | null;
+}) => {
   const pathname = usePathname();
   const isTodayPage = pathname === '/app/today';
 
   const [date, setDate] = useState<Date | undefined>(
-    isTodayPage ? new Date() : undefined
+    defaultValue ? new Date(defaultValue) : isTodayPage ? new Date() : undefined
   );
 
   return (

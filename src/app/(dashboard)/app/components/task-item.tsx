@@ -6,7 +6,9 @@ import { useOptimistic, useState, useTransition } from 'react';
 
 import { deleteTask } from '../actions/delate-task';
 import { toggleTaskCompleted } from '../actions/toggle-task-complated';
-import { Task } from '../types';
+import { DisplayTask, Task } from '../types';
+
+import { EditTaskDialog } from './edit-task-dialog';
 
 import { cn } from '@/lib/utils';
 
@@ -14,53 +16,52 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 
 export const TaskItem = ({ id, text, completed, deadline, priority }: Task) => {
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const [optimisticCompleted, setOptimisticCompleted] = useOptimistic(
-    completed,
-    (_, next: boolean) => next
-  );
-
-  const [optimisticDeleted, setOptimisticDeleted] = useOptimistic(
-    false,
-    (_, next: boolean) => next
-  );
+  const [optimisticTask, setOptimisticTask] = useOptimistic<
+    DisplayTask,
+    Partial<DisplayTask>
+  >({ id, text, completed, deadline, priority }, (currentState, newState) => ({
+    ...currentState,
+    ...newState
+  }));
 
   const [, startTransition] = useTransition();
 
   const handleToggle = async () => {
     startTransition(() => {
-      setOptimisticCompleted(!optimisticCompleted);
+      setOptimisticTask({ completed: !optimisticTask.completed });
     });
 
     try {
-      await toggleTaskCompleted(id, !optimisticCompleted);
+      await toggleTaskCompleted(id, !optimisticTask.completed);
     } catch (error) {
       setErrorMessage('完了ステータスの変更に失敗しました。');
       startTransition(() => {
-        setOptimisticCompleted(completed);
+        setOptimisticTask({ completed: optimisticTask.completed });
       });
-      console.error('Toggle failed:', error);
+      console.error('完了ステータスの変更に失敗しました：', error);
     }
   };
 
   const handleDelete = async () => {
     startTransition(() => {
-      setOptimisticDeleted(true);
+      setOptimisticTask({ id: '' });
     });
 
     try {
       await deleteTask(id);
     } catch (error) {
-      setErrorMessage('削除に失敗しました。');
+      setErrorMessage('削除に失敗しました');
       startTransition(() => {
-        setOptimisticDeleted(false);
+        setOptimisticTask({ id: id });
       });
-      console.error('Delete failed:', error);
+      console.error('削除に失敗しました：', error);
     }
   };
 
-  if (optimisticDeleted) {
+  if (!optimisticTask) {
     return null;
   }
 
@@ -77,14 +78,14 @@ export const TaskItem = ({ id, text, completed, deadline, priority }: Task) => {
         <div className="flex items-center space-x-3">
           <Checkbox
             onClick={handleToggle}
-            checked={optimisticCompleted}
+            checked={optimisticTask.completed}
             className={cn('size-5 rounded-full border-2 border-gray-500', {
               'border-red-600': priority === 'high',
               'border-red-400': priority === 'medium',
-              'opacity-40': optimisticCompleted
+              'opacity-40': optimisticTask.completed
             })}
           >
-            {optimisticCompleted && (
+            {optimisticTask.completed && (
               <svg
                 className="mx-auto size-3 text-white"
                 fill="none"
@@ -101,8 +102,10 @@ export const TaskItem = ({ id, text, completed, deadline, priority }: Task) => {
 
           <span
             className={cn('py-2', {
-              'opacity-40': optimisticCompleted
+              'opacity-40': optimisticTask.completed
             })}
+            onClick={() => setIsEditDialogOpen(true)}
+            role="button"
           >
             {text}
           </span>
@@ -140,6 +143,11 @@ export const TaskItem = ({ id, text, completed, deadline, priority }: Task) => {
           </Button>
         </div>
       </div>
+      <EditTaskDialog
+        task={optimisticTask}
+        open={isEditDialogOpen}
+        onOpenChange={setIsEditDialogOpen}
+      />
     </li>
   );
 };
