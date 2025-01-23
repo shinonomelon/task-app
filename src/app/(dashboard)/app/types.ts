@@ -5,8 +5,10 @@ export type Task = {
   completed: boolean;
   created_at: string;
   deadline: string | null;
-  priority: 1 | 2 | 3;
+  priority: Priority;
 };
+
+export type Priority = 'low' | 'medium' | 'high';
 
 export type AddTask = Omit<Task, 'id' | 'created_at' | 'completed'>;
 

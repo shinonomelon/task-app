@@ -79,8 +79,8 @@ export const TaskItem = ({ id, text, completed, deadline, priority }: Task) => {
             onClick={handleToggle}
             checked={optimisticCompleted}
             className={cn('size-5 rounded-full border-2 border-gray-500', {
-              'border-red-600': priority === 3,
-              'border-red-400': priority === 2,
+              'border-red-600': priority === 'high',
+              'border-red-400': priority === 'medium',
               'opacity-40': optimisticCompleted
             })}
           >

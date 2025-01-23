@@ -10,7 +10,7 @@ import { createClient } from '@/lib/supabase/server';
 const addTaskSchema = z.object({
   text: z.string().min(1, 'Text is required'),
   deadline: z.string().nullable(),
-  priority: z.number().min(1).max(3, '優先度は1から3の間で選択してください'),
+  priority: z.enum(['low', 'medium', 'high']),
   user_id: z.string().min(1, 'ユーザーIDが必要です')
 });
 
@@ -39,7 +39,7 @@ export async function addTask(
         formData.get('deadline') === ''
           ? null
           : (formData.get('deadline') as string),
-      priority: parseInt(formData.get('priority') as string, 3) as 1 | 2 | 3,
+      priority: formData.get('priority') as 'low' | 'medium' | 'high',
       user_id: user.id
     };
 

@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import { Priority } from '../types';
+
 import {
   Select,
   SelectContent,
@@ -13,15 +15,17 @@ import {
 } from '@/components/ui/select';
 
 const PRIORITY_OPTIONS = [
-  { value: '3', label: '高い' },
-  { value: '2', label: '中' },
-  { value: '1', label: '低い' }
+  { value: 'high', label: '高い' },
+  { value: 'medium', label: '中' },
+  { value: 'low', label: '低い' }
 ];
 
-type Priority = '1' | '2' | '3';
-
-export const PrioritySelect = () => {
-  const [priority, setPriority] = useState<Priority>('1');
+export const PrioritySelect = ({
+  defaultValue = 'low'
+}: {
+  defaultValue?: Priority;
+}) => {
+  const [priority, setPriority] = useState<Priority>(defaultValue);
 
   const handleChange = (value: Priority) => {
     setPriority(value);

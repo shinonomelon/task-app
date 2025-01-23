@@ -11,7 +11,7 @@ const editTaskSchema = z.object({
   id: z.string().uuid('IDはUUIDでなければなりません'),
   text: z.string().min(1, 'テキストは必須です'),
   deadline: z.string().nullable(),
-  priority: z.number().min(1).max(3, '優先度は1から3の間で選択してください'),
+  priority: z.enum(['low', 'medium', 'high']),
   completed: z.boolean(),
   user_id: z.string().uuid('ユーザーIDはUUIDでなければなりません')
 });
@@ -42,7 +42,7 @@ export async function editTask(
         formData.get('deadline') === ''
           ? null
           : (formData.get('deadline') as string),
-      priority: parseInt(formData.get('priority') as string, 10) as 1 | 2 | 3,
+      priority: formData.get('priority') as 'low' | 'medium' | 'high',
       completed: formData.get('completed') === 'true',
       user_id: user.id
     };
