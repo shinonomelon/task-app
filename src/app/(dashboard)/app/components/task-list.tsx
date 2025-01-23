@@ -28,8 +28,9 @@ export const TaskList = async ({ filterBy }: TaskListProps) => {
   return (
     <TaskSection title={title} count={tasks.length}>
       <ul>
-        {tasks &&
-          tasks.map((task: Task) => <TaskItem key={task.id} {...task} />)}
+        {tasks.map((task: Task) => (
+          <TaskItem key={task.id} filterBy={filterBy} {...task} />
+        ))}
       </ul>
     </TaskSection>
   );

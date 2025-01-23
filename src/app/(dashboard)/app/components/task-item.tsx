@@ -6,7 +6,8 @@ import { useOptimistic, useState, useTransition } from 'react';
 
 import { deleteTask } from '../actions/delate-task';
 import { toggleTaskCompleted } from '../actions/toggle-task-complated';
-import { DisplayTask, Task } from '../types';
+import { FilterBy } from '../queries';
+import { DisplayTask } from '../types';
 
 import { EditTaskDialog } from './edit-task-dialog';
 
@@ -15,7 +16,18 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 
-export const TaskItem = ({ id, text, completed, deadline, priority }: Task) => {
+type TaskItemProps = DisplayTask & {
+  filterBy: FilterBy;
+};
+
+export const TaskItem = ({
+  id,
+  text,
+  completed,
+  deadline,
+  priority,
+  filterBy
+}: TaskItemProps) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -31,7 +43,11 @@ export const TaskItem = ({ id, text, completed, deadline, priority }: Task) => {
 
   const handleToggle = async () => {
     startTransition(() => {
-      setOptimisticTask({ completed: !optimisticTask.completed });
+      if (filterBy === 'completed' && optimisticTask.completed) {
+        setOptimisticTask({ id: '' });
+      } else {
+        setOptimisticTask({ completed: !optimisticTask.completed });
+      }
     });
 
     try {
@@ -39,7 +55,7 @@ export const TaskItem = ({ id, text, completed, deadline, priority }: Task) => {
     } catch (error) {
       setErrorMessage('完了ステータスの変更に失敗しました。');
       startTransition(() => {
-        setOptimisticTask({ completed: optimisticTask.completed });
+        setOptimisticTask({ completed: optimisticTask.completed, id });
       });
       console.error('完了ステータスの変更に失敗しました：', error);
     }
@@ -67,7 +83,7 @@ export const TaskItem = ({ id, text, completed, deadline, priority }: Task) => {
 
   return (
     <li
-      key={id}
+      key={optimisticTask.id}
       className="group relative ml-2 flex flex-col gap-1 border-b bg-white py-1 dark:bg-gray-800"
     >
       {errorMessage && (
@@ -107,7 +123,7 @@ export const TaskItem = ({ id, text, completed, deadline, priority }: Task) => {
             onClick={() => setIsEditDialogOpen(true)}
             role="button"
           >
-            {text}
+            {optimisticTask.text}
           </span>
         </div>
         <div className="flex items-center space-x-2">
