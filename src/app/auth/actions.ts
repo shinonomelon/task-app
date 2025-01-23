@@ -68,7 +68,6 @@ export async function signup(
   _: ActionResponse<SignupFormData>,
   formData: FormData
 ): Promise<ActionResponse<SignupFormData>> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
   const rawData: SignupFormData = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
