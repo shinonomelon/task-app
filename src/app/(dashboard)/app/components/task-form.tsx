@@ -3,8 +3,8 @@
 import { LoaderCircle, Plus } from 'lucide-react';
 import { useActionState, useState } from 'react';
 
-import { addTask } from '../actions';
-import { ActionResponse } from '../types';
+import { addTask } from '../actions/add-task';
+import { ActionResponse, AddTask } from '../types';
 
 import { DatePicker } from './date-picker';
 import { PrioritySelect } from './priority-select';
@@ -12,7 +12,7 @@ import { PrioritySelect } from './priority-select';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-const initialState: ActionResponse = {
+const initialState: ActionResponse<AddTask> = {
   success: false,
   message: ''
 };
@@ -65,6 +65,7 @@ export const TaskForm = () => {
           </div>
           <div className="flex gap-2">
             <DatePicker />
+
             <PrioritySelect />
           </div>
           <div className="flex justify-end gap-2">

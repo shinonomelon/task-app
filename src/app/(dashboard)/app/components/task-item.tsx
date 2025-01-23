@@ -2,24 +2,18 @@
 
 import { format, isSameYear, isToday, isTomorrow, isYesterday } from 'date-fns';
 import { Trash } from 'lucide-react';
-import { FocusEvent, useOptimistic, useState, useTransition } from 'react';
+import { useOptimistic, useState, useTransition } from 'react';
 
-import { deleteTask, editTask, toggleTaskCompleted } from '../actions';
+import { deleteTask } from '../actions/delate-task';
+import { toggleTaskCompleted } from '../actions/toggle-task-complated';
 import { Task } from '../types';
 
 import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
 
-export const TaskItem = ({
-  id,
-  text: defaultValue,
-  completed,
-  deadline,
-  priority
-}: Task) => {
+export const TaskItem = ({ id, text, completed, deadline, priority }: Task) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [optimisticCompleted, setOptimisticCompleted] = useOptimistic(
@@ -32,36 +26,7 @@ export const TaskItem = ({
     (_, next: boolean) => next
   );
 
-  const [optimisticText, setOptimisticText] = useOptimistic(
-    defaultValue,
-    (_, next: string) => next
-  );
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, startTransition] = useTransition();
-
-  const [isEditorMode, setIsEditorMode] = useState(false);
-
-  const handleBlur = async (e: FocusEvent<HTMLInputElement>) => {
-    const inputText = e.target.value;
-    setIsEditorMode(false);
-
-    if (inputText === defaultValue) return;
-
-    startTransition(() => {
-      setOptimisticText(inputText);
-    });
-
-    try {
-      await editTask(id, inputText);
-    } catch (error) {
-      setErrorMessage('編集に失敗しました。もう一度お試しください。');
-      startTransition(() => {
-        setOptimisticText(defaultValue);
-      });
-      console.error('Edit failed:', error);
-    }
-  };
+  const [, startTransition] = useTransition();
 
   const handleToggle = async () => {
     startTransition(() => {
@@ -134,28 +99,13 @@ export const TaskItem = ({
             )}
           </Checkbox>
 
-          {isEditorMode ? (
-            <Input
-              className="py-2"
-              autoFocus
-              defaultValue={optimisticText}
-              onBlur={handleBlur}
-            />
-          ) : (
-            <span
-              className={`py-2 ${optimisticCompleted ? 'opacity-40' : ''} cursor-pointer`}
-              onClick={() => setIsEditorMode(true)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  setIsEditorMode(true);
-                }
-              }}
-            >
-              {optimisticText}
-            </span>
-          )}
+          <span
+            className={cn('py-2', {
+              'opacity-40': optimisticCompleted
+            })}
+          >
+            {text}
+          </span>
         </div>
         <div className="flex items-center space-x-2">
           {deadline && (

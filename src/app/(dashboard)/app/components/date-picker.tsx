@@ -40,7 +40,7 @@ export const DatePicker = () => {
             {date ? (
               format(date, 'yyyy年MM月dd日', { locale: ja })
             ) : (
-              <span>期限</span>
+              <span>期限を選択</span>
             )}
           </Button>
         </PopoverTrigger>
