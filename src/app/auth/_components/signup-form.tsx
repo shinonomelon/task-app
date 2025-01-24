@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import { useActionState } from 'react';
 
-import { signup } from '../actions';
+import { signup } from './actions';
 
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';

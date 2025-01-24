@@ -4,26 +4,9 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { signInSchema, signUpSchema } from './schema';
+import { ActionResponse, SigninFormData, SignupFormData } from './types';
 
 import { createClient } from '@/lib/supabase/server';
-
-type SignupFormData = {
-  email: string;
-  password: string;
-  confirmPassword?: string;
-};
-
-type SigninFormData = Omit<SignupFormData, 'confirmPassword'>;
-
-type ActionResponse<T> =
-  | {
-      state: T;
-      message: string;
-      errors?: {
-        [K in keyof T]?: string[];
-      };
-    }
-  | undefined;
 
 export async function signin(
   _: ActionResponse<SigninFormData>,

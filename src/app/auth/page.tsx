@@ -1,6 +1,6 @@
-import { Header } from './components/header';
-import { SignInForm } from './components/signin-form';
-import { SignUpForm } from './components/signup-form';
+import { Header } from './_components/header';
+import { SignInForm } from './_components/signin-form';
+import { SignUpForm } from './_components/signup-form';
 
 export type SearchParams = {
   type?: 'signin' | 'signup';
