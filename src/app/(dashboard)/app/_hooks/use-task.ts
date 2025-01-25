@@ -1,7 +1,8 @@
-import { startTransition, useCallback, useOptimistic } from 'react';
+import { startTransition, useCallback, useOptimistic, useState } from 'react';
 import { toast } from 'sonner';
 
 import { deleteTask } from '../_actions/delate-task';
+import { deleteTaskList } from '../_actions/delete-task-list';
 import { toggleTaskCompleted } from '../_actions/toggle-task-complated';
 import { Task } from '../types';
 
@@ -82,9 +83,50 @@ export const useTask = (tasks: Task[]) => {
     [optimisticTaskList, setOptimisticTaskList]
   );
 
+  const [selectedTaskIdList, setSelectedTaskIdList] = useState<string[]>([]);
+
+  const handleToggleSelect = (id: string) => {
+    setSelectedTaskIdList((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((id) => id !== id);
+      } else {
+        return [...prev, id];
+      }
+    });
+  };
+
+  const handleDeleteTaskList = useCallback(() => {
+    setSelectedTaskIdList([]);
+
+    startTransition(async () => {
+      const previousTaskList = optimisticTaskList;
+      const newTaskList = previousTaskList.filter(
+        (task) => !selectedTaskIdList.includes(task.id)
+      );
+      setOptimisticTaskList(newTaskList);
+
+      const response = await deleteTaskList(selectedTaskIdList);
+      if (response.success) {
+        toast.success(response.message);
+      } else {
+        setOptimisticTaskList(previousTaskList);
+        toast.error(response.message, {
+          style: {
+            background: 'red',
+            color: 'white'
+          }
+        });
+      }
+    });
+  }, [optimisticTaskList, setOptimisticTaskList, selectedTaskIdList]);
+
   return {
     optimisticTaskList,
     handleToggleTask,
-    handleDeleteTask
+    handleDeleteTask,
+    handleToggleSelect,
+    handleDeleteTaskList,
+    selectedTaskIdList,
+    setSelectedTaskIdList
   };
 };

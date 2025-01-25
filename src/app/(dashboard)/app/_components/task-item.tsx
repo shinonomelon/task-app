@@ -16,7 +16,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 export const TaskItem = ({
   task,
   handleToggleTask,
-  handleDeleteTask
+  handleDeleteTask,
+  isSelected,
+  handleToggleSelect
 }: {
   task: Task;
   handleToggleTask: ({
@@ -27,22 +29,31 @@ export const TaskItem = ({
     completed: boolean;
   }) => void;
   handleDeleteTask: ({ id }: { id: string }) => void;
+  isSelected: boolean;
+  handleToggleSelect: (id: string) => void;
 }) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   return (
-    <li
-      key={task.id}
-      className="group relative ml-2 flex flex-col gap-1 border-b py-1 "
-    >
+    <li className="group relative ml-2 flex flex-col gap-1 border-b py-1">
       <div className="flex items-center justify-between">
+        <Checkbox
+          checked={isSelected}
+          onClick={() => handleToggleSelect(task.id)}
+          className={cn(
+            'mr-4 opacity-0 transition duration-300 group-hover:opacity-100',
+            {
+              'opacity-100': isSelected
+            }
+          )}
+        />
         <div className="flex flex-1 items-center space-x-3">
           <Checkbox
             onClick={() =>
               handleToggleTask({ id: task.id, completed: task.completed })
             }
             checked={task.completed}
-            className={cn('size-5 rounded-full border-2 border-gray-500', {
+            className={cn('size-6 rounded-full border-2 border-gray-500', {
               'border-red-600': task.priority === 'high',
               'border-yellow-600': task.priority === 'medium',
               'opacity-40': task.completed

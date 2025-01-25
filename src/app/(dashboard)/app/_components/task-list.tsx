@@ -23,7 +23,7 @@ export const TaskList = async ({
     );
   }
 
-  if (!tasks || tasks.length === 0) {
+  if (!tasks) {
     return null;
   }
 
