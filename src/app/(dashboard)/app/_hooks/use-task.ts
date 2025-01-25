@@ -22,8 +22,9 @@ export const useTask = (tasks: Task[]) => {
 
         setOptimisticTaskList(newTaskList);
 
-        try {
-          await toggleTaskCompleted(id, !completed);
+        const response = await toggleTaskCompleted(id, !completed);
+
+        if (response.success) {
           toast.success(
             completed
               ? '1件のタスクを未完了にしました'
@@ -42,10 +43,14 @@ export const useTask = (tasks: Task[]) => {
               }
             }
           );
-        } catch (error) {
+        } else {
           setOptimisticTaskList(previousTaskList);
-          toast.error('タスクの完了状態の切り替えに失敗しました');
-          console.error('タスクの完了状態の切り替えに失敗しました:', error);
+          toast.error(response.message, {
+            style: {
+              background: 'red',
+              color: 'white'
+            }
+          });
         }
       });
     },
@@ -59,13 +64,18 @@ export const useTask = (tasks: Task[]) => {
         const newTaskList = previousTaskList.filter((task) => task.id !== id);
         setOptimisticTaskList(newTaskList);
 
-        try {
-          await deleteTask(id);
-          toast.success('タスクを削除しました');
-        } catch (error) {
+        const response = await deleteTask(id);
+
+        if (response.success) {
+          toast.success(response.message);
+        } else {
           setOptimisticTaskList(previousTaskList);
-          toast.error('タスクの削除に失敗しました');
-          console.error('タスクの削除に失敗しました:', error);
+          toast.error(response.message, {
+            style: {
+              background: 'red',
+              color: 'white'
+            }
+          });
         }
       });
     },
