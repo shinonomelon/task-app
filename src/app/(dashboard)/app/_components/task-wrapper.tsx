@@ -1,5 +1,3 @@
-'use client';
-
 import { ChevronDown } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -9,19 +7,17 @@ import {
   CollapsibleTrigger
 } from '@/components/ui/collapsible';
 
-interface TaskSectionProps {
-  title: string;
-  count: number;
-  children: React.ReactNode;
-  defaultOpen?: boolean;
-}
-
-export const TaskSection = ({
+export const TaskWrapper = ({
   title,
   count,
   children,
   defaultOpen = true
-}: TaskSectionProps) => {
+}: {
+  title: string;
+  count: number;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}) => {
   return (
     <Collapsible defaultOpen={defaultOpen} className="mb-4 space-y-2">
       <CollapsibleTrigger asChild>
@@ -34,7 +30,7 @@ export const TaskSection = ({
           <span className="ml-2 text-muted-foreground">{count}</span>
         </Button>
       </CollapsibleTrigger>
-      <CollapsibleContent className="space-y-2">{children}</CollapsibleContent>
+      <CollapsibleContent>{children}</CollapsibleContent>
     </Collapsible>
   );
 };

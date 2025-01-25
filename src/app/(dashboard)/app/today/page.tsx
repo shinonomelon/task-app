@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
 
-import { TaskForm } from '../components/task-form';
-import { TaskList } from '../components/task-list';
+import { TaskList } from '../_components/task-list';
 
 export default async function Page() {
   return (
@@ -12,16 +11,8 @@ export default async function Page() {
           <div className="text-center text-gray-500">読み込み中...</div>
         }
       >
-        <TaskList filterBy="overdue" />
+        <TaskList filterByList={['overdue', 'today']} />
       </Suspense>
-      <Suspense
-        fallback={
-          <div className="text-center text-gray-500">読み込み中...</div>
-        }
-      >
-        <TaskList filterBy="today" />
-      </Suspense>
-      <TaskForm />
     </div>
   );
 }

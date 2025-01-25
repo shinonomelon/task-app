@@ -3,7 +3,7 @@
 import { LoaderCircle } from 'lucide-react';
 import { useActionState } from 'react';
 
-import { editTask } from '../actions/edit-task';
+import { editTask } from '../_actions/edit-task';
 
 import { DatePicker } from './date-picker';
 import { PrioritySelect } from './priority-select';

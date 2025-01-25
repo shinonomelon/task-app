@@ -26,6 +26,8 @@ export type ToggleTaskCompleted = Omit<
   'text' | 'created_at' | 'deadline' | 'priority'
 >;
 
+export type FilterBy = 'all' | 'completed' | 'today' | 'overdue';
+
 export interface ActionResponse<T> {
   success: boolean;
   message: string;

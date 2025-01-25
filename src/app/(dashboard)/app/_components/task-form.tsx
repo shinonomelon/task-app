@@ -3,7 +3,7 @@
 import { LoaderCircle, Plus } from 'lucide-react';
 import { useActionState, useState } from 'react';
 
-import { addTask } from '../actions/add-task';
+import { addTask } from '../_actions/add-task';
 import { ActionResponse, AddTask } from '../types';
 
 import { DatePicker } from './date-picker';
