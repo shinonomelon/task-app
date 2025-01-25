@@ -7,8 +7,6 @@ import { usePathname } from 'next/navigation';
 import { useUser } from '@/lib/auth';
 import { cn } from '@/lib/utils';
 
-import { Button } from '@/components/ui/button';
-
 const NAV_ITEMS = [
   {
     title: 'インボックス',
@@ -28,23 +26,14 @@ export const Sidebar = () => {
 
   return (
     <div className="fixed flex h-screen w-72 flex-col gap-4 border-r p-4">
-      {user ? (
-        <span>{user.email}</span>
-      ) : (
-        <Button
-          asChild
-          className="rounded-full bg-black px-4 py-2 text-sm text-white hover:bg-gray-800"
-        >
-          <Link href="/sign-up">Sign Up</Link>
-        </Button>
-      )}
+      {user && <span>{user.email}</span>}
       <nav className="space-y-1">
         {NAV_ITEMS.map((item) => (
           <Link
             key={item.title}
             href={item.href}
             className={cn(
-              'flex items-center gap-2 rounded-md px-2 py-1.5',
+              'flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-muted/80',
               pathname == item.href && 'bg-muted'
             )}
           >

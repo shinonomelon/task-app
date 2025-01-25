@@ -15,7 +15,7 @@ export const Header = () => {
           <span className="text-xl font-bold">Task App</span>
         </Link>
         {user ? (
-          <Button>
+          <Button asChild>
             <Link href="/app">ダッシュボードへ移動</Link>
           </Button>
         ) : (
