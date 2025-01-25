@@ -78,7 +78,7 @@ export async function addTask(
 
     return {
       success: true,
-      message: 'タスクを追加しました'
+      message: '1件のタスクを追加しました'
     };
   } catch (error) {
     console.error('予期せぬエラーが発生しました:', error);

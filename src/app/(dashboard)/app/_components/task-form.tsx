@@ -2,6 +2,7 @@
 
 import { LoaderCircle, Plus } from 'lucide-react';
 import { useActionState, useState } from 'react';
+import { toast } from 'sonner';
 
 import { addTask } from '../_actions/add-task';
 import { ActionResponse, AddTask } from '../types';
@@ -18,7 +19,18 @@ const initialState: ActionResponse<AddTask> = {
 };
 
 export const TaskForm = () => {
-  const [state, action, isPending] = useActionState(addTask, initialState);
+  const [state, action, isPending] = useActionState(
+    async (prevState: ActionResponse<AddTask> | null, formData: FormData) => {
+      const response = await addTask(prevState, formData);
+      if (response.success) {
+        toast.success(response.message);
+      } else {
+        toast.error(response.message);
+      }
+      return response;
+    },
+    initialState
+  );
 
   const [showForm, setShowForm] = useState(false);
 

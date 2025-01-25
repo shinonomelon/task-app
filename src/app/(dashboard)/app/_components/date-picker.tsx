@@ -1,4 +1,3 @@
-// date-picker.tsx
 'use client';
 
 import { format } from 'date-fns';

@@ -2,13 +2,14 @@
 
 import { LoaderCircle } from 'lucide-react';
 import { useActionState } from 'react';
+import { toast } from 'sonner';
 
 import { editTask } from '../_actions/edit-task';
 
 import { DatePicker } from './date-picker';
 import { PrioritySelect } from './priority-select';
 
-import type { DisplayTask } from '../types';
+import type { ActionResponse, DisplayTask, EditTask } from '../types';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -27,15 +28,29 @@ type EditTaskDialogProps = {
   onOpenChange: (open: boolean) => void;
 };
 
+const initialState: ActionResponse<EditTask> = {
+  success: false,
+  message: ''
+};
+
 export const EditTaskDialog = ({
   task,
   open,
   onOpenChange
 }: EditTaskDialogProps) => {
-  const [state, action, isPending] = useActionState(editTask, {
-    success: false,
-    message: ''
-  });
+  const [state, action, isPending] = useActionState(
+    async (prevState: ActionResponse<EditTask> | null, formData: FormData) => {
+      const response = await editTask(prevState, formData);
+      if (response.success) {
+        toast.success(response.message);
+        onOpenChange(false);
+      } else {
+        toast.error(response.message);
+      }
+      return response;
+    },
+    initialState
+  );
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

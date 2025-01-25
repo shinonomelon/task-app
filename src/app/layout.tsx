@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 
 import { UserProvider } from '@/lib/auth';
 import { createClient } from '@/lib/supabase/server';
+
+import { Toaster } from '@/components/ui/sonner';
+
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -24,6 +27,7 @@ export default async function RootLayout({
     <html lang="ja">
       <body>
         <UserProvider userPromise={getUser()}>{children}</UserProvider>
+        <Toaster />
       </body>
     </html>
   );
