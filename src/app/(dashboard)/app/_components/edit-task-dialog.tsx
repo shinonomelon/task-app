@@ -50,7 +50,7 @@ export const EditTaskDialog = ({
             name="completed"
             value={task.completed ? 'true' : 'false'}
           />
-          <div className="flex flex-col gap-4">
+          <div className="mb-4 flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <Label htmlFor="text">タスク</Label>
               <Input

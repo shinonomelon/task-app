@@ -28,10 +28,10 @@ export type ToggleTaskCompleted = Omit<
 
 export type FilterBy = 'all' | 'completed' | 'today' | 'overdue';
 
-export interface ActionResponse<T> {
+export type ActionResponse<T> = {
   success: boolean;
   message: string;
   errors?: {
     [K in keyof T]?: string[];
   };
-}
+};
