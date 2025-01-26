@@ -86,12 +86,12 @@ export const useTask = (tasks: Task[]) => {
 
   const [selectedTaskIdList, setSelectedTaskIdList] = useState<string[]>([]);
 
-  const handleToggleSelect = (id: string) => {
+  const handleToggleSelect = (selectedTaskId: string) => {
     setSelectedTaskIdList((prev) => {
-      if (prev.includes(id)) {
-        return prev.filter((id) => id !== id);
+      if (prev.includes(selectedTaskId)) {
+        return prev.filter((id) => id !== selectedTaskId);
       } else {
-        return [...prev, id];
+        return [...prev, selectedTaskId];
       }
     });
   };
