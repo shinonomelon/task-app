@@ -6,7 +6,7 @@ import { TaskList } from '../_components/task-list';
 export default async function Page() {
   return (
     <>
-      <h1 className="mb-4 text-2xl font-bold">今日</h1>
+      <h1 className="mb-4 text-2xl font-bold">インボックス</h1>
       <Suspense
         fallback={
           <div className="flex items-center justify-center">
@@ -14,7 +14,7 @@ export default async function Page() {
           </div>
         }
       >
-        <TaskList filterByList={['overdue', 'today']} />
+        <TaskList filterByList={['all', 'completed']} />
       </Suspense>
     </>
   );

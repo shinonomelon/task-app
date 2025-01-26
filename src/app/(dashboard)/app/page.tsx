@@ -1,18 +1,25 @@
+import { LoaderCircle } from 'lucide-react';
 import { Suspense } from 'react';
 
-import { TaskList } from './_components/task-list';
+import { TaskSummary } from './_components/task-summary';
 
-export default async function Page() {
+export default async function DashboardPage() {
   return (
-    <div className="p-6 pb-24 pl-80">
-      <h1 className="mb-4 text-2xl font-bold">インボックス</h1>
-      <Suspense
-        fallback={
-          <div className="text-center text-gray-500">読み込み中...</div>
-        }
-      >
-        <TaskList filterByList={['all', 'completed']} />
-      </Suspense>
-    </div>
+    <>
+      <h1 className="mb-6 text-2xl font-semibold text-gray-900">
+        ダッシュボード
+      </h1>
+      <div className="space-y-6">
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center">
+              <LoaderCircle className="size-6 animate-spin" />
+            </div>
+          }
+        >
+          <TaskSummary />
+        </Suspense>
+      </div>
+    </>
   );
 }

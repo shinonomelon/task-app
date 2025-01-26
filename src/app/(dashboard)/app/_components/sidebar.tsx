@@ -3,33 +3,38 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { useUser } from '@/lib/auth';
+import { UserMenu } from './user-memu';
+
 import { cn } from '@/lib/utils';
 
 import { NAV_ITEMS } from '@/constants/nav';
 
 export const Sidebar = () => {
   const pathname = usePathname();
-  const { user } = useUser();
 
   return (
-    <div className="fixed flex h-screen w-72 flex-col gap-4 border-r p-4">
-      {user && <span>{user.email}</span>}
-      <nav className="space-y-1">
+    <div
+      className={cn(
+        'fixed flex h-screen flex-col gap-4 border-r md:p-6 pt-6 bg-background md:w-64 w-16'
+      )}
+    >
+      <nav className="flex-1 space-y-1">
         {NAV_ITEMS.map((item) => (
           <Link
             key={item.title}
             href={item.href}
             className={cn(
-              'flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-muted/80',
-              pathname == item.href && 'bg-muted'
+              'flex items-center gap-2 p-2 rounded-md hover:bg-muted/80',
+              pathname == item.href && 'bg-muted font-semibold'
             )}
           >
-            <item.icon className="size-4" />
-            {item.title}
+            <item.icon className="mx-auto size-6 md:mx-0" />
+            <span className="hidden md:block">{item.title}</span>
           </Link>
         ))}
       </nav>
+      <div className="h-px w-full shrink-0 bg-border" />
+      <UserMenu />
     </div>
   );
 };
