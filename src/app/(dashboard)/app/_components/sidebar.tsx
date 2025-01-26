@@ -1,24 +1,12 @@
 'use client';
 
-import { Clock, Inbox } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { useUser } from '@/lib/auth';
 import { cn } from '@/lib/utils';
 
-const NAV_ITEMS = [
-  {
-    title: 'インボックス',
-    href: '/app',
-    icon: Inbox
-  },
-  {
-    title: '今日',
-    href: '/app/today',
-    icon: Clock
-  }
-];
+import { NAV_ITEMS } from '@/constants/nav';
 
 export const Sidebar = () => {
   const pathname = usePathname();

@@ -8,11 +8,12 @@ import { TaskWrapper } from './task-wrapper';
 
 import { FilterBy, Task } from '@/types/task';
 
+import { filterConfig } from '@/lib/utils/filter-config';
+import { getTitle } from '@/lib/utils/get-title';
+
 import { Button } from '@/components/ui/button';
 
 import { useTask } from '@/hooks/use-task';
-import { filterConfig } from '@/utils/filter-config';
-import { getTitle } from '@/utils/get-title';
 
 export const TaskSection = ({
   tasks,
