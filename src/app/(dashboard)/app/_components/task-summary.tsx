@@ -14,7 +14,8 @@ export const TaskSummary = async () => {
 
   const totalTaskCount = data[0]?.total_count ?? 0;
   const completedTaskCount = data[0]?.completed_count ?? 0;
-  const pendingTaskCount = data[0]?.total_count - data[0]?.completed_count ?? 0;
+  const pendingTaskCount =
+    (data[0]?.total_count ?? 0) - (data[0]?.completed_count ?? 0);
 
   return (
     <div className="grid gap-4 md:grid-cols-3">
