@@ -21,14 +21,12 @@ export const SignInForm = () => {
   >(
     async (prevState: ActionResponse<SigninFormData>, formData: FormData) => {
       const response = await signIn(prevState, formData);
-      if (!response?.success) {
-        toast.error(response?.message);
-        return response;
-      } else {
-        router.push('/app');
-        toast.success(response?.message);
-        return response;
-      }
+
+      if (!response?.success) return response;
+
+      router.push('/app');
+      toast.success(response?.message);
+      return response;
     },
     {
       success: false,
@@ -93,7 +91,7 @@ export const SignInForm = () => {
         <Button
           type="submit"
           className={clsx(
-            'w-full bg-green-600 font-bold hover:bg-green-700',
+            'w-full bg-green-600 font-bold transition-colors duration-150 ease-in hover:bg-green-700',
             isPending && 'cursor-not-allowed opacity-50'
           )}
         >

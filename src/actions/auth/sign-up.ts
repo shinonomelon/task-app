@@ -37,11 +37,20 @@ export async function signUp(
     password
   });
 
+  if (error?.code === 'user_already_exists') {
+    return {
+      success: false,
+      state: rawData,
+      message: 'アカウントがすでに存在します'
+    };
+  }
+
+  // その他のエラー
   if (error) {
     return {
       success: false,
       state: rawData,
-      message: 'アカウント作成に失敗しました'
+      message: error.message
     };
   }
 
