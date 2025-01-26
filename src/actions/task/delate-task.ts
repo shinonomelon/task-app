@@ -1,16 +1,11 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { z } from 'zod';
 
-import { ActionResponse, DeleteTask } from '../types';
+import { ActionResponse, DeleteTask } from '@/types/task';
 
+import { deleteTaskSchema } from '@/lib/schema/task';
 import { createClient } from '@/lib/supabase/server';
-
-const deleteTaskSchema = z.object({
-  id: z.string().uuid('IDはUUIDでなければなりません'),
-  user_id: z.string().uuid('ユーザーIDはUUIDでなければなりません')
-});
 
 export async function deleteTask(
   id: string

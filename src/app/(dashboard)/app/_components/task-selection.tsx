@@ -2,16 +2,17 @@
 
 import { Trash2 } from 'lucide-react';
 
-import { useTask } from '../_hooks/use-task';
-import { filterConfig } from '../_utils/filter-config';
-import { getTitle } from '../_utils/get-title';
-import { FilterBy, Task } from '../types';
-
 import { TaskForm } from './task-form';
 import { TaskItem } from './task-item';
 import { TaskWrapper } from './task-wrapper';
 
+import { FilterBy, Task } from '@/types/task';
+
 import { Button } from '@/components/ui/button';
+
+import { useTask } from '@/hooks/use-task';
+import { filterConfig } from '@/utils/filter-config';
+import { getTitle } from '@/utils/get-title';
 
 export const TaskSection = ({
   tasks,

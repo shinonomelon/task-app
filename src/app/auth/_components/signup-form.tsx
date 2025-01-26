@@ -3,14 +3,14 @@
 import clsx from 'clsx';
 import { useActionState } from 'react';
 
-import { signup } from './actions';
-
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
+import { signUp } from '@/actions/auth/sign-up';
+
 export const SignUpForm = () => {
-  const [state, formAction, isPending] = useActionState(signup, undefined);
+  const [state, formAction, isPending] = useActionState(signUp, undefined);
 
   return (
     <section className="rounded-lg bg-white px-4 py-6">

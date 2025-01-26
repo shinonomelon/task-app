@@ -1,10 +1,11 @@
 import { startTransition, useCallback, useOptimistic, useState } from 'react';
 import { toast } from 'sonner';
 
-import { deleteTask } from '../_actions/delate-task';
-import { deleteTaskList } from '../_actions/delete-task-list';
-import { toggleTaskCompleted } from '../_actions/toggle-task-complated';
-import { Task } from '../types';
+import { Task } from '@/types/task';
+
+import { deleteTask } from '@/actions/task/delate-task';
+import { deleteTaskList } from '@/actions/task/delete-task-list';
+import { toggleTaskCompleted } from '@/actions/task/toggle-task-complated';
 
 export const useTask = (tasks: Task[]) => {
   const [optimisticTaskList, setOptimisticTaskList] = useOptimistic(

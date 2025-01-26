@@ -1,4 +1,4 @@
-import { FilterBy } from '../types';
+import { FilterBy } from '@/types/task';
 
 export const getTitle = (filterBy: FilterBy): string => {
   switch (filterBy) {

@@ -8,8 +8,6 @@ export type Task = {
   priority: Priority;
 };
 
-export type Priority = 'low' | 'medium' | 'high';
-
 export type DisplayTask = Omit<Task, 'user_id' | 'created_at'>;
 
 export type AddTask = Omit<Task, 'id' | 'created_at' | 'completed'>;
@@ -25,6 +23,8 @@ export type ToggleTaskCompleted = Omit<
   Task,
   'text' | 'created_at' | 'deadline' | 'priority'
 >;
+
+export type Priority = 'low' | 'medium' | 'high';
 
 export type FilterBy = 'all' | 'completed' | 'today' | 'overdue';
 

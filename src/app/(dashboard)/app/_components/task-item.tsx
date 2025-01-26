@@ -4,9 +4,9 @@ import { format, isSameYear, isToday, isTomorrow, isYesterday } from 'date-fns';
 import { Trash } from 'lucide-react';
 import { useState } from 'react';
 
-import { Task } from '../types';
-
 import { EditTaskDialog } from './edit-task-dialog';
+
+import { Task } from '@/types/task';
 
 import { cn } from '@/lib/utils';
 

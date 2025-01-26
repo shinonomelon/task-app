@@ -3,17 +3,18 @@
 import clsx from 'clsx';
 import { useActionState } from 'react';
 
-import { signin } from './actions';
-import { ActionResponse, SigninFormData } from './types';
+import { ActionResponse, SigninFormData } from '@/types/auth';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+
+import { signIn } from '@/actions/auth/sign-in';
 
 export const SignInForm = () => {
   const [state, formAction, isPending] = useActionState<
     ActionResponse<SigninFormData>,
     FormData
-  >(signin, undefined);
+  >(signIn, undefined);
 
   return (
     <section className="rounded-lg bg-white px-4 py-6">

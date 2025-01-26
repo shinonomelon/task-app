@@ -1,6 +1,6 @@
-import { FilterBy } from '../types';
-
 import { TaskSection } from './task-selection';
+
+import { FilterBy } from '@/types/task';
 
 import { createClient } from '@/lib/supabase/server';
 

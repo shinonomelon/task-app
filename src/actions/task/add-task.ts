@@ -1,18 +1,11 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { z } from 'zod';
 
-import { ActionResponse, AddTask } from '../types';
+import { ActionResponse, AddTask } from '@/types/task';
 
+import { addTaskSchema } from '@/lib/schema/task';
 import { createClient } from '@/lib/supabase/server';
-
-const addTaskSchema = z.object({
-  text: z.string().min(1, 'Text is required'),
-  deadline: z.string().nullable(),
-  priority: z.enum(['low', 'medium', 'high']),
-  user_id: z.string().min(1, 'ユーザーIDが必要です')
-});
 
 export async function addTask(
   _: ActionResponse<AddTask> | null,
@@ -55,7 +48,7 @@ export async function addTask(
 
     const { text, deadline, priority, user_id } = validatedData.data;
 
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('tasks')
       .insert([
         {
@@ -66,6 +59,8 @@ export async function addTask(
         }
       ])
       .select();
+
+    console.log(data);
 
     if (error) {
       return {

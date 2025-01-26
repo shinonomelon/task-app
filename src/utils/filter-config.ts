@@ -1,6 +1,6 @@
 import { isSameDay } from 'date-fns';
 
-import { Task } from '../types';
+import { Task } from '@/types/task';
 
 export const filterConfig = {
   all: {

@@ -1,20 +1,11 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { z } from 'zod';
 
-import { ActionResponse, EditTask } from '../types';
+import { ActionResponse, EditTask } from '@/types/task';
 
+import { editTaskSchema } from '@/lib/schema/task';
 import { createClient } from '@/lib/supabase/server';
-
-const editTaskSchema = z.object({
-  id: z.string().uuid('IDはUUIDでなければなりません'),
-  text: z.string().min(1, 'テキストは必須です'),
-  deadline: z.string().nullable(),
-  priority: z.enum(['low', 'medium', 'high']),
-  completed: z.boolean(),
-  user_id: z.string().uuid('ユーザーIDはUUIDでなければなりません')
-});
 
 export async function editTask(
   _: ActionResponse<EditTask> | null,

@@ -4,19 +4,15 @@ import { LoaderCircle, Plus } from 'lucide-react';
 import { useActionState, useState } from 'react';
 import { toast } from 'sonner';
 
-import { addTask } from '../_actions/add-task';
-import { ActionResponse, AddTask } from '../types';
-
 import { DatePicker } from './date-picker';
 import { PrioritySelect } from './priority-select';
+
+import { ActionResponse, AddTask } from '@/types/task';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-const initialState: ActionResponse<AddTask> = {
-  success: false,
-  message: ''
-};
+import { addTask } from '@/actions/task/add-task';
 
 export const TaskForm = () => {
   const [state, action, isPending] = useActionState(
@@ -29,7 +25,10 @@ export const TaskForm = () => {
       }
       return response;
     },
-    initialState
+    {
+      success: false,
+      message: ''
+    }
   );
 
   const [showForm, setShowForm] = useState(false);

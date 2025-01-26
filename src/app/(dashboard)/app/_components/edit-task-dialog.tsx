@@ -4,12 +4,10 @@ import { LoaderCircle } from 'lucide-react';
 import { useActionState } from 'react';
 import { toast } from 'sonner';
 
-import { editTask } from '../_actions/edit-task';
-
 import { DatePicker } from './date-picker';
 import { PrioritySelect } from './priority-select';
 
-import type { ActionResponse, DisplayTask, EditTask } from '../types';
+import { ActionResponse, DisplayTask, EditTask } from '@/types/task';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -22,15 +20,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
+import { editTask } from '@/actions/task/edit-task';
+
 type EditTaskDialogProps = {
   task: DisplayTask;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-};
-
-const initialState: ActionResponse<EditTask> = {
-  success: false,
-  message: ''
 };
 
 export const EditTaskDialog = ({
@@ -49,7 +44,10 @@ export const EditTaskDialog = ({
       }
       return response;
     },
-    initialState
+    {
+      success: false,
+      message: ''
+    }
   );
 
   return (

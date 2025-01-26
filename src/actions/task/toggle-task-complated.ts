@@ -1,20 +1,16 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { z } from 'zod';
 
-import { ActionResponse, DeleteTask } from '../types';
+import { ActionResponse, ToggleTaskCompleted } from '@/types/task';
 
+import { toggleTaskCompletedSchema } from '@/lib/schema/task';
 import { createClient } from '@/lib/supabase/server';
 
-const deleteTaskListSchema = z.object({
-  idList: z.array(z.string().uuid('IDはUUIDでなければなりません')),
-  user_id: z.string().uuid('ユーザーIDはUUIDでなければなりません')
-});
-
-export async function deleteTaskList(
-  idList: string[]
-): Promise<ActionResponse<DeleteTask>> {
+export async function toggleTaskCompleted(
+  id: string,
+  completed: boolean
+): Promise<ActionResponse<ToggleTaskCompleted>> {
   try {
     const supabase = await createClient();
 
@@ -30,12 +26,13 @@ export async function deleteTaskList(
       };
     }
 
-    const rawData = {
-      idList,
+    const rawData: ToggleTaskCompleted = {
+      id,
+      completed,
       user_id: user.id
     };
 
-    const validatedData = deleteTaskListSchema.safeParse(rawData);
+    const validatedData = toggleTaskCompletedSchema.safeParse(rawData);
 
     if (!validatedData.success) {
       return {
@@ -47,14 +44,16 @@ export async function deleteTaskList(
 
     const { error } = await supabase
       .from('tasks')
-      .delete()
-      .in('id', validatedData.data.idList)
-      .eq('user_id', validatedData.data.user_id);
+      .update({ completed: validatedData.data.completed })
+      .match({
+        id: validatedData.data.id,
+        user_id: validatedData.data.user_id
+      });
 
     if (error) {
       return {
         success: false,
-        message: 'タスクの削除に失敗しました'
+        message: 'タスクの更新に失敗しました'
       };
     }
 
@@ -62,7 +61,7 @@ export async function deleteTaskList(
 
     return {
       success: true,
-      message: 'タスクを削除しました'
+      message: 'タスクを更新しました'
     };
   } catch (error) {
     console.error('予期せぬエラーが発生しました:', error);

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { Priority } from '../types';
+import { Priority } from '@/types/task';
 
 import {
   Select,
