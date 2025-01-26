@@ -26,3 +26,11 @@ export const signInSchema = z.object({
     .email({ message: '有効なメールアドレスを入力してください' }),
   password: z.string().min(12, { message: 'パスワードは最低12文字必要です' })
 });
+
+export const resetPasswordSchema = z.object({
+  email: z.string().email({ message: '有効なメールアドレスを入力してください' })
+});
+
+export const updatePasswordSchema = z.object({
+  password: z.string().min(12, { message: 'パスワードは最低12文字必要です' })
+});

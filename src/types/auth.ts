@@ -6,6 +6,14 @@ export type SignupFormData = {
 
 export type SigninFormData = Omit<SignupFormData, 'confirmPassword'>;
 
+export type ResetPasswordFormData = {
+  email: string;
+};
+
+export type UpdatePasswordFormData = {
+  password: string;
+};
+
 export type ActionResponse<T> = {
   success: boolean;
   state: T;
