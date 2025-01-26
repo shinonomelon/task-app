@@ -1,7 +1,6 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 
 import { ActionResponse, SigninFormData } from '@/types/auth';
 
@@ -21,6 +20,7 @@ export async function signIn(
 
   if (!validatedData.success) {
     return {
+      success: false,
       state: rawData,
       message: 'フォームのエラーを修正してください',
       errors: validatedData.error.flatten().fieldErrors
@@ -38,11 +38,17 @@ export async function signIn(
 
   if (error) {
     return {
+      success: false,
       state: rawData,
-      message: error.message
+      message: 'ログインに失敗しました'
     };
   }
 
   revalidatePath('/app', 'layout');
-  redirect('/app');
+
+  return {
+    success: true,
+    state: rawData,
+    message: 'ログインしました'
+  };
 }

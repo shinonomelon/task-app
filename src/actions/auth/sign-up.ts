@@ -1,7 +1,6 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 
 import { ActionResponse, SignupFormData } from '@/types/auth';
 
@@ -22,6 +21,7 @@ export async function signUp(
 
   if (!validatedData.success) {
     return {
+      success: false,
       state: rawData,
       message: 'フォームのエラーを修正してください',
       errors: validatedData.error.flatten().fieldErrors
@@ -39,11 +39,17 @@ export async function signUp(
 
   if (error) {
     return {
+      success: false,
       state: rawData,
-      message: error.message
+      message: 'アカウント作成に失敗しました'
     };
   }
 
   revalidatePath('/app', 'layout');
-  redirect('/app');
+
+  return {
+    success: true,
+    state: rawData,
+    message: 'アカウントを作成しました'
+  };
 }

@@ -1,7 +1,11 @@
 'use client';
 
 import clsx from 'clsx';
+import { useRouter } from 'next/navigation';
 import { useActionState } from 'react';
+import { toast } from 'sonner';
+
+import { ActionResponse, SignupFormData } from '@/types/auth';
 
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -10,7 +14,33 @@ import { Input } from '@/components/ui/input';
 import { signUp } from '@/actions/auth/sign-up';
 
 export const SignUpForm = () => {
-  const [state, formAction, isPending] = useActionState(signUp, undefined);
+  const router = useRouter();
+
+  const [state, formAction, isPending] = useActionState<
+    ActionResponse<SignupFormData>,
+    FormData
+  >(
+    async (prevState: ActionResponse<SignupFormData>, formData: FormData) => {
+      const response = await signUp(prevState, formData);
+      if (!response?.success) {
+        toast.error(response?.message);
+        return response;
+      } else {
+        router.push('/app');
+        toast.success(response?.message);
+        return response;
+      }
+    },
+    {
+      success: false,
+      message: '',
+      state: {
+        email: '',
+        password: '',
+        confirmPassword: ''
+      }
+    }
+  );
 
   return (
     <section className="rounded-lg bg-white px-4 py-6">

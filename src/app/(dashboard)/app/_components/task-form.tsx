@@ -15,7 +15,10 @@ import { Input } from '@/components/ui/input';
 import { addTask } from '@/actions/task/add-task';
 
 export const TaskForm = () => {
-  const [state, action, isPending] = useActionState(
+  const [state, action, isPending] = useActionState<
+    ActionResponse<AddTask>,
+    FormData
+  >(
     async (prevState: ActionResponse<AddTask> | null, formData: FormData) => {
       const response = await addTask(prevState, formData);
       if (response.success) {
@@ -62,7 +65,7 @@ export const TaskForm = () => {
             <Input
               type="text"
               name="text"
-              minLength={2}
+              minLength={1}
               maxLength={100}
               required
               autoFocus

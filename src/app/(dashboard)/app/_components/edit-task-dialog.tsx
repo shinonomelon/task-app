@@ -33,7 +33,10 @@ export const EditTaskDialog = ({
   open,
   onOpenChange
 }: EditTaskDialogProps) => {
-  const [state, action, isPending] = useActionState(
+  const [state, action, isPending] = useActionState<
+    ActionResponse<EditTask>,
+    FormData
+  >(
     async (prevState: ActionResponse<EditTask> | null, formData: FormData) => {
       const response = await editTask(prevState, formData);
       if (response.success) {

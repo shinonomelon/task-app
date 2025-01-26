@@ -6,12 +6,11 @@ export type SignupFormData = {
 
 export type SigninFormData = Omit<SignupFormData, 'confirmPassword'>;
 
-export type ActionResponse<T> =
-  | {
-      state: T;
-      message: string;
-      errors?: {
-        [K in keyof T]?: string[];
-      };
-    }
-  | undefined;
+export type ActionResponse<T> = {
+  success: boolean;
+  state: T;
+  message: string;
+  errors?: {
+    [K in keyof T]?: string[];
+  };
+};
