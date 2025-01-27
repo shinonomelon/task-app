@@ -1,11 +1,13 @@
 import { ArrowRightIcon } from 'lucide-react';
 import Link from 'next/link';
 
+import { SITE_METADATA } from '@/constants/metadata';
+
 export const Header = ({ type }: { type: 'signin' | 'signup' }) => {
   return (
     <header className="flex items-center justify-between py-4">
       <Link href="/" className="flex items-center gap-2">
-        <span className="text-xl font-bold">Task App</span>
+        <span className="text-xl font-bold">{SITE_METADATA.title}</span>
       </Link>
       <Link
         href={{

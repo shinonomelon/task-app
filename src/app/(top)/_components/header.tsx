@@ -6,13 +6,16 @@ import { useUser } from '@/lib/auth';
 
 import { Button } from '@/components/ui/button';
 
+import { SITE_METADATA } from '@/constants/metadata';
+
 export const Header = () => {
   const { user } = useUser();
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 bg-white/80 backdrop-blur-sm">
       <div className="container mx-auto flex items-center justify-between p-4">
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold">Task App</span>
+          <span className="text-xl font-bold">{SITE_METADATA.title}</span>
         </Link>
         {user ? (
           <Button asChild>
@@ -41,7 +44,7 @@ export const Header = () => {
                   query: { type: 'signup' }
                 }}
               >
-                新規登録
+                アカウント作成
               </Link>
             </Button>
           </div>

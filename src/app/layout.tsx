@@ -5,11 +5,15 @@ import { createClient } from '@/lib/supabase/server';
 
 import { Toaster } from '@/components/ui/sonner';
 
+import { SITE_METADATA } from '@/constants/metadata';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Task App',
-  description: 'Created by Next.js and Supabase'
+  title: {
+    default: SITE_METADATA.title,
+    template: '%s | ' + SITE_METADATA.title
+  },
+  description: SITE_METADATA.description
 };
 
 const getUser = async () => {

@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 
 import { ActionResponse, SigninFormData } from '@/types/auth';
 
+import { Alert, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -88,6 +89,11 @@ export const SignInForm = () => {
             {state?.errors?.password}
           </p>
         </div>
+        {state?.message && (
+          <Alert variant="destructive" className="">
+            <AlertTitle>{state.message}</AlertTitle>
+          </Alert>
+        )}
         <Button
           type="submit"
           className={clsx(

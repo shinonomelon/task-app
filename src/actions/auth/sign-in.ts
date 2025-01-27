@@ -40,7 +40,8 @@ export async function signIn(
     return {
       success: false,
       state: rawData,
-      message: 'ログインに失敗しました'
+      message:
+        'メールまたはパスワードが違います。ご確認の上、再度ログインをお試しください'
     };
   }
 

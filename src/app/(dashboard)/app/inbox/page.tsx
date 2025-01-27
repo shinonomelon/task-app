@@ -1,7 +1,12 @@
 import { LoaderCircle } from 'lucide-react';
+import { Metadata } from 'next';
 import { Suspense } from 'react';
 
 import { TaskList } from '../_components/task-list';
+
+export const metadata: Metadata = {
+  title: 'インボックス'
+};
 
 export default async function Page() {
   return (

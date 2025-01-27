@@ -25,9 +25,9 @@ export const UserMenu = () => {
     const response = await signOut();
 
     if (response.success) {
-      toast.success(response.message);
       setUser(null);
       router.push('/');
+      toast.success(response.message);
     } else {
       toast.error(response.message);
     }
