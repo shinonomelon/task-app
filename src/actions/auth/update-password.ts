@@ -9,6 +9,19 @@ export async function updatePassword(
   _: ActionResponse<UpdatePasswordFormData>,
   formData: FormData
 ): Promise<ActionResponse<UpdatePasswordFormData>> {
+  const searchParams = new URL(formData.get('url') as string).searchParams;
+  const token = searchParams.get('token');
+
+  if (!token) {
+    return {
+      success: false,
+      state: {
+        password: ''
+      },
+      message: 'トークンが無効または見つかりません'
+    };
+  }
+
   const rawData: UpdatePasswordFormData = {
     password: formData.get('password') as string
   };
@@ -27,6 +40,19 @@ export async function updatePassword(
   const { password } = validatedData.data;
 
   const supabase = await createClient();
+
+  const { error: tokenError } = await supabase.auth.verifyOtp({
+    token_hash: token,
+    type: 'email'
+  });
+
+  if (tokenError) {
+    return {
+      success: false,
+      state: rawData,
+      message: tokenError.message
+    };
+  }
 
   const { error } = await supabase.auth.updateUser({
     password

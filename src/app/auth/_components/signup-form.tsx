@@ -1,15 +1,17 @@
 'use client';
 
-import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import { useActionState } from 'react';
 import { toast } from 'sonner';
 
 import { ActionResponse, SignupFormData } from '@/types/auth';
 
+import { cn } from '@/lib/utils';
+
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 import { signUp } from '@/actions/auth/sign-up';
 
@@ -55,7 +57,7 @@ export const SignUpForm = () => {
       </header>
       <form action={formAction} className="space-y-4">
         <div className="space-y-2">
-          <label htmlFor="email" className="text-sm font-bold">
+          <Label htmlFor="email" className="text-sm font-bold">
             メールアドレス
             <span
               className="ml-0.5 inline-flex -translate-y-1 text-red-400"
@@ -64,7 +66,7 @@ export const SignUpForm = () => {
             >
               *
             </span>
-          </label>
+          </Label>
           <Input
             id="email"
             type="email"
@@ -86,7 +88,7 @@ export const SignUpForm = () => {
           </p>
         </div>
         <div className="space-y-2">
-          <label htmlFor="password" className="text-sm font-bold">
+          <Label htmlFor="password" className="text-sm font-bold">
             パスワード
             <span
               className="ml-0.5 inline-flex -translate-y-1 text-red-400"
@@ -95,7 +97,7 @@ export const SignUpForm = () => {
             >
               *
             </span>
-          </label>
+          </Label>
           <Input
             id="password"
             type="password"
@@ -117,7 +119,7 @@ export const SignUpForm = () => {
           </p>
         </div>
         <div className="space-y-2">
-          <label htmlFor="confirm-password" className="text-sm font-bold">
+          <Label htmlFor="confirm-password" className="text-sm font-bold">
             パスワードの確認
             <span
               className="ml-0.5 inline-flex -translate-y-1 text-red-400"
@@ -126,7 +128,7 @@ export const SignUpForm = () => {
             >
               *
             </span>
-          </label>
+          </Label>
           <Input
             id="confirm-password"
             type="password"
@@ -153,7 +155,7 @@ export const SignUpForm = () => {
         )}
         <Button
           type="submit"
-          className={clsx(
+          className={cn(
             'w-full bg-green-600 font-bold transition-colors duration-150 ease-in hover:bg-green-700',
             isPending && 'cursor-not-allowed opacity-50'
           )}

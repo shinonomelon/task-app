@@ -1,6 +1,5 @@
 'use client';
 
-import clsx from 'clsx';
 import { CornerUpLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useActionState, useState } from 'react';
@@ -12,9 +11,12 @@ import {
   SigninFormData
 } from '@/types/auth';
 
+import { cn } from '@/lib/utils';
+
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 import { resetPassword } from '@/actions/auth/reset-password';
 import { signIn } from '@/actions/auth/sign-in';
@@ -57,9 +59,9 @@ export const SignInForm = () => {
       </header>
       <form action={formAction} className="mb-4 space-y-6">
         <div className="space-y-2">
-          <label htmlFor="email" className="text-sm font-bold">
+          <Label htmlFor="email" className="text-sm font-bold">
             メールアドレス
-          </label>
+          </Label>
           <Input
             id="email"
             type="email"
@@ -80,9 +82,9 @@ export const SignInForm = () => {
           </p>
         </div>
         <div className="space-y-2">
-          <label htmlFor="password" className="text-sm font-bold">
+          <Label htmlFor="password" className="text-sm font-bold">
             パスワード
-          </label>
+          </Label>
           <Input
             id="password"
             type="password"
@@ -107,7 +109,7 @@ export const SignInForm = () => {
         )}
         <Button
           type="submit"
-          className={clsx(
+          className={cn(
             'w-full bg-green-600 font-bold transition-colors duration-150 ease-in hover:bg-green-700',
             isPending && 'cursor-not-allowed opacity-50'
           )}
@@ -190,7 +192,7 @@ const SendResetPasswordEmail = ({
 
           <Button
             type="submit"
-            className={clsx(
+            className={cn(
               'w-full bg-green-600 font-bold transition-colors duration-150 ease-in hover:bg-green-700',
               isPending && 'cursor-not-allowed opacity-50'
             )}
