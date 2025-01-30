@@ -1,18 +1,18 @@
 import { isSameDay } from 'date-fns';
 
-import { Task } from '@/types/task';
+import { DisplayTask } from '@/types/task';
 
 export const filterConfig = {
   all: {
-    filterFn: (task: Task) => !task.completed,
+    filterFn: (task: DisplayTask) => !task.completed,
     showForm: true
   },
   completed: {
-    filterFn: (task: Task) => task.completed,
+    filterFn: (task: DisplayTask) => task.completed,
     showForm: false
   },
   overdue: {
-    filterFn: (task: Task) => {
+    filterFn: (task: DisplayTask) => {
       if (!task.deadline || task.completed) return false;
       const deadlineDate = new Date(task.deadline);
       return !isSameDay(deadlineDate, new Date()) && deadlineDate < new Date();
@@ -20,7 +20,7 @@ export const filterConfig = {
     showForm: false
   },
   today: {
-    filterFn: (task: Task) => {
+    filterFn: (task: DisplayTask) => {
       if (task.completed || !task.deadline) return false;
       const deadlineDate = new Date(task.deadline);
       return (

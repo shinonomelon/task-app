@@ -6,7 +6,7 @@ import { TaskForm } from './task-form';
 import { TaskItem } from './task-item';
 import { TaskWrapper } from './task-wrapper';
 
-import { FilterBy, Task } from '@/types/task';
+import { DisplayTask, FilterBy } from '@/types/task';
 
 import { filterConfig } from '@/lib/utils/filter-config';
 import { getTitle } from '@/lib/utils/get-title';
@@ -19,7 +19,7 @@ export const TaskSection = ({
   tasks,
   filterByList
 }: {
-  tasks: Task[];
+  tasks: DisplayTask[];
   filterByList: FilterBy[];
 }) => {
   const {
