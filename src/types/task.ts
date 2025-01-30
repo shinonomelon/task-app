@@ -1,12 +1,6 @@
-export type Task = {
-  id: string;
-  text: string;
-  user_id: string;
-  completed: boolean;
-  created_at: string;
-  deadline: string | null;
-  priority: Priority;
-};
+import { Database } from './database';
+
+export type Task = Database['public']['Tables']['tasks']['Row'];
 
 export type DisplayTask = Omit<Task, 'user_id' | 'created_at'>;
 
@@ -24,7 +18,7 @@ export type ToggleTaskCompleted = Omit<
   'text' | 'created_at' | 'deadline' | 'priority'
 >;
 
-export type Priority = 'low' | 'medium' | 'high';
+export type Priority = Database['public']['Enums']['priority_level'];
 
 export type FilterBy = 'all' | 'completed' | 'today' | 'overdue';
 

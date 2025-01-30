@@ -11,7 +11,8 @@
     "check:prettier": "prettier --check .",
     "fix": "pnpm run fix:lint && pnpm run fix:prettier",
     "fix:lint": "next lint --fix",
-    "fix:prettier": "prettier --write ."
+    "fix:prettier": "prettier --write .",
+    "gen-types": "pnpm supabase gen types typescript --local > src/types/database.ts"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.2",

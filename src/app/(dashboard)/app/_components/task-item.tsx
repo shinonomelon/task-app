@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import { EditTaskDialog } from './edit-task-dialog';
 
-import { Task } from '@/types/task';
+import { DisplayTask } from '@/types/task';
 
 import { cn } from '@/lib/utils';
 
@@ -20,7 +20,7 @@ export const TaskItem = ({
   isSelected,
   handleToggleSelect
 }: {
-  task: Task;
+  task: DisplayTask;
   handleToggleTask: ({
     id,
     completed
