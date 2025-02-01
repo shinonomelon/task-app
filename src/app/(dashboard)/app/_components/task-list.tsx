@@ -9,15 +9,7 @@ export const TaskList = async ({
 }: {
   filterByList: FilterBy[];
 }) => {
-  const { data: tasks, error } = await getTaskList();
-
-  if (error) {
-    return (
-      <div className="rounded-lg bg-red-100 p-4 text-red-500" role="alert">
-        エラーが発生しました: {error.message}
-      </div>
-    );
-  }
+  const { data: tasks } = await getTaskList();
 
   if (!tasks) {
     return null;

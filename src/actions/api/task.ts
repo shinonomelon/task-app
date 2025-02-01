@@ -12,7 +12,10 @@ export const getTaskList = async () => {
     .from('tasks')
     .select('id, text, completed, deadline, priority')
     .order('created_at', { ascending: true });
-  return { data, error };
+
+  if (error) throw error;
+
+  return { data };
 };
 
 export const revalidateTaskList = () => revalidateTag(taskListTag);
@@ -24,7 +27,10 @@ const taskCountsTag = 'task-counts';
 export const getTaskCounts = async () => {
   const supabase = await createClient({ tags: [taskCountsTag] });
   const { data, error } = await supabase.rpc('get_task_counts');
-  return { data, error };
+
+  if (error) throw error;
+
+  return { data };
 };
 export const revalidateTaskCounts = () => revalidateTag(taskCountsTag);
 export const preloadTaskCounts = () => void getTaskCounts();

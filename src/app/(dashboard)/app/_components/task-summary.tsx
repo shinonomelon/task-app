@@ -1,15 +1,7 @@
 import { getTaskCounts } from '@/actions/api/task';
 
 export const TaskSummary = async () => {
-  const { data: taskCounts, error } = await getTaskCounts();
-
-  if (error) {
-    return (
-      <div className="rounded-lg bg-red-100 p-4 text-red-500" role="alert">
-        エラーが発生しました: {error.message}
-      </div>
-    );
-  }
+  const { data: taskCounts } = await getTaskCounts();
 
   if (!taskCounts) {
     return null;
