@@ -12,7 +12,8 @@
     "fix": "pnpm run fix:lint && pnpm run fix:prettier",
     "fix:lint": "next lint --fix",
     "fix:prettier": "prettier --write .",
-    "gen-types": "pnpm supabase gen types typescript --local > src/types/database.ts"
+    "gen-types": "pnpm supabase gen types typescript --local > src/types/database.ts",
+    "migrate": "pnpm supabase db diff --schema public -f"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.2",
