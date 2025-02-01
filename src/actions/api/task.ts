@@ -1,6 +1,8 @@
 import { revalidateTag } from 'next/cache';
 import 'server-only';
 
+import { TaskSummaryDetail } from '@/types/task';
+
 import { createClient } from '@/lib/supabase/server';
 
 // タスク一覧を取得
@@ -21,16 +23,17 @@ export const getTaskList = async () => {
 export const revalidateTaskList = () => revalidateTag(taskListTag);
 export const preloadTaskList = () => void getTaskList();
 
-// タスク数を取得
-const taskCountsTag = 'task-counts';
+// タスクの要約を取得
+const taskSummaryTag = 'task-summary';
 
-export const getTaskCounts = async () => {
-  const supabase = await createClient({ tags: [taskCountsTag] });
-  const { data, error } = await supabase.rpc('get_task_counts');
+export const getTaskSummary = async () => {
+  const supabase = await createClient({ tags: [taskSummaryTag] });
+  const { data, error } = await supabase.rpc('get_task_summary');
 
   if (error) throw error;
 
-  return { data };
+  return { data: data as TaskSummaryDetail };
 };
-export const revalidateTaskCounts = () => revalidateTag(taskCountsTag);
-export const preloadTaskCounts = () => void getTaskCounts();
+
+export const revalidateTaskSummary = () => revalidateTag(taskSummaryTag);
+export const preloadTaskSummary = () => void getTaskSummary();

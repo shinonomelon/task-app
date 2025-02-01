@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidateTaskCounts, revalidateTaskList } from '../api/task';
+import { revalidateTaskList, revalidateTaskSummary } from '../api/task';
 
 import { ActionResponse, DeleteTask } from '@/types/task';
 
@@ -54,7 +54,7 @@ export async function deleteTaskList(
     }
 
     revalidateTaskList();
-    revalidateTaskCounts();
+    revalidateTaskSummary();
 
     return {
       success: true,

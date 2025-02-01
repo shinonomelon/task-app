@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidateTaskCounts, revalidateTaskList } from '../api/task';
+import { revalidateTaskList, revalidateTaskSummary } from '../api/task';
 
 import { ActionResponse, ToggleTaskCompleted } from '@/types/task';
 
@@ -58,7 +58,7 @@ export async function toggleTaskCompleted(
     }
 
     revalidateTaskList();
-    revalidateTaskCounts();
+    revalidateTaskSummary();
 
     return {
       success: true,
