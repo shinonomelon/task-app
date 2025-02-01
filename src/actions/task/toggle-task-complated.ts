@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
+import { revalidateTaskCounts, revalidateTaskList } from '../api/task';
 
 import { ActionResponse, ToggleTaskCompleted } from '@/types/task';
 
@@ -57,7 +57,8 @@ export async function toggleTaskCompleted(
       };
     }
 
-    revalidateTag('supabase');
+    revalidateTaskList();
+    revalidateTaskCounts();
 
     return {
       success: true,

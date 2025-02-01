@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
+import { revalidateTaskCounts, revalidateTaskList } from '../api/task';
 
 import { ActionResponse, DeleteTask } from '@/types/task';
 
@@ -52,7 +52,8 @@ export async function deleteTask(
       };
     }
 
-    revalidateTag('supabase');
+    revalidateTaskList();
+    revalidateTaskCounts();
 
     return {
       success: true,

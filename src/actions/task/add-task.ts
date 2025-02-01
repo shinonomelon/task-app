@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
+import { revalidateTaskCounts, revalidateTaskList } from '../api/task';
 
 import { ActionResponse, AddTask } from '@/types/task';
 
@@ -48,7 +48,7 @@ export async function addTask(
 
     const { text, deadline, priority, user_id } = validatedData.data;
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('tasks')
       .insert([
         {
@@ -60,8 +60,6 @@ export async function addTask(
       ])
       .select();
 
-    console.log(data);
-
     if (error) {
       return {
         success: false,
@@ -69,7 +67,8 @@ export async function addTask(
       };
     }
 
-    revalidateTag('supabase');
+    revalidateTaskList();
+    revalidateTaskCounts();
 
     return {
       success: true,

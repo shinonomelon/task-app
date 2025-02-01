@@ -1,7 +1,5 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
-
 import { createClient } from '@/lib/supabase/server';
 
 export async function signOut() {
@@ -11,8 +9,6 @@ export async function signOut() {
   if (error) {
     return { success: false, message: 'ログアウトに失敗しました' };
   }
-
-  revalidateTag('supabase');
 
   return { success: true, message: 'ログアウトしました' };
 }

@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
+import { revalidateTaskCounts, revalidateTaskList } from '../api/task';
 
 import { ActionResponse, EditTask } from '@/types/task';
 
@@ -68,7 +68,8 @@ export async function editTask(
       };
     }
 
-    revalidateTag('supabase');
+    revalidateTaskList();
+    revalidateTaskCounts();
 
     return {
       success: true,

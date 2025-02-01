@@ -1,7 +1,5 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
-
 import { ActionResponse, SigninFormData } from '@/types/auth';
 
 import { signInSchema } from '@/lib/schema/auth';
@@ -44,8 +42,6 @@ export async function signIn(
         'メールまたはパスワードが違います。ご確認の上、再度ログインをお試しください'
     };
   }
-
-  revalidatePath('/app', 'layout');
 
   return {
     success: true,

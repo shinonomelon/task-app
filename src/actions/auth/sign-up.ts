@@ -1,7 +1,5 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
-
 import { ActionResponse, SignupFormData } from '@/types/auth';
 
 import { signUpSchema } from '@/lib/schema/auth';
@@ -53,8 +51,6 @@ export async function signUp(
       message: error.message
     };
   }
-
-  revalidatePath('/app', 'layout');
 
   return {
     success: true,

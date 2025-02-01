@@ -12,7 +12,12 @@ export const createFetch =
     });
   };
 
-export async function createClient() {
+type CreateClientOptions = {
+  tags?: string[];
+  revalidate?: number;
+};
+
+export async function createClient(options?: CreateClientOptions) {
   const cookieStore = await cookies();
 
   return createServerClient<Database>(
@@ -22,8 +27,8 @@ export async function createClient() {
       global: {
         fetch: createFetch({
           next: {
-            revalidate: 60,
-            tags: ['supabase']
+            revalidate: options?.revalidate ?? 60,
+            tags: options?.tags ?? []
           }
         })
       },

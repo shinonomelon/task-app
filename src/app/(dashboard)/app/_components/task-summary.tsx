@@ -1,8 +1,7 @@
-import { createClient } from '@/lib/supabase/server';
+import { getTaskCounts } from '@/actions/api/task';
 
 export const TaskSummary = async () => {
-  const supabase = await createClient();
-  const { data, error } = await supabase.rpc('get_task_counts');
+  const { data: taskCounts, error } = await getTaskCounts();
 
   if (error) {
     return (
@@ -12,10 +11,14 @@ export const TaskSummary = async () => {
     );
   }
 
-  const totalTaskCount = data[0]?.total_count ?? 0;
-  const completedTaskCount = data[0]?.completed_count ?? 0;
+  if (!taskCounts) {
+    return null;
+  }
+
+  const totalTaskCount = taskCounts[0]?.total_count ?? 0;
+  const completedTaskCount = taskCounts[0]?.completed_count ?? 0;
   const pendingTaskCount =
-    (data[0]?.total_count ?? 0) - (data[0]?.completed_count ?? 0);
+    (taskCounts[0]?.total_count ?? 0) - (taskCounts[0]?.completed_count ?? 0);
 
   return (
     <div className="grid gap-4 md:grid-cols-3">
