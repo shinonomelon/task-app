@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import { UserMenu } from './user-memu';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/cn';
 
 import { NAV_ITEMS } from '@/constants/nav';
 

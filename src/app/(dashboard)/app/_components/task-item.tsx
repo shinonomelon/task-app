@@ -8,7 +8,7 @@ import { EditTaskDialog } from './edit-task-dialog';
 
 import { DisplayTask } from '@/types/task';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/cn';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';

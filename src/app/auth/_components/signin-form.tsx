@@ -11,7 +11,7 @@ import {
   SigninFormData
 } from '@/types/auth';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/cn';
 
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';

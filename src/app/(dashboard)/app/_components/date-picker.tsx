@@ -6,7 +6,7 @@ import { CalendarIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/cn';
 
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
