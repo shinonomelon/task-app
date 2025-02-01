@@ -1,14 +1,13 @@
-export const OverAllSummary = ({ overall }: { overall: any }) => {
+import { TaskCount } from '@/types/task';
+
+export const OverAllSummary = ({ total_task, completed_task }: TaskCount) => {
   return (
     <div>
       <h2 className="text-xl font-bold">全体のタスク</h2>
       <div className="grid gap-4 md:grid-cols-3">
-        <TaskCard
-          title="未完了タスク"
-          count={overall.total_task - overall.completed_task}
-        />
-        <TaskCard title="完了タスク" count={overall.completed_task} />
-        <TaskCard title="総タスク数" count={overall.total_task} />
+        <TaskCard title="未完了タスク" count={total_task - completed_task} />
+        <TaskCard title="完了タスク" count={completed_task} />
+        <TaskCard title="総タスク数" count={total_task} />
       </div>
     </div>
   );

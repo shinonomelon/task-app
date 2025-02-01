@@ -1,7 +1,7 @@
 import { revalidateTag } from 'next/cache';
 import 'server-only';
 
-import { TaskSummaryDetail } from '@/types/task';
+import { TaskSummary } from '@/types/task';
 
 import { createClient } from '@/lib/supabase/server';
 
@@ -32,7 +32,7 @@ export const getTaskSummary = async () => {
 
   if (error) throw error;
 
-  return { data: data as TaskSummaryDetail };
+  return { data: data as TaskSummary };
 };
 
 export const revalidateTaskSummary = () => revalidateTag(taskSummaryTag);

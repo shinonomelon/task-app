@@ -14,7 +14,7 @@ export const TaskSummary = async () => {
 
   return (
     <div className="space-y-6">
-      <OverAllSummary overall={overall} />
+      <OverAllSummary {...overall} />
       <TodaySummary {...today} />
     </div>
   );

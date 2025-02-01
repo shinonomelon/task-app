@@ -3,6 +3,8 @@
 import { CheckCircle2, Circle } from 'lucide-react';
 import Link from 'next/link';
 
+import { TodayTaskSummary as TodayTaskSummaryType } from '@/types/task';
+
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 
@@ -10,17 +12,7 @@ export default function TodayTaskSummary({
   completed_task,
   total_task,
   latest_task_list
-}: {
-  total_task: number;
-  completed_task: number;
-  latest_task_list:
-    | {
-        id: number;
-        text: string;
-        completed: boolean;
-      }[]
-    | null;
-}) {
+}: TodayTaskSummaryType) {
   const progressPercentage = total_task
     ? (completed_task / total_task) * 100
     : 0;
