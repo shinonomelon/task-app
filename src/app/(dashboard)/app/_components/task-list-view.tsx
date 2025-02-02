@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 
 import { useTask } from '@/hooks/use-task';
 
-export const TaskSection = ({
+export const TaskListView = ({
   tasks,
   filterByList
 }: {

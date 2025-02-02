@@ -16,9 +16,9 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center">
-      <h2 className="text-2xl font-bold">エラーが発生しました</h2>
-      <p className="text-lg">{error.message}</p>
+    <div className="flex flex-col items-center justify-center">
+      <h2 className="mb-4 text-2xl font-bold">エラーが発生しました</h2>
+
       <Button onClick={() => reset()}>もう一度試してみる</Button>
     </div>
   );
