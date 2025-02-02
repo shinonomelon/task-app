@@ -160,7 +160,12 @@ const TaskCalendarItem = ({ task }: { task: DisplayTask }) => {
           !task.completed && !isOverdue && 'bg-gray-100'
         )}
       >
-        <div className={cn('text-sm p-0.5', task.completed && 'line-through')}>
+        <div
+          className={cn(
+            'text-sm p-0.5 truncate',
+            task.completed && 'line-through'
+          )}
+        >
           {task.text}
         </div>
       </div>

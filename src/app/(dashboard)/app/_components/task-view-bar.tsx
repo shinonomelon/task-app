@@ -4,6 +4,8 @@ import { Calendar, List, Plus, Search } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
+import { AddTaskDialog } from './add-task-dialog';
+
 import { cn } from '@/lib/utils/cn';
 
 import { Button } from '@/components/ui/button';
@@ -11,6 +13,7 @@ import { Input } from '@/components/ui/input';
 
 export const TaskViewBar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const view = searchParams.get('view');
@@ -60,10 +63,12 @@ export const TaskViewBar = () => {
             <Search className="size-4" />
           </Button>
         )}
-        <Button className="gap-2 disabled:cursor-not-allowed disabled:opacity-50">
-          <Plus className="size-4" />
-          <span>タスクを追加</span>
-        </Button>
+        <AddTaskDialog open={isAddTaskOpen} onOpenChange={setIsAddTaskOpen}>
+          <Button className="gap-2 disabled:cursor-not-allowed disabled:opacity-50">
+            <Plus className="size-4" />
+            <span>タスクを追加</span>
+          </Button>
+        </AddTaskDialog>
       </div>
     </div>
   );

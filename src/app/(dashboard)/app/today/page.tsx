@@ -11,14 +11,18 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const { data: tasks } = await getTaskList();
-
   return (
     <>
       <h1 className="mb-4 text-2xl font-bold">今日</h1>
       <CustomSuspense height={100} width="100%">
-        <TaskListView tasks={tasks} filterByList={['overdue', 'today']} />
+        <TaskView />
       </CustomSuspense>
     </>
   );
 }
+
+const TaskView = async () => {
+  const { data: tasks } = await getTaskList();
+
+  return <TaskListView tasks={tasks} filterByList={['overdue', 'today']} />;
+};

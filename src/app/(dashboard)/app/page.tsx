@@ -14,7 +14,6 @@ export default function DashboardPage() {
       <h1 className="mb-6 text-2xl font-semibold text-gray-900">
         ダッシュボード
       </h1>
-
       <CustomSuspense height={100} width="100%">
         <TaskSummary />
       </CustomSuspense>
