@@ -15,7 +15,8 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
+  DialogTrigger
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -23,12 +24,14 @@ import { Label } from '@/components/ui/label';
 import { editTask } from '@/actions/task/edit-task';
 
 type EditTaskDialogProps = {
+  children: React.ReactNode;
   task: DisplayTask;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
 
 export const EditTaskDialog = ({
+  children,
   task,
   open,
   onOpenChange
@@ -55,6 +58,8 @@ export const EditTaskDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+
       <DialogContent className="sm:max-w-[425px]">
         <form action={action}>
           <DialogHeader className="mb-4">

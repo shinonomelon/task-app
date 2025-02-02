@@ -3,6 +3,8 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 
+import { EditTaskDialog } from './edit-task-dialog';
+
 import { DisplayTask } from '@/types/task';
 
 import { cn } from '@/lib/utils/cn';
@@ -127,29 +129,7 @@ export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
                     return 0;
                   })
                   .map((task) => {
-                    const isOverdue =
-                      task.deadline && new Date(task.deadline) < new Date();
-
-                    return (
-                      <div
-                        key={task.id}
-                        className={cn(
-                          'rounded-sm',
-                          task.completed && 'bg-blue-100',
-                          !task.completed && isOverdue && 'bg-red-100',
-                          !task.completed && !isOverdue && 'bg-gray-100'
-                        )}
-                      >
-                        <div
-                          className={cn(
-                            'text-sm p-0.5',
-                            task.completed && 'line-through'
-                          )}
-                        >
-                          {task.text}
-                        </div>
-                      </div>
-                    );
+                    return <TaskCalendarItem key={task.id} task={task} />;
                   })}
               </div>
             </div>
@@ -157,5 +137,33 @@ export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
         })}
       </div>
     </>
+  );
+};
+
+const TaskCalendarItem = ({ task }: { task: DisplayTask }) => {
+  const [open, setOpen] = useState(false);
+  const isOverdue = task.deadline && new Date(task.deadline) < new Date();
+
+  return (
+    <EditTaskDialog
+      key={task.id}
+      task={task}
+      open={open}
+      onOpenChange={setOpen}
+    >
+      <div
+        key={task.id}
+        className={cn(
+          'rounded-sm cursor-pointer hover:brightness-95',
+          task.completed && 'bg-blue-100',
+          !task.completed && isOverdue && 'bg-red-100',
+          !task.completed && !isOverdue && 'bg-gray-100'
+        )}
+      >
+        <div className={cn('text-sm p-0.5', task.completed && 'line-through')}>
+          {task.text}
+        </div>
+      </div>
+    </EditTaskDialog>
   );
 };

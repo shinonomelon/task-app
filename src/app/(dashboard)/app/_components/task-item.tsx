@@ -59,17 +59,19 @@ export const TaskItem = ({
               'opacity-40': task.completed
             })}
           />
-
-          <span
-            className={cn('py-2 w-full cursor-pointer', {
-              'opacity-40': task.completed
-            })}
-            role="button"
-            onClick={() => setIsEditDialogOpen(true)}
-            tabIndex={0}
+          <EditTaskDialog
+            task={task}
+            open={isEditDialogOpen}
+            onOpenChange={setIsEditDialogOpen}
           >
-            {task.text}
-          </span>
+            <div
+              className={cn('py-2 w-full cursor-pointer', {
+                'opacity-40': task.completed
+              })}
+            >
+              {task.text}
+            </div>
+          </EditTaskDialog>
         </div>
         <div className="flex items-center space-x-2">
           {task.deadline && (
@@ -109,11 +111,6 @@ export const TaskItem = ({
           </Button>
         </div>
       </div>
-      <EditTaskDialog
-        task={task}
-        open={isEditDialogOpen}
-        onOpenChange={setIsEditDialogOpen}
-      />
     </li>
   );
 };
