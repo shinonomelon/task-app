@@ -12,7 +12,7 @@ export const getTaskList = async () => {
   const supabase = await createClient({ tags: [taskListTag] });
   const { data, error } = await supabase
     .from('tasks')
-    .select('id, text, completed, deadline, priority')
+    .select('id, text, completed, deadline, priority, include_time')
     .order('created_at', { ascending: true });
 
   if (error) throw error;

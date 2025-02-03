@@ -33,6 +33,7 @@ export async function editTask(
         formData.get('deadline') === ''
           ? null
           : (formData.get('deadline') as string),
+      include_time: formData.get('include_time') === 'true',
       priority: formData.get('priority') as 'low' | 'medium' | 'high',
       completed: formData.get('completed') === 'true',
       user_id: user.id
@@ -43,7 +44,7 @@ export async function editTask(
     if (!validatedData.success) {
       return {
         success: false,
-        message: 'タスクの削除に失敗しました',
+        message: 'タスクの編集に失敗しました',
         errors: validatedData.error.flatten().fieldErrors
       };
     }

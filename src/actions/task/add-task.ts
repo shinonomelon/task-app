@@ -32,6 +32,7 @@ export async function addTask(
         formData.get('deadline') === ''
           ? null
           : (formData.get('deadline') as string),
+      include_time: formData.get('include_time') === 'true',
       priority: formData.get('priority') as 'low' | 'medium' | 'high',
       user_id: user.id
     };
@@ -46,7 +47,8 @@ export async function addTask(
       };
     }
 
-    const { text, deadline, priority, user_id } = validatedData.data;
+    const { text, deadline, priority, user_id, include_time } =
+      validatedData.data;
 
     const { error } = await supabase
       .from('tasks')
@@ -55,7 +57,8 @@ export async function addTask(
           text,
           user_id,
           deadline,
-          priority
+          priority,
+          include_time
         }
       ])
       .select();

@@ -88,7 +88,11 @@ export const TaskItem = ({
                 const deadlineDate = new Date(task.deadline);
 
                 if (isToday(deadlineDate)) {
-                  return '今日';
+                  let label = '今日';
+                  if (task.include_time) {
+                    label += ` ${format(deadlineDate, 'HH:mm')}`;
+                  }
+                  return label;
                 } else if (isTomorrow(deadlineDate)) {
                   return '明日';
                 } else if (isYesterday(deadlineDate)) {

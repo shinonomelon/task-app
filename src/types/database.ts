@@ -40,6 +40,7 @@ export type Database = {
           created_at: string;
           deadline: string | null;
           id: string;
+          include_time: boolean;
           priority: Database['public']['Enums']['priority_level'];
           text: string;
           user_id: string;
@@ -49,6 +50,7 @@ export type Database = {
           created_at?: string;
           deadline?: string | null;
           id?: string;
+          include_time?: boolean;
           priority?: Database['public']['Enums']['priority_level'];
           text: string;
           user_id: string;
@@ -58,6 +60,7 @@ export type Database = {
           created_at?: string;
           deadline?: string | null;
           id?: string;
+          include_time?: boolean;
           priority?: Database['public']['Enums']['priority_level'];
           text?: string;
           user_id?: string;

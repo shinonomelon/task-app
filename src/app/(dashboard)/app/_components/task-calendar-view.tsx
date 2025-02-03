@@ -97,7 +97,7 @@ export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
             <div
               key={i}
               className={cn(
-                'min-h-28 rounded-none p-2',
+                'min-h-28 rounded-none p-2 border-[0.5px] box-border',
                 !isCurrentMonth && 'bg-muted/50'
               )}
             >
@@ -111,26 +111,9 @@ export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
                 {currentDate.getDate()}
               </div>
               <div className="flex flex-col gap-1">
-                {[...dayTasks]
-                  .sort((a, b) => {
-                    if (a.completed && !b.completed) return -1;
-                    if (!a.completed && b.completed) return 1;
-
-                    if (!a.completed && !b.completed) {
-                      const aIsOverdue =
-                        a.deadline && new Date(a.deadline) < new Date();
-                      const bIsOverdue =
-                        b.deadline && new Date(b.deadline) < new Date();
-
-                      if (aIsOverdue && !bIsOverdue) return -1;
-                      if (!aIsOverdue && bIsOverdue) return 1;
-                    }
-
-                    return 0;
-                  })
-                  .map((task) => {
-                    return <TaskCalendarItem key={task.id} task={task} />;
-                  })}
+                {dayTasks.map((task) => {
+                  return <TaskCalendarItem key={task.id} task={task} />;
+                })}
               </div>
             </div>
           );
@@ -142,7 +125,6 @@ export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
 
 const TaskCalendarItem = ({ task }: { task: DisplayTask }) => {
   const [open, setOpen] = useState(false);
-  const isOverdue = task.deadline && new Date(task.deadline) < new Date();
 
   return (
     <EditTaskDialog
@@ -154,10 +136,7 @@ const TaskCalendarItem = ({ task }: { task: DisplayTask }) => {
       <div
         key={task.id}
         className={cn(
-          'rounded-sm cursor-pointer hover:brightness-95',
-          task.completed && 'bg-blue-100',
-          !task.completed && isOverdue && 'bg-red-100',
-          !task.completed && !isOverdue && 'bg-gray-100'
+          'rounded-sm cursor-pointer p-0.5 transition-all duration-100 hover:bg-gray-100 border box-border'
         )}
       >
         <div
@@ -167,6 +146,14 @@ const TaskCalendarItem = ({ task }: { task: DisplayTask }) => {
           )}
         >
           {task.text}
+        </div>
+        <div className="text-xs text-gray-500">
+          {task.deadline &&
+            task.include_time &&
+            new Date(task.deadline).toLocaleString('ja-JP', {
+              hour: '2-digit',
+              minute: '2-digit'
+            })}
         </div>
       </div>
     </EditTaskDialog>
