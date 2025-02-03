@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 
 import { DisplayTask } from '@/types/task';
 
-import { deleteTask } from '@/actions/task/delate-task';
+import { deleteTask } from '@/actions/task/delete-task';
 import { deleteTaskList } from '@/actions/task/delete-task-list';
 import { toggleTaskCompleted } from '@/actions/task/toggle-task-complated';
 

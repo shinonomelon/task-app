@@ -8,14 +8,14 @@ export type AddTask = Omit<Task, 'id' | 'created_at' | 'completed'>;
 
 export type DeleteTask = Omit<
   Task,
-  'text' | 'created_at' | 'completed' | 'deadline' | 'priority'
+  'text' | 'created_at' | 'completed' | 'deadline' | 'priority' | 'include_time'
 >;
 
 export type EditTask = Omit<Task, 'created_at'>;
 
 export type ToggleTaskCompleted = Omit<
   Task,
-  'text' | 'created_at' | 'deadline' | 'priority'
+  'text' | 'created_at' | 'deadline' | 'priority' | 'include_time'
 >;
 
 export type Priority = Database['public']['Enums']['priority_level'];
