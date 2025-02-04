@@ -1,15 +1,23 @@
-alter table "public"."tasks" drop column "text";
+BEGIN;
 
-alter table "public"."tasks" add column "description" text;
 
-alter table "public"."tasks" add column "title" text not null;
+ALTER TABLE "public"."tasks" DROP COLUMN IF EXISTS "text";
 
-set check_function_bodies = off;
+ALTER TABLE "public"."tasks" ADD COLUMN IF NOT EXISTS "description" text;
+
+ALTER TABLE "public"."tasks" ADD COLUMN IF NOT EXISTS "title" text;
+
+UPDATE "public"."tasks" SET "title" = 'default title' WHERE "title" IS NULL;
+
+ALTER TABLE "public"."tasks" ALTER COLUMN "title" SET NOT NULL;
+
+SET check_function_bodies = off;
 
 CREATE OR REPLACE FUNCTION public.get_task_summary()
  RETURNS json
  LANGUAGE sql
-AS $function$WITH overall AS (
+AS $function$
+WITH overall AS (
   SELECT 
     COUNT(*) AS total_task,
     COUNT(*) FILTER (WHERE completed = true) AS completed_task
@@ -42,7 +50,7 @@ SELECT json_build_object(
     )
     FROM today t
   )
-);$function$
-;
+);
+$function$;
 
-
+COMMIT;
