@@ -27,7 +27,7 @@ export async function createClient(options?: CreateClientOptions) {
       global: {
         fetch: createFetch({
           next: {
-            revalidate: options?.revalidate ?? 60,
+            revalidate: options?.revalidate ?? 0,
             tags: options?.tags ?? []
           }
         })

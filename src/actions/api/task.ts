@@ -9,7 +9,10 @@ import { createClient } from '@/lib/supabase/server';
 const taskListTag = 'task-list';
 
 export const getTaskList = async () => {
-  const supabase = await createClient({ tags: [taskListTag] });
+  const supabase = await createClient({
+    revalidate: 60,
+    tags: [taskListTag]
+  });
   const { data, error } = await supabase
     .from('tasks')
     .select(
@@ -29,7 +32,10 @@ export const preloadTaskList = () => void getTaskList();
 const taskSummaryTag = 'task-summary';
 
 export const getTaskSummary = async () => {
-  const supabase = await createClient({ tags: [taskSummaryTag] });
+  const supabase = await createClient({
+    revalidate: 60,
+    tags: [taskSummaryTag]
+  });
   const { data, error } = await supabase.rpc('get_task_summary');
 
   if (error) throw error;
