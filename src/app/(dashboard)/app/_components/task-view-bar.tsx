@@ -35,7 +35,7 @@ export const TaskViewBar = () => {
           }}
         >
           <List className="mr-2 size-4" />
-          リスト
+          <span className="hidden md:block">リスト</span>
         </Button>
         <Button
           variant="ghost"
@@ -48,7 +48,7 @@ export const TaskViewBar = () => {
           }}
         >
           <Calendar className="mr-2 size-4" />
-          カレンダー
+          <span className="hidden md:block">カレンダー</span>
         </Button>
       </div>
       <div className="flex items-center gap-2">
@@ -75,7 +75,7 @@ export const TaskViewBar = () => {
         <AddTaskDialog open={isAddTaskOpen} onOpenChange={setIsAddTaskOpen}>
           <Button className="gap-2 disabled:cursor-not-allowed disabled:opacity-50">
             <Plus className="size-4" />
-            <span>タスクを追加</span>
+            <span className="hidden md:block">タスクを追加</span>
           </Button>
         </AddTaskDialog>
       </div>
