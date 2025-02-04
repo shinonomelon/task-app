@@ -9,15 +9,14 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
 
 const PRIORITY_OPTIONS = [
-  { value: 'high', label: '高い' },
-  { value: 'medium', label: '中' },
-  { value: 'low', label: '低い' }
+  { value: 'high', label: '優先度：高い' },
+  { value: 'medium', label: '優先度：中' },
+  { value: 'low', label: '優先度：低い' }
 ];
 
 export const PrioritySelect = ({
@@ -38,7 +37,6 @@ export const PrioritySelect = ({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>優先度</SelectLabel>
           {PRIORITY_OPTIONS.map((option) => (
             <SelectItem key={option.value} value={option.value}>
               {option.label}

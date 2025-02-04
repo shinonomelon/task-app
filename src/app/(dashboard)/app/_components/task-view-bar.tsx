@@ -34,7 +34,7 @@ export const TaskViewBar = () => {
             router.push(`/app/inbox?view=list`);
           }}
         >
-          <List className="mr-2 size-4" />
+          <List className="size-4 md:mr-2" />
           <span className="hidden md:block">リスト</span>
         </Button>
         <Button
@@ -47,7 +47,7 @@ export const TaskViewBar = () => {
             router.push(`/app/inbox?view=calendar`);
           }}
         >
-          <Calendar className="mr-2 size-4" />
+          <Calendar className="size-4 md:mr-2" />
           <span className="hidden md:block">カレンダー</span>
         </Button>
       </div>

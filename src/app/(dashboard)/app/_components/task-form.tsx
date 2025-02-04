@@ -99,7 +99,7 @@ export const TaskForm = () => {
               </Alert>
             )}
           </div>
-          <div className="flex gap-2">
+          <div className="flex max-w-fit gap-2">
             <DatePicker />
             <PrioritySelect />
           </div>

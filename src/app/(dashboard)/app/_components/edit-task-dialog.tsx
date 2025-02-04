@@ -128,13 +128,12 @@ export const EditTaskDialog = ({
             </div>
             <div className="space-y-4 border-l pl-6">
               <div className="space-y-2">
-                <Label
-                  className="text-sm font-medium text-muted-foreground"
-                  htmlFor="priority"
-                >
-                  優先度
+                <Label className="flex flex-col gap-2">
+                  <span className="text-sm font-medium text-muted-foreground">
+                    優先度
+                  </span>
+                  <PrioritySelect defaultValue={task.priority} />
                 </Label>
-                <PrioritySelect defaultValue={task.priority} />
                 {state.errors?.priority && (
                   <div className="mt-1 text-sm text-red-500" role="alert">
                     {state.errors.priority.join(', ')}
@@ -143,13 +142,12 @@ export const EditTaskDialog = ({
               </div>
 
               <div className="space-y-2">
-                <Label
-                  className="text-sm font-medium text-muted-foreground"
-                  htmlFor="deadline"
-                >
-                  期限
+                <Label className="flex flex-col gap-2">
+                  <span className="text-sm font-medium text-muted-foreground">
+                    期限
+                  </span>
+                  <DatePicker defaultValue={task.deadline} />
                 </Label>
-                <DatePicker defaultValue={task.deadline} />
                 {state.errors?.deadline && (
                   <div className="mt-1 text-sm text-red-500" role="alert">
                     {state.errors.deadline.join(', ')}

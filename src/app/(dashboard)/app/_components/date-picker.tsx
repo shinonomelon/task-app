@@ -102,7 +102,7 @@ export const DatePicker = ({
             <Button
               variant="outline"
               className={cn(
-                'justify-start text-left font-normal',
+                'w-full justify-start text-left font-normal',
                 !date && 'text-muted-foreground'
               )}
               aria-label="日付を選択"
@@ -110,7 +110,7 @@ export const DatePicker = ({
               <CalendarIcon />
               {date ? (
                 <>
-                  {format(date, 'yyyy年MM月dd日', { locale: ja })}
+                  {format(date, 'yyyy年M月dd日', { locale: ja })}
                   {includeTime && ` ${time}`}
                 </>
               ) : (

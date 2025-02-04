@@ -65,7 +65,7 @@ export const AddTaskDialog = ({
           <DialogHeader className="mb-4">
             <DialogTitle>タスクを追加</DialogTitle>
           </DialogHeader>
-          <div className="mb-4 flex flex-col gap-4">
+          <div className="mb-4 flex flex-col gap-6">
             <div className="flex flex-col gap-2">
               <Input
                 className="border-none px-0 py-1 text-xl font-medium shadow-none focus-visible:ring-0"
@@ -102,8 +102,10 @@ export const AddTaskDialog = ({
               )}
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="priority">優先度</Label>
-              <PrioritySelect />
+              <Label className="flex flex-col gap-3">
+                <span>優先度</span>
+                <PrioritySelect />
+              </Label>
               {state.errors?.priority && (
                 <Alert variant="destructive">
                   <AlertCircle className="size-4" />
@@ -115,8 +117,10 @@ export const AddTaskDialog = ({
               )}
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="deadline">期限</Label>
-              <DatePicker />
+              <Label className="flex flex-col gap-3">
+                <span>期限</span>
+                <DatePicker />
+              </Label>
               {state.errors?.deadline && (
                 <Alert variant="destructive">
                   <AlertCircle className="size-4" />
