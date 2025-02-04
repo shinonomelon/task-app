@@ -33,7 +33,7 @@ export const PrioritySelect = ({
 
   return (
     <Select value={priority} name="priority" onValueChange={handleChange}>
-      <SelectTrigger className="w-fit" aria-label="優先度を選択">
+      <SelectTrigger className="w-full font-normal" aria-label="優先度を選択">
         <SelectValue placeholder="優先度" />
       </SelectTrigger>
       <SelectContent>

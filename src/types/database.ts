@@ -39,30 +39,33 @@ export type Database = {
           completed: boolean;
           created_at: string;
           deadline: string | null;
+          description: string | null;
           id: string;
           include_time: boolean;
           priority: Database['public']['Enums']['priority_level'];
-          text: string;
+          title: string;
           user_id: string;
         };
         Insert: {
           completed?: boolean;
           created_at?: string;
           deadline?: string | null;
+          description?: string | null;
           id?: string;
           include_time?: boolean;
           priority?: Database['public']['Enums']['priority_level'];
-          text: string;
+          title: string;
           user_id: string;
         };
         Update: {
           completed?: boolean;
           created_at?: string;
           deadline?: string | null;
+          description?: string | null;
           id?: string;
           include_time?: boolean;
           priority?: Database['public']['Enums']['priority_level'];
-          text?: string;
+          title?: string;
           user_id?: string;
         };
         Relationships: [];

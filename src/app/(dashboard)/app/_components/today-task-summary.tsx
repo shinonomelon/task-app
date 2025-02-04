@@ -45,7 +45,7 @@ export default function TodayTaskSummary({
               ) : (
                 <Circle className="text-gray-300" />
               )}
-              <span className="text-sm">{task.text}</span>
+              <span className="text-sm">{task.title}</span>
             </div>
           ))}
         </div>

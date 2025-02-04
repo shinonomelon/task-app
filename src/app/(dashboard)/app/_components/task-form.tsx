@@ -1,6 +1,6 @@
 'use client';
 
-import { LoaderCircle, Plus } from 'lucide-react';
+import { AlertCircle, LoaderCircle, Plus } from 'lucide-react';
 import { useActionState, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -9,8 +9,10 @@ import { PrioritySelect } from './priority-select';
 
 import { ActionResponse, AddTask } from '@/types/task';
 
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 import { addTask } from '@/actions/task/add-task';
 
@@ -63,23 +65,42 @@ export const TaskForm = () => {
         >
           <div>
             <Input
+              className="border-none px-0 py-1 text-xl font-medium shadow-none focus-visible:ring-0"
               type="text"
-              name="text"
-              minLength={1}
+              name="title"
+              minLength={2}
               maxLength={100}
+              placeholder="タスク名"
               required
               autoFocus
-              placeholder="新しいタスクを入力してください"
             />
-            {state.errors?.text && (
-              <div className="mt-1 text-sm text-red-500" role="alert">
-                {state.errors.text.join(', ')}
-              </div>
+            {state.errors?.title && (
+              <Alert variant="destructive">
+                <AlertCircle className="size-4" />
+                <AlertTitle>タスク名を入力してください</AlertTitle>
+                <AlertDescription>
+                  {state.errors.title.join(', ')}
+                </AlertDescription>
+              </Alert>
+            )}
+            <Textarea
+              className="min-h-12 resize-none border-none bg-transparent px-0 py-1 font-medium shadow-none focus-visible:ring-0"
+              name="description"
+              minLength={1}
+              placeholder="タスクの説明"
+            />
+            {state.errors?.description && (
+              <Alert variant="destructive">
+                <AlertCircle className="size-4" />
+                <AlertTitle>タスクの説明を正しく入力してください</AlertTitle>
+                <AlertDescription>
+                  {state.errors.description.join(', ')}
+                </AlertDescription>
+              </Alert>
             )}
           </div>
           <div className="flex gap-2">
             <DatePicker />
-
             <PrioritySelect />
           </div>
           <div className="flex justify-end gap-2">

@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
 export const addTaskSchema = z.object({
-  text: z.string().min(1, 'Text is required'),
+  title: z.string().min(1, 'タスク名は必須です'),
+  description: z.string().nullable(),
   deadline: z.string().nullable(),
   include_time: z.boolean(),
   priority: z.enum(['low', 'medium', 'high']),
@@ -10,7 +11,8 @@ export const addTaskSchema = z.object({
 
 export const editTaskSchema = z.object({
   id: z.string().uuid('IDはUUIDでなければなりません'),
-  text: z.string().min(1, 'テキストは必須です'),
+  title: z.string().min(1, 'タスク名は必須です'),
+  description: z.string().nullable(),
   deadline: z.string().nullable(),
   include_time: z.boolean(),
   priority: z.enum(['low', 'medium', 'high']),

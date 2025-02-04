@@ -114,7 +114,7 @@ export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
               </div>
               <div className="flex flex-col gap-1">
                 {dayTasks
-                  .filter((task) => task.text.includes(searchQuery))
+                  .filter((task) => task.title.includes(searchQuery))
                   .map((task) => {
                     return <TaskCalendarItem key={task.id} task={task} />;
                   })}
@@ -149,7 +149,7 @@ const TaskCalendarItem = ({ task }: { task: DisplayTask }) => {
             task.completed && 'line-through'
           )}
         >
-          {task.text}
+          {task.title}
         </div>
         <div className="text-xs text-gray-500">
           {task.deadline &&

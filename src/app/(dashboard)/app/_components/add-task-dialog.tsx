@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 import { addTask } from '@/actions/task/add-task';
 
@@ -66,23 +67,36 @@ export const AddTaskDialog = ({
           </DialogHeader>
           <div className="mb-4 flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="text">タスク</Label>
               <Input
-                id="text"
+                className="border-none px-0 py-1 text-xl font-medium shadow-none focus-visible:ring-0"
                 type="text"
-                name="text"
-                minLength={2}
+                name="title"
+                minLength={1}
                 maxLength={100}
+                placeholder="タスク名"
                 required
-                autoFocus
-                placeholder="新しいタスクを入力してください"
               />
-              {state.errors?.text && (
+              {state.errors?.title && (
                 <Alert variant="destructive">
                   <AlertCircle className="size-4" />
                   <AlertTitle>タスクを入力してください</AlertTitle>
                   <AlertDescription>
-                    {state.errors.text.join(', ')}
+                    {state.errors.title.join(', ')}
+                  </AlertDescription>
+                </Alert>
+              )}
+              <Textarea
+                className="min-h-12 resize-none border-none bg-transparent px-0 py-1 font-medium shadow-none focus-visible:ring-0"
+                name="description"
+                minLength={1}
+                placeholder="タスクの説明"
+              />
+              {state.errors?.description && (
+                <Alert variant="destructive">
+                  <AlertCircle className="size-4" />
+                  <AlertTitle>タスクの説明を正しく入力してください</AlertTitle>
+                  <AlertDescription>
+                    {state.errors.description.join(', ')}
                   </AlertDescription>
                 </Alert>
               )}
@@ -115,20 +129,29 @@ export const AddTaskDialog = ({
             </div>
           </div>
           <DialogFooter>
-            <Button
-              type="submit"
-              disabled={isPending}
-              className="gap-2 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {isPending ? (
-                <>
-                  <LoaderCircle className="animate-spin" />
-                  <span>保存中</span>
-                </>
-              ) : (
-                <span>保存</span>
-              )}
-            </Button>
+            <div className="flex justify-end gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+              >
+                キャンセル
+              </Button>
+              <Button
+                type="submit"
+                disabled={isPending}
+                className="gap-2 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {isPending ? (
+                  <>
+                    <LoaderCircle className="animate-spin" />
+                    <span>保存中</span>
+                  </>
+                ) : (
+                  <span>保存</span>
+                )}
+              </Button>
+            </div>
           </DialogFooter>
         </form>
       </DialogContent>

@@ -28,7 +28,11 @@ export async function editTask(
 
     const rawData: EditTask = {
       id: formData.get('id') as string,
-      text: formData.get('text') as string,
+      title: formData.get('title') as string,
+      description:
+        formData.get('description') === ''
+          ? null
+          : (formData.get('description') as string),
       deadline:
         formData.get('deadline') === ''
           ? null
@@ -52,7 +56,8 @@ export async function editTask(
     const { error } = await supabase
       .from('tasks')
       .update({
-        text: validatedData.data.text,
+        title: validatedData.data.title,
+        description: validatedData.data.description,
         deadline: validatedData.data.deadline,
         priority: validatedData.data.priority,
         completed: validatedData.data.completed

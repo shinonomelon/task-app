@@ -35,7 +35,7 @@ export const TaskItem = ({
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   return (
-    <li className="group relative ml-2 flex flex-col gap-1 border-b py-1">
+    <li className="group relative ml-2 flex flex-col gap-1 border-b">
       <div className="flex items-center justify-between">
         <Checkbox
           checked={isSelected}
@@ -53,9 +53,9 @@ export const TaskItem = ({
               handleToggleTask({ id: task.id, completed: task.completed })
             }
             checked={task.completed}
-            className={cn('size-6 rounded-full border-2 border-gray-500', {
-              'border-red-600': task.priority === 'high',
-              'border-yellow-600': task.priority === 'medium',
+            className={cn('size-6 border-2', {
+              'border-red-600 bg-red-100': task.priority === 'high',
+              'border-yellow-600 bg-yellow-100': task.priority === 'medium',
               'opacity-40': task.completed
             })}
           />
@@ -65,11 +65,13 @@ export const TaskItem = ({
             onOpenChange={setIsEditDialogOpen}
           >
             <div
-              className={cn('py-2 w-full cursor-pointer', {
+              role="button"
+              tabIndex={0}
+              className={cn('py-3 w-full cursor-pointer', {
                 'opacity-40': task.completed
               })}
             >
-              {task.text}
+              {task.title}
             </div>
           </EditTaskDialog>
         </div>
@@ -98,9 +100,9 @@ export const TaskItem = ({
                 } else if (isYesterday(deadlineDate)) {
                   return '昨日';
                 } else if (isSameYear(deadlineDate, new Date())) {
-                  return format(deadlineDate, 'MM月dd日');
+                  return format(deadlineDate, 'M月dd日');
                 } else {
-                  return format(deadlineDate, 'yyyy年MM月dd日');
+                  return format(deadlineDate, 'yyyy年M月dd日');
                 }
               })()}
             </span>

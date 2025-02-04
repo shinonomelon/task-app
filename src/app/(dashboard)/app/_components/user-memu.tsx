@@ -37,7 +37,7 @@ export const UserMenu = () => {
 
   return (
     <div className="flex w-full items-center justify-between">
-      <div className="flex flex-1 items-center gap-2">
+      <div className="hidden flex-1 items-center gap-2 md:flex">
         <Avatar>
           <AvatarImage
             src={user.user_metadata.avatar_url}
@@ -48,9 +48,19 @@ export const UserMenu = () => {
           </AvatarFallback>
         </Avatar>
         <span className="max-w-[170px] truncate text-sm text-muted-foreground">
-          {user.user_metadata.name?.[0] ||
-            user.user_metadata.email?.split('@')[0]}
+          {user.user_metadata.name || user.user_metadata.email?.split('@')[0]}
         </span>
+      </div>
+      <div className="flex flex-1 items-center justify-center md:hidden">
+        <Avatar>
+          <AvatarImage
+            src={user.user_metadata.avatar_url}
+            alt={user.user_metadata.name || ''}
+          />
+          <AvatarFallback>
+            {user.user_metadata.name?.[0] || user.user_metadata.email?.[0]}
+          </AvatarFallback>
+        </Avatar>
       </div>
       <TooltipProvider>
         <Tooltip>

@@ -49,7 +49,7 @@ export const TaskListView = ({
         const { filterFn, showForm } = filterConfig[filterKey];
         const filteredTaskList = optimisticTaskList
           .filter(filterFn)
-          .filter((task) => task.text.includes(searchQuery));
+          .filter((task) => task.title.includes(searchQuery));
 
         return (
           <TaskWrapper
