@@ -13,7 +13,8 @@
     "fix:lint": "next lint --fix",
     "fix:prettier": "prettier --write .",
     "gen-types": "pnpm supabase gen types typescript --local > src/types/database.ts",
-    "migrate": "pnpm supabase db diff --schema public -f"
+    "migrate": "pnpm supabase db diff --schema public -f",
+    "prepare": "husky"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.2",
@@ -54,6 +55,8 @@
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-tailwindcss": "^3.18.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
     "postcss": "^8.5.1",
     "prettier": "^3.4.2",
     "supabase": "^2.9.6",
@@ -65,5 +68,11 @@
     "singleQuote": true,
     "tabWidth": 2,
     "trailingComma": "none"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "next lint --fix",
+      "prettier --write"
+    ]
   }
 }
