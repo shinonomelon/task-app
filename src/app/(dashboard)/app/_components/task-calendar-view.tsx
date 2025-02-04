@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils/cn';
 
 import { Button } from '@/components/ui/button';
 
+import { useSearchStore } from '@/hooks/use-search';
 import { useTask } from '@/hooks/use-task';
 
 const DAYS_OF_WEEK = ['日', '月', '火', '水', '木', '金', '土'];
@@ -21,6 +22,7 @@ const getDateString = (date: Date) => {
 
 export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
   const { optimisticTaskList } = useTask(tasks);
+  const { searchQuery } = useSearchStore();
 
   const [date, setDate] = useState<Date>(new Date());
 
@@ -111,9 +113,11 @@ export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
                 {currentDate.getDate()}
               </div>
               <div className="flex flex-col gap-1">
-                {dayTasks.map((task) => {
-                  return <TaskCalendarItem key={task.id} task={task} />;
-                })}
+                {dayTasks
+                  .filter((task) => task.text.includes(searchQuery))
+                  .map((task) => {
+                    return <TaskCalendarItem key={task.id} task={task} />;
+                  })}
               </div>
             </div>
           );

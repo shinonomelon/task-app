@@ -11,12 +11,15 @@ import { cn } from '@/lib/utils/cn';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
+import { useSearchStore } from '@/hooks/use-search';
+
 export const TaskViewBar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const view = searchParams.get('view');
+  const { searchQuery, setSearchQuery } = useSearchStore();
 
   return (
     <div className="mb-4 flex items-center justify-between">
@@ -52,7 +55,13 @@ export const TaskViewBar = () => {
         {isSearchOpen ? (
           <div className="relative">
             <Search className="absolute left-2 top-1/2 size-4 -translate-y-1/2" />
-            <Input className="pl-8" placeholder="検索..." autoFocus />
+            <Input
+              className="pl-8"
+              placeholder="検索..."
+              autoFocus
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
         ) : (
           <Button

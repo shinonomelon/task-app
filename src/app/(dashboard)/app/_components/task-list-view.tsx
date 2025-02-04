@@ -13,6 +13,7 @@ import { getTitle } from '@/lib/utils/get-title';
 
 import { Button } from '@/components/ui/button';
 
+import { useSearchStore } from '@/hooks/use-search';
 import { useTask } from '@/hooks/use-task';
 
 export const TaskListView = ({
@@ -32,6 +33,8 @@ export const TaskListView = ({
     setSelectedTaskIdList
   } = useTask(tasks);
 
+  const { searchQuery } = useSearchStore();
+
   return (
     <>
       <TaskNav
@@ -44,7 +47,9 @@ export const TaskListView = ({
         if (!filterConfig[filterKey]) return null;
 
         const { filterFn, showForm } = filterConfig[filterKey];
-        const filteredTaskList = optimisticTaskList.filter(filterFn);
+        const filteredTaskList = optimisticTaskList
+          .filter(filterFn)
+          .filter((task) => task.text.includes(searchQuery));
 
         return (
           <TaskWrapper

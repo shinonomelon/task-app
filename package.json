@@ -43,7 +43,8 @@
     "sonner": "^1.7.4",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.24.1"
+    "zod": "^3.24.1",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -70,9 +71,9 @@
     "trailingComma": "none"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "next lint --fix",
-      "prettier --write"
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "git add"
     ]
   }
 }
