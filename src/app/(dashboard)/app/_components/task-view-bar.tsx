@@ -33,6 +33,7 @@ export const TaskViewBar = () => {
           onClick={() => {
             router.push(`/app/inbox?view=list`);
           }}
+          aria-label="リスト表示"
         >
           <List className="size-4 md:mr-2" />
           <span className="hidden md:block">リスト</span>
@@ -46,6 +47,7 @@ export const TaskViewBar = () => {
           onClick={() => {
             router.push(`/app/inbox?view=calendar`);
           }}
+          aria-label="カレンダー表示"
         >
           <Calendar className="size-4 md:mr-2" />
           <span className="hidden md:block">カレンダー</span>
@@ -68,12 +70,16 @@ export const TaskViewBar = () => {
             variant="ghost"
             size="icon"
             onClick={() => setIsSearchOpen(true)}
+            aria-label="タスクを検索"
           >
             <Search className="size-4" />
           </Button>
         )}
         <AddTaskDialog open={isAddTaskOpen} onOpenChange={setIsAddTaskOpen}>
-          <Button className="gap-2 disabled:cursor-not-allowed disabled:opacity-50">
+          <Button
+            className="gap-2 disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label="タスクを追加"
+          >
             <Plus className="size-4" />
             <span className="hidden md:block">タスクを追加</span>
           </Button>

@@ -63,15 +63,29 @@ export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
       <div className="sticky top-0 z-10 mb-4 bg-white pt-4">
         <div className="flex items-center justify-between">
           <div className="font-medium">{monthLabel}</div>
-
           <div className="ml-auto flex items-center gap-2">
-            <Button variant="outline" size="icon" onClick={handlePrevMonth}>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handlePrevMonth}
+              aria-label="前の月へ移動"
+            >
               <ChevronLeft className="size-4" />
             </Button>
-            <Button variant="outline" size="icon" onClick={handleToday}>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleToday}
+              aria-label="今日へ移動"
+            >
               今日
             </Button>
-            <Button variant="outline" size="icon" onClick={handleNextMonth}>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleNextMonth}
+              aria-label="次の月へ移動"
+            >
               <ChevronRight className="size-4" />
             </Button>
           </div>
@@ -131,17 +145,15 @@ const TaskCalendarItem = ({ task }: { task: DisplayTask }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <EditTaskDialog
-      key={task.id}
-      task={task}
-      open={open}
-      onOpenChange={setOpen}
-    >
-      <div
-        key={task.id}
+    <EditTaskDialog task={task} open={open} onOpenChange={setOpen}>
+      <button
+        type="button"
+        // aria-label を付与し、ボタンの役割と内容を明示する
+        aria-label={`タスクを編集: ${task.title}`}
         className={cn(
-          'rounded-sm cursor-pointer p-0.5 transition-all duration-100 hover:bg-gray-100 border box-border'
+          'rounded-sm p-0.5 transition-all duration-100 hover:bg-gray-100 border box-border focus:outline-none'
         )}
+        onClick={() => setOpen(true)}
       >
         <div
           className={cn(
@@ -159,7 +171,7 @@ const TaskCalendarItem = ({ task }: { task: DisplayTask }) => {
               minute: '2-digit'
             })}
         </div>
-      </div>
+      </button>
     </EditTaskDialog>
   );
 };

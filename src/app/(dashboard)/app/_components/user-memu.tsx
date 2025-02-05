@@ -65,7 +65,12 @@ export const UserMenu = () => {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button variant="ghost" size="icon" onClick={handleSignOut}>
+            <Button
+              aria-label="ログアウトする"
+              variant="ghost"
+              size="icon"
+              onClick={handleSignOut}
+            >
               <LogOut className="size-5" />
             </Button>
           </TooltipTrigger>

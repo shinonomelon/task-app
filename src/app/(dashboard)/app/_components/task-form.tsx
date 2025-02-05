@@ -53,6 +53,7 @@ export const TaskForm = () => {
           variant="ghost"
           className="mt-2 w-full gap-2"
           onClick={handleAddButtonClick}
+          aria-label="タスクを追加"
         >
           <Plus className="size-4" />
           <span>タスクを追加</span>
@@ -104,13 +105,19 @@ export const TaskForm = () => {
             <PrioritySelect />
           </div>
           <div className="flex justify-end gap-2">
-            <Button variant="outline" type="button" onClick={handleCancel}>
+            <Button
+              variant="outline"
+              type="button"
+              onClick={handleCancel}
+              aria-label="タスクの追加をキャンセル"
+            >
               キャンセル
             </Button>
             <Button
               type="submit"
               disabled={isPending}
               className="gap-2 disabled:cursor-not-allowed disabled:opacity-50"
+              aria-label="タスクを追加"
             >
               {isPending ? (
                 <>

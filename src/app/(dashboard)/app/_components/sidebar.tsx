@@ -27,6 +27,7 @@ export const Sidebar = () => {
               'flex items-center gap-2 p-2 rounded-md hover:bg-muted/80',
               pathname == item.href && 'bg-muted font-semibold'
             )}
+            aria-label={`${item.title}ページへ移動`}
           >
             <item.icon className="mx-auto size-6 md:mx-0" />
             <span className="hidden md:block">{item.title}</span>

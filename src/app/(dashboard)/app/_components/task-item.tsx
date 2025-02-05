@@ -46,6 +46,7 @@ export const TaskItem = ({
               'opacity-100': isSelected
             }
           )}
+          aria-label="タスクの選択"
         />
         <div className="flex flex-1 items-center space-x-3">
           <Checkbox
@@ -58,6 +59,7 @@ export const TaskItem = ({
               'border-yellow-600 bg-yellow-100': task.priority === 'medium',
               'opacity-40': task.completed
             })}
+            aria-label="タスクの完了・未完了の切り替え"
           />
           <EditTaskDialog
             task={task}
@@ -112,6 +114,7 @@ export const TaskItem = ({
             size="icon"
             onClick={() => handleDeleteTask({ id: task.id })}
             className="opacity-0 transition duration-300 group-hover:opacity-100"
+            aria-label="タスクの削除"
           >
             <Trash />
           </Button>

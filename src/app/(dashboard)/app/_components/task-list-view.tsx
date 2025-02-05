@@ -57,16 +57,18 @@ export const TaskListView = ({
             title={getTitle(filterKey)}
             count={filteredTaskList.length}
           >
-            {filteredTaskList.map((task) => (
-              <TaskItem
-                key={task.id}
-                task={task}
-                handleToggleTask={handleToggleTask}
-                handleDeleteTask={handleDeleteTask}
-                isSelected={selectedTaskIdList.includes(task.id)}
-                handleToggleSelect={handleToggleSelect}
-              />
-            ))}
+            <ul>
+              {filteredTaskList.map((task) => (
+                <TaskItem
+                  key={task.id}
+                  task={task}
+                  handleToggleTask={handleToggleTask}
+                  handleDeleteTask={handleDeleteTask}
+                  isSelected={selectedTaskIdList.includes(task.id)}
+                  handleToggleSelect={handleToggleSelect}
+                />
+              ))}
+            </ul>
             {showForm && <TaskForm />}
           </TaskWrapper>
         );
@@ -91,6 +93,7 @@ const TaskNav = ({
         variant="ghost"
         className="text-blue-600 hover:text-blue-700"
         onClick={() => setSelectedTaskIdList([])}
+        aria-label="選択済みタスクの数をクリア"
       >
         {selectedTaskIdList.length}件選択済み
       </Button>
@@ -99,6 +102,7 @@ const TaskNav = ({
         variant="ghost"
         className="text-red-600 hover:text-red-700"
         onClick={handleDeleteTaskList}
+        aria-label="選択済みタスクをまとめて削除"
       >
         <Trash2 className="size-4" />
         まとめて削除

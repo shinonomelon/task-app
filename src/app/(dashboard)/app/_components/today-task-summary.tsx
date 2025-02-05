@@ -22,7 +22,11 @@ export default function TodayTaskSummary({
       <h2 className="text-xl font-bold">今日のタスク進捗</h2>
       {total_task > 0 ? (
         <>
-          <Progress value={progressPercentage} className="h-4 w-full" />
+          <Progress
+            value={progressPercentage}
+            className="h-4 w-full"
+            aria-label="今日のタスクの進捗"
+          />
           <div className="flex flex-row items-center justify-between">
             <span>
               {completed_task}/{total_task} 完了
