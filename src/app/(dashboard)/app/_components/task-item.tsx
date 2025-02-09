@@ -78,6 +78,21 @@ export const TaskItem = ({
           </EditTaskDialog>
         </div>
         <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2">
+            {task.tags?.map((tag) => {
+              return (
+                <div
+                  key={tag.id}
+                  style={{ backgroundColor: tag.color }}
+                  className={cn(
+                    'rounded-full px-2 py-1 text-xs mix-blend-difference'
+                  )}
+                >
+                  {tag.name}
+                </div>
+              );
+            })}
+          </div>
           {task.deadline && (
             <span
               className={cn({

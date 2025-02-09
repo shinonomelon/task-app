@@ -16,7 +16,7 @@ export const getTaskList = async () => {
   const { data, error } = await supabase
     .from('tasks')
     .select(
-      'id, title, description, completed, deadline, priority, include_time'
+      'id, title, description, completed, deadline, priority, include_time, tags(id, name, color)'
     )
     .order('created_at', { ascending: true });
 

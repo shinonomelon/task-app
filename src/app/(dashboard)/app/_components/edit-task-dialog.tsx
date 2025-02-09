@@ -130,6 +130,26 @@ export const EditTaskDialog = ({
               <div className="space-y-2">
                 <Label className="flex flex-col gap-2">
                   <span className="text-sm font-medium text-muted-foreground">
+                    タグ
+                  </span>
+                </Label>
+                <div className="flex flex-wrap gap-2">
+                  {task.tags?.map((tag) => (
+                    <div
+                      key={tag.id}
+                      className={cn(
+                        'rounded-full px-2 py-1 text-xs mix-blend-difference',
+                        `bg-[${tag.color}]`
+                      )}
+                    >
+                      {tag.name}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label className="flex flex-col gap-2">
+                  <span className="text-sm font-medium text-muted-foreground">
                     優先度
                   </span>
                   <PrioritySelect defaultValue={task.priority} />

@@ -2,13 +2,27 @@ import { Database } from './database';
 
 export type Task = Database['public']['Tables']['tasks']['Row'];
 
-export type DisplayTask = Omit<Task, 'user_id' | 'created_at'>;
+export type Tag = Database['public']['Tables']['tags']['Row'];
 
-export type AddTask = Omit<Task, 'id' | 'created_at' | 'completed'>;
+export type TaskTag = Database['public']['Tables']['task_tags']['Row'];
+
+export type DisplayTag = Omit<Tag, 'user_id' | 'created_at' | 'updated_at'>;
+
+export type DisplayTask = Omit<
+  Task,
+  'user_id' | 'created_at' | 'updated_at'
+> & {
+  tags: DisplayTag[];
+};
+
+export type AddTask = Omit<
+  Task,
+  'id' | 'created_at' | 'completed' | 'updated_at'
+>;
 
 export type DeleteTask = Pick<Task, 'id' | 'user_id'>;
 
-export type EditTask = Omit<Task, 'created_at'>;
+export type EditTask = Omit<Task, 'created_at' | 'updated_at'>;
 
 export type ToggleTaskCompleted = Pick<Task, 'id' | 'user_id' | 'completed'>;
 
