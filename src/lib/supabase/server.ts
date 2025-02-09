@@ -28,7 +28,7 @@ export async function createClient(options?: CreateClientOptions) {
         fetch: createFetch({
           cache: 'force-cache',
           next: {
-            revalidate: options?.revalidate ?? 0,
+            revalidate: options?.revalidate ? options.revalidate : undefined,
             tags: options?.tags ?? []
           }
         })
