@@ -26,9 +26,8 @@ export async function createClient(options?: CreateClientOptions) {
     {
       global: {
         fetch: createFetch({
-          cache: 'force-cache',
           next: {
-            revalidate: options?.revalidate ? options.revalidate : undefined,
+            revalidate: options?.revalidate ?? 0,
             tags: options?.tags ?? []
           }
         })
