@@ -16,8 +16,11 @@ import { useTask } from '@/hooks/use-task';
 
 const DAYS_OF_WEEK = ['日', '月', '火', '水', '木', '金', '土'];
 
-const getDateString = (date: Date) => {
-  return date.toISOString().split('T')[0];
+const getLocalDateString = (date: Date) => {
+  const year = date.getFullYear();
+  const month = ('0' + (date.getMonth() + 1)).slice(-2);
+  const day = ('0' + date.getDate()).slice(-2);
+  return `${year}-${month}-${day}`;
 };
 
 export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
@@ -35,7 +38,6 @@ export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
   };
 
   const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-
   const startDayOfWeek = firstDayOfMonth.getDay();
 
   const startDate = new Date(
@@ -103,8 +105,8 @@ export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
           const dayTasks = optimisticTaskList.filter(
             (task) =>
               task.deadline &&
-              getDateString(new Date(task.deadline)) ===
-                getDateString(currentDate)
+              getLocalDateString(new Date(task.deadline)) ===
+                getLocalDateString(currentDate)
           );
 
           const isCurrentMonth = currentDate.getMonth() === date.getMonth();
@@ -120,8 +122,8 @@ export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
               <div
                 className={cn(
                   'mb-2 text-sm w-6 h-6 flex items-center justify-center rounded-full',
-                  getDateString(currentDate) === getDateString(new Date()) &&
-                    'text-white bg-red-500'
+                  getLocalDateString(currentDate) ===
+                    getLocalDateString(new Date()) && 'text-white bg-red-500'
                 )}
               >
                 {currentDate.getDate()}
@@ -146,24 +148,22 @@ const TaskCalendarItem = ({ task }: { task: DisplayTask }) => {
 
   return (
     <EditTaskDialog task={task} open={open} onOpenChange={setOpen}>
-      <button
+      <Button
         type="button"
-        // aria-label を付与し、ボタンの役割と内容を明示する
+        variant="outline"
         aria-label={`タスクを編集: ${task.title}`}
-        className={cn(
-          'rounded-sm p-0.5 transition-all duration-100 hover:bg-gray-100 border box-border focus:outline-none'
-        )}
         onClick={() => setOpen(true)}
+        className="flex size-full flex-col px-2 py-1"
       >
         <div
           className={cn(
-            'text-sm p-0.5 truncate',
+            'text-sm truncate w-full text-left',
             task.completed && 'line-through'
           )}
         >
           {task.title}
         </div>
-        <div className="text-xs text-gray-500">
+        <div className="w-full text-left text-xs text-gray-500">
           {task.deadline &&
             task.include_time &&
             new Date(task.deadline).toLocaleString('ja-JP', {
@@ -171,7 +171,7 @@ const TaskCalendarItem = ({ task }: { task: DisplayTask }) => {
               minute: '2-digit'
             })}
         </div>
-      </button>
+      </Button>
     </EditTaskDialog>
   );
 };
