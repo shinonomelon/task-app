@@ -79,19 +79,22 @@ export const TaskItem = ({
         </div>
         <div className="flex items-center space-x-2">
           <div className="flex items-center space-x-2">
-            {task.tags?.map((tag) => {
-              return (
-                <div
-                  key={tag.id}
-                  style={{ backgroundColor: tag.color }}
-                  className={cn(
-                    'rounded-full px-2 py-1 text-xs mix-blend-difference'
-                  )}
-                >
-                  {tag.name}
-                </div>
-              );
-            })}
+            {task.tags?.[0] && (
+              <div
+                key={task.tags[0].id}
+                style={{ backgroundColor: task.tags[0].color }}
+                className={cn(
+                  'rounded-full px-2 py-1 text-xs mix-blend-difference'
+                )}
+              >
+                {task.tags[0].name}
+              </div>
+            )}
+            {task.tags.length > 1 && (
+              <div className="rounded-full bg-gray-200 px-2 py-1 text-xs">
+                {task.tags.length - 1} つのタグ
+              </div>
+            )}
           </div>
           {task.deadline && (
             <span
