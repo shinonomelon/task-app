@@ -35,3 +35,9 @@ export const deleteTaskListSchema = z.object({
   idList: z.array(z.string().uuid('IDはUUIDでなければなりません')),
   user_id: z.string().uuid('ユーザーIDはUUIDでなければなりません')
 });
+
+export const addTagSchema = z.object({
+  name: z.string().min(1, 'タグ名は必須です'),
+  color: z.string().min(1, '色は必須です'),
+  user_id: z.string().min(1, 'ユーザーIDが必要です')
+});

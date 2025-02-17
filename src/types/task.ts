@@ -1,4 +1,4 @@
-import { Database } from './database';
+import type { Database } from './database';
 
 export type Task = Database['public']['Tables']['tasks']['Row'];
 
@@ -19,6 +19,8 @@ export type AddTask = Omit<
   Task,
   'id' | 'created_at' | 'completed' | 'updated_at'
 >;
+
+export type AddTag = Omit<Tag, 'id' | 'created_at' | 'updated_at'>;
 
 export type DeleteTask = Pick<Task, 'id' | 'user_id'>;
 
