@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 
 import { DatePicker } from './date-picker';
 import { PrioritySelect } from './priority-select';
+import { TagSelect } from './tag-select';
 
 import { ActionResponse, DisplayTask, EditTask } from '@/types/task';
 
@@ -22,7 +23,6 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
 import { editTask } from '@/actions/task/edit-task';
@@ -127,33 +127,19 @@ export const EditTaskDialog = ({
               </div>
             </div>
             <div className="space-y-4 border-l pl-6">
-              <div className="space-y-2">
-                <Label className="flex flex-col gap-2">
+              <div>
+                <div className="flex flex-col gap-2">
                   <span className="text-sm font-medium text-muted-foreground">
                     タグ
                   </span>
-                </Label>
-                <div className="flex flex-wrap gap-2">
-                  {task.tags?.map((tag) => (
-                    <div
-                      key={tag.id}
-                      className={cn(
-                        'rounded-full px-2 py-1 text-xs mix-blend-difference',
-                        `bg-[${tag.color}]`
-                      )}
-                    >
-                      {tag.name}
-                    </div>
-                  ))}
+                  <TagSelect defaultValue={task.tags} taskId={task.id} />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label className="flex flex-col gap-2">
-                  <span className="text-sm font-medium text-muted-foreground">
-                    優先度
-                  </span>
-                  <PrioritySelect defaultValue={task.priority} />
-                </Label>
+                <span className="text-sm font-medium text-muted-foreground">
+                  優先度
+                </span>
+                <PrioritySelect defaultValue={task.priority} />
                 {state.errors?.priority && (
                   <div className="mt-1 text-sm text-red-500" role="alert">
                     {state.errors.priority.join(', ')}
@@ -162,12 +148,10 @@ export const EditTaskDialog = ({
               </div>
 
               <div className="space-y-2">
-                <Label className="flex flex-col gap-2">
-                  <span className="text-sm font-medium text-muted-foreground">
-                    期限
-                  </span>
-                  <DatePicker defaultValue={task.deadline} />
-                </Label>
+                <span className="text-sm font-medium text-muted-foreground">
+                  期限
+                </span>
+                <DatePicker defaultValue={task.deadline} />
                 {state.errors?.deadline && (
                   <div className="mt-1 text-sm text-red-500" role="alert">
                     {state.errors.deadline.join(', ')}
