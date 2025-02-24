@@ -73,6 +73,36 @@ export async function editTask(
         message: 'タスクの編集に失敗しました'
       };
     }
+    const tagIdsStr = formData.get('tags') as string;
+    const tagIds = tagIdsStr ? tagIdsStr.split(',').filter(Boolean) : [];
+
+    const { error: deleteError } = await supabase
+      .from('task_tags')
+      .delete()
+      .match({ task_id: validatedData.data.id });
+
+    if (deleteError) {
+      return {
+        success: false,
+        message: 'タスクタグの削除に失敗しました'
+      };
+    }
+
+    const insertData = tagIds.map((tagId: string) => ({
+      task_id: validatedData.data.id,
+      tag_id: tagId
+    }));
+
+    const { error: insertError } = await supabase
+      .from('task_tags')
+      .insert(insertData);
+
+    if (insertError) {
+      return {
+        success: false,
+        message: 'タスクタグの登録に失敗しました'
+      };
+    }
 
     revalidateTaskList();
     revalidateTaskSummary();

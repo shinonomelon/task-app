@@ -36,7 +36,6 @@ export type Database = {
     Tables: {
       tags: {
         Row: {
-          color: string;
           created_at: string;
           id: string;
           name: string;
@@ -44,7 +43,6 @@ export type Database = {
           user_id: string;
         };
         Insert: {
-          color: string;
           created_at?: string;
           id?: string;
           name: string;
@@ -52,7 +50,6 @@ export type Database = {
           user_id: string;
         };
         Update: {
-          color?: string;
           created_at?: string;
           id?: string;
           name?: string;

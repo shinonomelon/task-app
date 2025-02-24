@@ -1,17 +1,13 @@
 'use server';
 
-import { revalidateTaskList } from '../api/task';
-
-import { ActionResponse, AddTag } from '@/types/task';
+import { ActionResponse, AddTag, DisplayTag } from '@/types/task';
 
 import { addTagSchema } from '@/lib/schema/task';
 import { createClient } from '@/lib/supabase/server';
 
 export async function addTag(
-  task_id: string,
-  name: string,
-  color: string
-): Promise<ActionResponse<AddTag>> {
+  name: string
+): Promise<ActionResponse<DisplayTag>> {
   try {
     const supabase = await createClient();
 
@@ -29,7 +25,6 @@ export async function addTag(
 
     const rawData: AddTag = {
       name,
-      color,
       user_id: user.id
     };
 
@@ -48,13 +43,11 @@ export async function addTag(
       .insert([
         {
           name: validatedData.data.name,
-          color: validatedData.data.color,
           user_id: validatedData.data.user_id
         }
       ])
-      .select();
+      .select('id, name');
 
-    console.log(data);
     if (error) {
       return {
         success: false,
@@ -62,25 +55,10 @@ export async function addTag(
       };
     }
 
-    const { error: taskError } = await supabase.from('task_tags').insert([
-      {
-        task_id,
-        tag_id: data[0].id
-      }
-    ]);
-
-    if (taskError) {
-      return {
-        success: false,
-        message: 'タグの追加に失敗しました'
-      };
-    }
-
-    revalidateTaskList();
-
     return {
       success: true,
-      message: '1件のタグを追加しました'
+      message: '1件のタグを追加しました',
+      state: data[0]
     };
   } catch (error) {
     console.error('予期せぬエラーが発生しました:', error);

@@ -35,7 +35,7 @@ export const TaskItem = ({
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   return (
-    <li className="group relative ml-2 flex flex-col gap-1 border-b">
+    <li className="group relative ml-2 flex flex-col gap-1 border-b transition duration-300  hover:bg-gray-50">
       <div className="flex items-center justify-between">
         <Checkbox
           checked={isSelected}
@@ -82,9 +82,8 @@ export const TaskItem = ({
             {task.tags?.[0] && (
               <div
                 key={task.tags[0].id}
-                style={{ backgroundColor: task.tags[0].color }}
                 className={cn(
-                  'rounded-full px-2 py-1 text-xs mix-blend-difference'
+                  'rounded-full px-2 py-1 text-xs bg-gray-100 text-gray-800'
                 )}
               >
                 {task.tags[0].name}

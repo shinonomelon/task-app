@@ -132,7 +132,7 @@ export const EditTaskDialog = ({
                   <span className="text-sm font-medium text-muted-foreground">
                     タグ
                   </span>
-                  <TagSelect defaultValue={task.tags} taskId={task.id} />
+                  <TagSelect defaultValue={task.tags} />
                 </div>
               </div>
               <div className="space-y-2">

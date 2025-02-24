@@ -55,6 +55,7 @@ export type TodayTaskSummary = TaskCount & {
 export type ActionResponse<T> = {
   success: boolean;
   message: string;
+  state?: T;
   errors?: {
     [K in keyof T]?: string[];
   };
