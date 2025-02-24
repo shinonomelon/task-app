@@ -55,51 +55,22 @@ export async function editTask(
       };
     }
 
-    const { error } = await supabase
-      .from('tasks')
-      .update({
-        title: validatedData.data.title,
-        description: validatedData.data.description,
-        deadline: validatedData.data.deadline,
-        priority: validatedData.data.priority,
-        completed: validatedData.data.completed
-      })
-      .match({
-        id: validatedData.data.id,
-        user_id: validatedData.data.user_id
-      });
-
-    if (error) {
-      return {
-        success: false,
-        message: MESSAGES.TASK.EDIT.FAILED
-      };
-    }
     const tagIdsStr = formData.get('tags') as string;
     const tagIds = tagIdsStr ? tagIdsStr.split(',').filter(Boolean) : [];
 
-    const { error: deleteError } = await supabase
-      .from('task_tags')
-      .delete()
-      .match({ task_id: validatedData.data.id });
+    const { error } = await supabase.rpc('edit_task', {
+      p_task_id: validatedData.data.id,
+      p_user_id: validatedData.data.user_id,
+      p_title: validatedData.data.title,
+      p_description: validatedData.data.description ?? '',
+      p_deadline: validatedData.data.deadline ?? '',
+      p_include_time: validatedData.data.include_time,
+      p_priority: validatedData.data.priority,
+      p_completed: validatedData.data.completed,
+      p_tag_ids: tagIds
+    });
 
-    if (deleteError) {
-      return {
-        success: false,
-        message: MESSAGES.TASK.EDIT.FAILED
-      };
-    }
-
-    const insertData = tagIds.map((tagId: string) => ({
-      task_id: validatedData.data.id,
-      tag_id: tagId
-    }));
-
-    const { error: insertError } = await supabase
-      .from('task_tags')
-      .insert(insertData);
-
-    if (insertError) {
+    if (error) {
       return {
         success: false,
         message: MESSAGES.TASK.EDIT.FAILED
