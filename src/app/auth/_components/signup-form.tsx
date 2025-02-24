@@ -1,17 +1,16 @@
 'use client';
 
+import { LoaderCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useActionState } from 'react';
 import { toast } from 'sonner';
 
 import { ActionResponse, SignupFormData } from '@/types/auth';
 
-import { cn } from '@/lib/utils/cn';
-
+import { FormField } from '@/components/form/form-field';
+import { FormInput } from '@/components/form/form-input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 
 import { signUp } from '@/actions/auth/sign-up';
 
@@ -56,116 +55,75 @@ export const SignUpForm = () => {
         </h1>
       </header>
       <form action={formAction} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="email" className="text-sm font-bold">
-            メールアドレス
-            <span
-              className="ml-0.5 inline-flex -translate-y-1 text-red-400"
-              title="このフィールドは必須です"
-              aria-label="必須のフィールド"
-            >
-              *
-            </span>
-          </Label>
-          <Input
+        <FormField
+          label="メールアドレス"
+          name="email"
+          required
+          error={state?.errors?.email}
+        >
+          <FormInput
             id="email"
-            type="email"
             name="email"
-            aria-describedby="email-error"
-            defaultValue={state?.state?.email}
-            autoFocus
-            required
+            type="email"
             placeholder="email@example.com"
-            className="w-full"
+            defaultValue={state?.state?.email}
+            required
+            autoFocus
           />
-          <p
-            id="email-error"
-            className="text-red-400"
-            role="alert"
-            aria-live="assertive"
-          >
-            {state?.errors?.email}
-          </p>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="password" className="text-sm font-bold">
-            パスワード
-            <span
-              className="ml-0.5 inline-flex -translate-y-1 text-red-400"
-              title="このフィールドは必須です"
-              aria-label="必須のフィールド"
-            >
-              *
-            </span>
-          </Label>
-          <Input
+        </FormField>
+
+        <FormField
+          label="パスワード"
+          name="password"
+          required
+          error={state?.errors?.password}
+          description="12文字以上で入力してください"
+        >
+          <FormInput
             id="password"
-            type="password"
             name="password"
-            className="w-full"
-            aria-describedby="password-error"
-            defaultValue={state?.state?.password}
-            required
-            placeholder="12文字以上"
-            minLength={12}
-          />
-          <p
-            id="password-error"
-            className="text-red-400"
-            role="alert"
-            aria-live="assertive"
-          >
-            {state?.errors?.password}
-          </p>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="confirm-password" className="text-sm font-bold">
-            パスワードの確認
-            <span
-              className="ml-0.5 inline-flex -translate-y-1 text-red-400"
-              title="このフィールドは必須です"
-              aria-label="必須のフィールド"
-            >
-              *
-            </span>
-          </Label>
-          <Input
-            id="confirm-password"
             type="password"
-            name="confirmPassword"
-            defaultValue={state?.state?.confirmPassword}
-            aria-describedby="confirm-password-error"
-            required
-            className="w-full"
             minLength={12}
+            required
+            defaultValue={state?.state?.password}
           />
-          <p
-            id="confirm-password-error"
-            className="text-red-400"
-            role="alert"
-            aria-live="assertive"
-          >
-            {state?.errors?.confirmPassword}
-          </p>
-        </div>
+        </FormField>
+
+        <FormField
+          label="パスワードの確認"
+          name="confirmPassword"
+          required
+          error={state?.errors?.confirmPassword}
+        >
+          <FormInput
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            minLength={12}
+            required
+            defaultValue={state?.state?.confirmPassword}
+          />
+        </FormField>
+
         {state?.message && (
-          <Alert variant="destructive" className="flex items-center">
+          <Alert variant="destructive">
             <AlertDescription>{state.message}</AlertDescription>
           </Alert>
         )}
+
         <Button
           type="submit"
-          className={cn(
-            'w-full bg-green-600 font-bold transition-colors duration-150 ease-in hover:bg-green-700',
-            isPending && 'cursor-not-allowed opacity-50'
-          )}
+          disabled={isPending}
+          className="w-full gap-2 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {isPending && (
-            <div className="flex justify-center" aria-label="読み込み中">
-              <div className="size-6 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
-            </div>
+          {isPending ? (
+            <>
+              <LoaderCircle className="animate-spin" />
+              <span>アカウントを作成中</span>
+            </>
+          ) : (
+            <span>アカウントを作成する</span>
           )}
-          アカウントを作成する
         </Button>
       </form>
     </section>
