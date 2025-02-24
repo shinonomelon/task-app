@@ -1,5 +1,6 @@
-import { startTransition, useCallback, useOptimistic, useState } from 'react';
-import { toast } from 'sonner';
+import { useCallback, useState } from 'react';
+
+import { useOptimisticAction } from './use-optimistic-action';
 
 import { DisplayTask } from '@/types/task';
 
@@ -8,113 +9,52 @@ import { deleteTaskList } from '@/actions/task/delete-task-list';
 import { toggleTaskCompleted } from '@/actions/task/toggle-task-complated';
 
 export const useTask = (tasks: DisplayTask[]) => {
-  const [optimisticTaskList, setOptimisticTaskList] = useOptimistic(
-    tasks,
-    (_, newState: DisplayTask[]) => newState
-  );
+  const { optimisticList: optimisticTaskList, execute } =
+    useOptimisticAction<DisplayTask>(tasks);
 
   const handleToggleTask = useCallback(
     ({ id, completed }: { id: string; completed: boolean }) => {
-      startTransition(async () => {
-        const previousTaskList = optimisticTaskList;
-
-        const newTaskList = previousTaskList.map((task) =>
-          task.id === id ? { ...task, completed: !completed } : task
-        );
-
-        setOptimisticTaskList(newTaskList);
-
-        const response = await toggleTaskCompleted(id, !completed);
-
-        if (response.success) {
-          toast.success(response.message, {
-            action: {
-              label: '取り消す',
-              onClick: () =>
-                startTransition(async () => {
-                  const previousTaskList = optimisticTaskList.map((task) =>
-                    task.id === id ? { ...task, completed } : task
-                  );
-                  setOptimisticTaskList(previousTaskList);
-                  await toggleTaskCompleted(id, completed);
-                })
-            }
-          });
-        } else {
-          setOptimisticTaskList(previousTaskList);
-          toast.error(response.message, {
-            style: {
-              background: 'red',
-              color: 'white'
-            }
-          });
-        }
-      });
+      execute(
+        (prev) =>
+          prev.map((task) =>
+            task.id === id ? { ...task, completed: !completed } : task
+          ),
+        () => toggleTaskCompleted(id, !completed),
+        () => toggleTaskCompleted(id, completed)
+      );
     },
-    [optimisticTaskList, setOptimisticTaskList]
+    [execute]
   );
 
   const handleDeleteTask = useCallback(
     ({ id }: { id: string }) => {
-      startTransition(async () => {
-        const previousTaskList = optimisticTaskList;
-        const newTaskList = previousTaskList.filter((task) => task.id !== id);
-        setOptimisticTaskList(newTaskList);
-
-        const response = await deleteTask(id);
-
-        if (response.success) {
-          toast.success(response.message);
-        } else {
-          setOptimisticTaskList(previousTaskList);
-          toast.error(response.message, {
-            style: {
-              background: 'red',
-              color: 'white'
-            }
-          });
-        }
-      });
+      execute(
+        (prev) => prev.filter((task) => task.id !== id),
+        () => deleteTask(id)
+      );
     },
-    [optimisticTaskList, setOptimisticTaskList]
+    [execute]
   );
 
   const [selectedTaskIdList, setSelectedTaskIdList] = useState<string[]>([]);
-
   const handleToggleSelect = (selectedTaskId: string) => {
-    setSelectedTaskIdList((prev) => {
-      if (prev.includes(selectedTaskId)) {
-        return prev.filter((id) => id !== selectedTaskId);
-      } else {
-        return [...prev, selectedTaskId];
-      }
-    });
+    setSelectedTaskIdList((prev) =>
+      prev.includes(selectedTaskId)
+        ? prev.filter((id) => id !== selectedTaskId)
+        : [...prev, selectedTaskId]
+    );
   };
 
   const handleDeleteTaskList = useCallback(() => {
+    const tasksToDelete = selectedTaskIdList;
+
     setSelectedTaskIdList([]);
 
-    startTransition(async () => {
-      const previousTaskList = optimisticTaskList;
-      const newTaskList = previousTaskList.filter(
-        (task) => !selectedTaskIdList.includes(task.id)
-      );
-      setOptimisticTaskList(newTaskList);
-
-      const response = await deleteTaskList(selectedTaskIdList);
-      if (response.success) {
-        toast.success(response.message);
-      } else {
-        setOptimisticTaskList(previousTaskList);
-        toast.error(response.message, {
-          style: {
-            background: 'red',
-            color: 'white'
-          }
-        });
-      }
-    });
-  }, [optimisticTaskList, setOptimisticTaskList, selectedTaskIdList]);
+    execute(
+      (prev) => prev.filter((task) => !tasksToDelete.includes(task.id)),
+      () => deleteTaskList(tasksToDelete)
+    );
+  }, [execute, selectedTaskIdList]);
 
   return {
     optimisticTaskList,
