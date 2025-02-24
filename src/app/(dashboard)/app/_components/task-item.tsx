@@ -1,6 +1,6 @@
 'use client';
 
-import { format, isSameYear, isToday, isTomorrow, isYesterday } from 'date-fns';
+import { isToday } from 'date-fns';
 import { Trash } from 'lucide-react';
 import { useState } from 'react';
 
@@ -9,6 +9,7 @@ import { EditTaskDialog } from './edit-task-dialog';
 import { DisplayTask } from '@/types/task';
 
 import { cn } from '@/lib/utils/cn';
+import { formatDate } from '@/lib/utils/date-formatter';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -105,25 +106,7 @@ export const TaskItem = ({
                   new Date(task.deadline).getDate() > new Date().getDate()
               })}
             >
-              {(() => {
-                const deadlineDate = new Date(task.deadline);
-
-                if (isToday(deadlineDate)) {
-                  let label = '今日';
-                  if (task.include_time) {
-                    label += ` ${format(deadlineDate, 'HH:mm')}`;
-                  }
-                  return label;
-                } else if (isTomorrow(deadlineDate)) {
-                  return '明日';
-                } else if (isYesterday(deadlineDate)) {
-                  return '昨日';
-                } else if (isSameYear(deadlineDate, new Date())) {
-                  return format(deadlineDate, 'M月dd日');
-                } else {
-                  return format(deadlineDate, 'yyyy年M月dd日');
-                }
-              })()}
+              {formatDate.toDisplayDate(new Date(task.deadline))}
             </span>
           )}
           <Button

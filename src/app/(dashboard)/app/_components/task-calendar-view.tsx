@@ -8,6 +8,7 @@ import { EditTaskDialog } from './edit-task-dialog';
 import { DisplayTask } from '@/types/task';
 
 import { cn } from '@/lib/utils/cn';
+import { formatDate } from '@/lib/utils/date-formatter';
 
 import { Button } from '@/components/ui/button';
 
@@ -15,13 +16,6 @@ import { useSearchStore } from '@/hooks/use-search';
 import { useTask } from '@/hooks/use-task';
 
 const DAYS_OF_WEEK = ['日', '月', '火', '水', '木', '金', '土'];
-
-const getLocalDateString = (date: Date) => {
-  const year = date.getFullYear();
-  const month = ('0' + (date.getMonth() + 1)).slice(-2);
-  const day = ('0' + date.getDate()).slice(-2);
-  return `${year}-${month}-${day}`;
-};
 
 export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
   const { optimisticTaskList } = useTask(tasks);
@@ -38,6 +32,7 @@ export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
   };
 
   const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+
   const startDayOfWeek = firstDayOfMonth.getDay();
 
   const startDate = new Date(
@@ -105,8 +100,8 @@ export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
           const dayTasks = optimisticTaskList.filter(
             (task) =>
               task.deadline &&
-              getLocalDateString(new Date(task.deadline)) ===
-                getLocalDateString(currentDate)
+              formatDate.toLocalDateString(new Date(task.deadline)) ===
+                formatDate.toLocalDateString(currentDate)
           );
 
           const isCurrentMonth = currentDate.getMonth() === date.getMonth();
@@ -122,8 +117,9 @@ export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
               <div
                 className={cn(
                   'mb-2 text-sm w-6 h-6 flex items-center justify-center rounded-full',
-                  getLocalDateString(currentDate) ===
-                    getLocalDateString(new Date()) && 'text-white bg-red-500'
+                  formatDate.toLocalDateString(currentDate) ===
+                    formatDate.toLocalDateString(new Date()) &&
+                    'text-white bg-red-500'
                 )}
               >
                 {currentDate.getDate()}
