@@ -27,24 +27,19 @@ export const useTask = (tasks: DisplayTask[]) => {
         const response = await toggleTaskCompleted(id, !completed);
 
         if (response.success) {
-          toast.success(
-            completed
-              ? '1件のタスクを未完了にしました'
-              : '1件のタスクを完了しました',
-            {
-              action: {
-                label: '取り消す',
-                onClick: () =>
-                  startTransition(async () => {
-                    const previousTaskList = optimisticTaskList.map((task) =>
-                      task.id === id ? { ...task, completed } : task
-                    );
-                    setOptimisticTaskList(previousTaskList);
-                    await toggleTaskCompleted(id, completed);
-                  })
-              }
+          toast.success(response.message, {
+            action: {
+              label: '取り消す',
+              onClick: () =>
+                startTransition(async () => {
+                  const previousTaskList = optimisticTaskList.map((task) =>
+                    task.id === id ? { ...task, completed } : task
+                  );
+                  setOptimisticTaskList(previousTaskList);
+                  await toggleTaskCompleted(id, completed);
+                })
             }
-          );
+          });
         } else {
           setOptimisticTaskList(previousTaskList);
           toast.error(response.message, {

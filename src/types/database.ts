@@ -132,6 +132,20 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      edit_task: {
+        Args: {
+          p_task_id: string;
+          p_user_id: string;
+          p_title: string;
+          p_description: string;
+          p_deadline: string;
+          p_include_time: boolean;
+          p_priority: string;
+          p_completed: boolean;
+          p_tag_ids: string[];
+        };
+        Returns: undefined;
+      };
       get_task_summary: {
         Args: Record<PropertyKey, never>;
         Returns: Json;

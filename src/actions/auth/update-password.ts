@@ -5,6 +5,8 @@ import { ActionResponse, UpdatePasswordFormData } from '@/types/auth';
 import { updatePasswordSchema } from '@/lib/schema/auth';
 import { createClient } from '@/lib/supabase/server';
 
+import { MESSAGES } from '@/constants/messages';
+
 export async function updatePassword(
   _: ActionResponse<UpdatePasswordFormData>,
   formData: FormData
@@ -18,7 +20,7 @@ export async function updatePassword(
       state: {
         password: ''
       },
-      message: 'トークンが無効または見つかりません'
+      message: MESSAGES.AUTH.INVALID_TOKEN
     };
   }
 
@@ -32,7 +34,7 @@ export async function updatePassword(
     return {
       success: false,
       state: rawData,
-      message: 'フォームのエラーを修正してください',
+      message: MESSAGES.VALIDATION_FAILED,
       errors: validatedData.error.flatten().fieldErrors
     };
   }
@@ -50,7 +52,7 @@ export async function updatePassword(
     return {
       success: false,
       state: rawData,
-      message: tokenError.message
+      message: MESSAGES.AUTH.VERIFY_OTP.FAILED
     };
   }
 
@@ -62,13 +64,13 @@ export async function updatePassword(
     return {
       success: false,
       state: rawData,
-      message: error.message
+      message: MESSAGES.AUTH.UPDATE_PASSWORD.FAILED
     };
   }
 
   return {
     success: true,
     state: rawData,
-    message: 'パスワードを更新しました'
+    message: MESSAGES.AUTH.UPDATE_PASSWORD.SUCCESS
   };
 }

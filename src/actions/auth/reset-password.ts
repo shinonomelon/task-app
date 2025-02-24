@@ -5,6 +5,8 @@ import { ActionResponse, ResetPasswordFormData } from '@/types/auth';
 import { resetPasswordSchema } from '@/lib/schema/auth';
 import { createClient } from '@/lib/supabase/server';
 
+import { MESSAGES } from '@/constants/messages';
+
 export async function resetPassword(
   _: ActionResponse<ResetPasswordFormData>,
   formData: FormData
@@ -19,7 +21,7 @@ export async function resetPassword(
     return {
       success: false,
       state: rawData,
-      message: 'フォームのエラーを修正してください',
+      message: MESSAGES.VALIDATION_FAILED,
       errors: validatedData.error.flatten().fieldErrors
     };
   }
@@ -34,14 +36,14 @@ export async function resetPassword(
   if (error) {
     return {
       success: false,
-      message: 'パスワードリセットメールの送信に失敗しました',
+      message: MESSAGES.AUTH.PASSWORD_RESET_SENT.FAILED,
       state: rawData
     };
   }
 
   return {
     success: true,
-    message: 'パスワードリセットメールを送信しました',
+    message: MESSAGES.AUTH.PASSWORD_RESET_SENT.SUCCESS,
     state: rawData
   };
 }

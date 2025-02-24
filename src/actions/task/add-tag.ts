@@ -5,6 +5,8 @@ import { ActionResponse, AddTag, DisplayTag } from '@/types/task';
 import { addTagSchema } from '@/lib/schema/task';
 import { createClient } from '@/lib/supabase/server';
 
+import { MESSAGES } from '@/constants/messages';
+
 export async function addTag(
   name: string
 ): Promise<ActionResponse<DisplayTag>> {
@@ -19,7 +21,7 @@ export async function addTag(
     if (userError || !user) {
       return {
         success: false,
-        message: '認証に失敗しました。再度ログインしてください。'
+        message: MESSAGES.AUTH.UNAUTHORIZED
       };
     }
 
@@ -33,7 +35,7 @@ export async function addTag(
     if (!validatedData.success) {
       return {
         success: false,
-        message: 'フォームのエラーを修正してください',
+        message: MESSAGES.VALIDATION_FAILED,
         errors: validatedData.error.flatten().fieldErrors
       };
     }
@@ -51,21 +53,21 @@ export async function addTag(
     if (error) {
       return {
         success: false,
-        message: 'タグの追加に失敗しました'
+        message: MESSAGES.TAG.ADD.FAILED
       };
     }
 
     return {
       success: true,
-      message: '1件のタグを追加しました',
+      message: MESSAGES.TAG.ADD.SUCCESS,
       state: data[0]
     };
   } catch (error) {
-    console.error('予期せぬエラーが発生しました:', error);
+    console.error(`${MESSAGES.UNEXPECTED}:`, error);
 
     return {
       success: false,
-      message: '予期せぬエラーが発生しました'
+      message: MESSAGES.UNEXPECTED
     };
   }
 }

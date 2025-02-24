@@ -5,6 +5,8 @@ import { ActionResponse, SignupFormData } from '@/types/auth';
 import { signUpSchema } from '@/lib/schema/auth';
 import { createClient } from '@/lib/supabase/server';
 
+import { MESSAGES } from '@/constants/messages';
+
 export async function signUp(
   _: ActionResponse<SignupFormData>,
   formData: FormData
@@ -21,7 +23,7 @@ export async function signUp(
     return {
       success: false,
       state: rawData,
-      message: 'フォームのエラーを修正してください',
+      message: MESSAGES.VALIDATION_FAILED,
       errors: validatedData.error.flatten().fieldErrors
     };
   }
@@ -39,22 +41,21 @@ export async function signUp(
     return {
       success: false,
       state: rawData,
-      message: 'アカウントがすでに存在します'
+      message: MESSAGES.AUTH.SIGNUP.USER_ALLREADY_EXISTS
     };
   }
 
-  // その他のエラー
   if (error) {
     return {
       success: false,
       state: rawData,
-      message: error.message
+      message: MESSAGES.AUTH.SIGNUP.FAILED
     };
   }
 
   return {
     success: true,
     state: rawData,
-    message: 'アカウントを作成しました'
+    message: MESSAGES.AUTH.SIGNUP.SUCCESS
   };
 }

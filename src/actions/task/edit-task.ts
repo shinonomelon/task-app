@@ -7,6 +7,8 @@ import { ActionResponse, EditTask } from '@/types/task';
 import { editTaskSchema } from '@/lib/schema/task';
 import { createClient } from '@/lib/supabase/server';
 
+import { MESSAGES } from '@/constants/messages';
+
 export async function editTask(
   _: ActionResponse<EditTask> | null,
   formData: FormData
@@ -22,7 +24,7 @@ export async function editTask(
     if (userError || !user) {
       return {
         success: false,
-        message: '認証に失敗しました。再度ログインしてください。'
+        message: MESSAGES.AUTH.UNAUTHORIZED
       };
     }
 
@@ -48,7 +50,7 @@ export async function editTask(
     if (!validatedData.success) {
       return {
         success: false,
-        message: 'タスクの編集に失敗しました',
+        message: MESSAGES.VALIDATION_FAILED,
         errors: validatedData.error.flatten().fieldErrors
       };
     }
@@ -70,7 +72,7 @@ export async function editTask(
     if (error) {
       return {
         success: false,
-        message: 'タスクの編集に失敗しました'
+        message: MESSAGES.TASK.EDIT.FAILED
       };
     }
     const tagIdsStr = formData.get('tags') as string;
@@ -84,7 +86,7 @@ export async function editTask(
     if (deleteError) {
       return {
         success: false,
-        message: 'タスクタグの削除に失敗しました'
+        message: MESSAGES.TASK.EDIT.FAILED
       };
     }
 
@@ -100,7 +102,7 @@ export async function editTask(
     if (insertError) {
       return {
         success: false,
-        message: 'タスクタグの登録に失敗しました'
+        message: MESSAGES.TASK.EDIT.FAILED
       };
     }
 
@@ -109,14 +111,14 @@ export async function editTask(
 
     return {
       success: true,
-      message: 'タスクを編集しました'
+      message: MESSAGES.TASK.EDIT.SUCCESS
     };
   } catch (error) {
-    console.error('予期せぬエラーが発生しました:', error);
+    console.error(`${MESSAGES.UNEXPECTED}:`, error);
 
     return {
       success: false,
-      message: '予期せぬエラーが発生しました'
+      message: MESSAGES.UNEXPECTED
     };
   }
 }

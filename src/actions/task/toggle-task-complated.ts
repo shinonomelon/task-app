@@ -7,6 +7,8 @@ import { ActionResponse, ToggleTaskCompleted } from '@/types/task';
 import { toggleTaskCompletedSchema } from '@/lib/schema/task';
 import { createClient } from '@/lib/supabase/server';
 
+import { MESSAGES } from '@/constants/messages';
+
 export async function toggleTaskCompleted(
   id: string,
   completed: boolean
@@ -22,7 +24,7 @@ export async function toggleTaskCompleted(
     if (userError || !user) {
       return {
         success: false,
-        message: '認証に失敗しました。再度ログインしてください。'
+        message: MESSAGES.AUTH.UNAUTHORIZED
       };
     }
 
@@ -37,7 +39,7 @@ export async function toggleTaskCompleted(
     if (!validatedData.success) {
       return {
         success: false,
-        message: 'タスクの削除に失敗しました',
+        message: MESSAGES.VALIDATION_FAILED,
         errors: validatedData.error.flatten().fieldErrors
       };
     }
@@ -53,7 +55,7 @@ export async function toggleTaskCompleted(
     if (error) {
       return {
         success: false,
-        message: 'タスクの更新に失敗しました'
+        message: MESSAGES.TASK.TOGGLE.FAILED
       };
     }
 
@@ -62,14 +64,16 @@ export async function toggleTaskCompleted(
 
     return {
       success: true,
-      message: 'タスクを更新しました'
+      message: completed
+        ? MESSAGES.TASK.TOGGLE.SUCCESS_COMPLETE
+        : MESSAGES.TASK.TOGGLE.SUCCESS_INCOMPLETE
     };
   } catch (error) {
-    console.error('予期せぬエラーが発生しました:', error);
+    console.error(`${MESSAGES.UNEXPECTED}:`, error);
 
     return {
       success: false,
-      message: '予期せぬエラーが発生しました'
+      message: MESSAGES.UNEXPECTED
     };
   }
 }

@@ -5,6 +5,8 @@ import { ActionResponse, SigninFormData } from '@/types/auth';
 import { signInSchema } from '@/lib/schema/auth';
 import { createClient } from '@/lib/supabase/server';
 
+import { MESSAGES } from '@/constants/messages';
+
 export async function signIn(
   _: ActionResponse<SigninFormData>,
   formData: FormData
@@ -20,7 +22,7 @@ export async function signIn(
     return {
       success: false,
       state: rawData,
-      message: 'フォームのエラーを修正してください',
+      message: MESSAGES.VALIDATION_FAILED,
       errors: validatedData.error.flatten().fieldErrors
     };
   }
@@ -38,14 +40,13 @@ export async function signIn(
     return {
       success: false,
       state: rawData,
-      message:
-        'メールまたはパスワードが違います。ご確認の上、再度ログインをお試しください'
+      message: MESSAGES.AUTH.SIGNIN.FAILED
     };
   }
 
   return {
     success: true,
     state: rawData,
-    message: 'ログインしました'
+    message: MESSAGES.AUTH.SIGNIN.SUCCESS
   };
 }

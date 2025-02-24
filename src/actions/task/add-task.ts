@@ -7,6 +7,8 @@ import { ActionResponse, AddTask } from '@/types/task';
 import { addTaskSchema } from '@/lib/schema/task';
 import { createClient } from '@/lib/supabase/server';
 
+import { MESSAGES } from '@/constants/messages';
+
 export async function addTask(
   _: ActionResponse<AddTask> | null,
   formData: FormData
@@ -22,7 +24,7 @@ export async function addTask(
     if (userError || !user) {
       return {
         success: false,
-        message: '認証に失敗しました。再度ログインしてください。'
+        message: MESSAGES.AUTH.UNAUTHORIZED
       };
     }
 
@@ -46,7 +48,7 @@ export async function addTask(
     if (!validatedData.success) {
       return {
         success: false,
-        message: 'フォームのエラーを修正してください',
+        message: MESSAGES.VALIDATION_FAILED,
         errors: validatedData.error.flatten().fieldErrors
       };
     }
@@ -71,7 +73,7 @@ export async function addTask(
     if (error) {
       return {
         success: false,
-        message: 'タスクの追加に失敗しました'
+        message: MESSAGES.TASK.ADD.FAILED
       };
     }
 
@@ -80,14 +82,14 @@ export async function addTask(
 
     return {
       success: true,
-      message: '1件のタスクを追加しました'
+      message: MESSAGES.TASK.ADD.SUCCESS
     };
   } catch (error) {
-    console.error('予期せぬエラーが発生しました:', error);
+    console.error(`${MESSAGES.UNEXPECTED}:`, error);
 
     return {
       success: false,
-      message: '予期せぬエラーが発生しました'
+      message: MESSAGES.UNEXPECTED
     };
   }
 }

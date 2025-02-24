@@ -7,6 +7,8 @@ import { ActionResponse, DeleteTask } from '@/types/task';
 import { deleteTaskListSchema } from '@/lib/schema/task';
 import { createClient } from '@/lib/supabase/server';
 
+import { MESSAGES } from '@/constants/messages';
+
 export async function deleteTaskList(
   idList: string[]
 ): Promise<ActionResponse<DeleteTask>> {
@@ -21,7 +23,7 @@ export async function deleteTaskList(
     if (userError || !user) {
       return {
         success: false,
-        message: '認証に失敗しました。再度ログインしてください。'
+        message: MESSAGES.AUTH.UNAUTHORIZED
       };
     }
 
@@ -35,7 +37,7 @@ export async function deleteTaskList(
     if (!validatedData.success) {
       return {
         success: false,
-        message: 'タスクの削除に失敗しました',
+        message: MESSAGES.VALIDATION_FAILED,
         errors: validatedData.error.flatten().fieldErrors
       };
     }
@@ -49,7 +51,7 @@ export async function deleteTaskList(
     if (error) {
       return {
         success: false,
-        message: 'タスクの削除に失敗しました'
+        message: MESSAGES.TASK.DELETE.FAILED
       };
     }
 
@@ -58,14 +60,14 @@ export async function deleteTaskList(
 
     return {
       success: true,
-      message: 'タスクを削除しました'
+      message: MESSAGES.TASK.DELETE.SUCCESS
     };
   } catch (error) {
-    console.error('予期せぬエラーが発生しました:', error);
+    console.error(`${MESSAGES.UNEXPECTED}:`, error);
 
     return {
       success: false,
-      message: '予期せぬエラーが発生しました'
+      message: MESSAGES.UNEXPECTED
     };
   }
 }
