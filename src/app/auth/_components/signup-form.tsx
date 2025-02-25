@@ -13,6 +13,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 
 import { signUp } from '@/actions/auth/sign-up';
+import { MESSAGES } from '@/constants/messages';
 
 export const SignUpForm = () => {
   const router = useRouter();
@@ -25,9 +26,14 @@ export const SignUpForm = () => {
       const response = await signUp(prevState, formData);
 
       if (!response?.success) {
-        if (response?.message === 'アカウントがすでに存在します') {
+        if (response?.message === MESSAGES.AUTH.SIGNUP.USER_ALLREADY_EXISTS) {
           router.push('/auth?type=signin');
-          toast.error(response?.message);
+          toast.error(response?.message, {
+            style: {
+              background: 'red',
+              color: 'white'
+            }
+          });
         }
         return response;
       }

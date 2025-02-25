@@ -51,7 +51,12 @@ export const EditTaskDialog = ({
         toast.success(response.message);
         onOpenChange(false);
       } else {
-        toast.error(response.message);
+        toast.error(response.message, {
+          style: {
+            background: 'red',
+            color: 'white'
+          }
+        });
       }
       return response;
     },

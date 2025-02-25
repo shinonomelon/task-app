@@ -29,7 +29,12 @@ export const UserMenu = () => {
       router.push('/');
       toast.success(response.message);
     } else {
-      toast.error(response.message);
+      toast.error(response.message, {
+        style: {
+          background: 'red',
+          color: 'white'
+        }
+      });
     }
   };
 
