@@ -1,11 +1,15 @@
 'use client';
 
-import { LayoutDashboard } from 'lucide-react';
+import { LayoutDashboard, Tag } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import { UserMenu } from './user-memu';
 
+import { DisplayTag } from '@/types/task';
+
+import { createClient } from '@/lib/supabase/client';
 import { cn } from '@/lib/utils/cn';
 
 import {
@@ -23,7 +27,20 @@ import {
 import { NAV_ITEMS } from '@/constants/nav';
 
 export function Sidebar() {
+  const [tags, setTags] = useState<DisplayTag[]>([]);
   const pathname = usePathname();
+  useEffect(() => {
+    const fetchTags = async () => {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from('tags')
+        .select('id, name')
+        .order('created_at', { ascending: true });
+      if (error) throw error;
+      setTags(data);
+    };
+    fetchTags();
+  }, []);
 
   return (
     <ShadcnSidebar variant="sidebar">
@@ -66,6 +83,32 @@ export function Sidebar() {
                     >
                       <item.icon className="mr-2 size-4" />
                       <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>タグ</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {tags.map((item) => (
+                <SidebarMenuItem key={item.name}>
+                  <SidebarMenuButton asChild>
+                    <Link
+                      key={item.name}
+                      href={`/app/tags/${item.id}`}
+                      className={cn(
+                        'flex items-center gap-2 p-2 rounded-md hover:bg-muted/80',
+                        pathname == `/app/tags/${item.id}` &&
+                          'bg-muted font-semibold'
+                      )}
+                      aria-label={`タグ：${item.name}ページへ移動`}
+                    >
+                      <Tag className="mr-2 size-4" />
+                      <span>{item.name}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
