@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 
+import { AppHeader } from './_components/app-header';
 import { TaskSummary } from './_components/task-summary';
 
 import { CustomSuspense } from '@/lib/utils/custom-suspense';
@@ -11,9 +12,7 @@ export const metadata: Metadata = {
 export default function DashboardPage() {
   return (
     <>
-      <h1 className="mb-6 text-2xl font-semibold text-gray-900">
-        ダッシュボード
-      </h1>
+      <AppHeader title="ダッシュボード" />
       <CustomSuspense height={100} width="100%">
         <TaskSummary />
       </CustomSuspense>

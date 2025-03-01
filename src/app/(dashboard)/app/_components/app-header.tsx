@@ -1,59 +1,32 @@
 'use client';
 
-import { Calendar, List, Plus, Search } from 'lucide-react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { Menu, Plus, Search } from 'lucide-react';
 import { useState } from 'react';
 
 import { AddTaskDialog } from './add-task-dialog';
 
-import { cn } from '@/lib/utils/cn';
-
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useSidebar } from '@/components/ui/sidebar';
 
 import { useSearchStore } from '@/hooks/use-search';
 
-export const TaskViewBar = () => {
+export const AppHeader = ({ title }: { title: string }) => {
+  const { toggleSidebar } = useSidebar();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const view = searchParams.get('view');
+
   const { searchQuery, setSearchQuery } = useSearchStore();
 
   return (
-    <div className="mb-4 flex items-center justify-between">
-      <div className="flex items-center gap-2">
-        <Button
-          variant="ghost"
-          className={cn(
-            'text-muted-foreground',
-            (!view || view === 'list') && 'font-medium text-primary bg-accent'
-          )}
-          onClick={() => {
-            router.push(`/app/inbox?view=list`);
-          }}
-          aria-label="リスト表示"
-        >
-          <List className="size-4 md:mr-2" />
-          <span className="hidden md:block">リスト</span>
+    <header className="mb-4 flex items-center justify-between">
+      <div className="flex items-center">
+        <Button onClick={toggleSidebar} variant="ghost">
+          <Menu />
         </Button>
-        <Button
-          variant="ghost"
-          className={cn(
-            'text-muted-foreground',
-            view === 'calendar' && 'font-medium text-primary bg-accent'
-          )}
-          onClick={() => {
-            router.push(`/app/inbox?view=calendar`);
-          }}
-          aria-label="カレンダー表示"
-        >
-          <Calendar className="size-4 md:mr-2" />
-          <span className="hidden md:block">カレンダー</span>
-        </Button>
+        <h1 className="ml-2 text-2xl font-bold">{title}</h1>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-end gap-2">
         {isSearchOpen ? (
           <div className="relative">
             <Search className="absolute left-2 top-1/2 size-4 -translate-y-1/2" />
@@ -85,6 +58,6 @@ export const TaskViewBar = () => {
           </Button>
         </AddTaskDialog>
       </div>
-    </div>
+    </header>
   );
 };

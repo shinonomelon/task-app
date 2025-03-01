@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 
+import { AppHeader } from '../_components/app-header';
 import { TaskListView } from '../_components/task-list-view';
 
 import { CustomSuspense } from '@/lib/utils/custom-suspense';
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
 export default async function Page() {
   return (
     <>
-      <h1 className="mb-4 text-2xl font-bold">今日</h1>
+      <AppHeader title="今日" />
       <CustomSuspense height={100} width="100%">
         <TaskView />
       </CustomSuspense>

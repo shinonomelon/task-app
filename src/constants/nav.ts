@@ -1,11 +1,6 @@
-import { Clock, Inbox, LayoutDashboard } from 'lucide-react';
+import { Calendar, Clock, Inbox } from 'lucide-react';
 
 export const NAV_ITEMS = [
-  {
-    title: 'ダッシュボード',
-    href: '/app',
-    icon: LayoutDashboard
-  },
   {
     title: 'インボックス',
     href: '/app/inbox',
@@ -15,5 +10,10 @@ export const NAV_ITEMS = [
     title: '今日',
     href: '/app/today',
     icon: Clock
+  },
+  {
+    title: 'カレンダー',
+    href: '/app/calendar',
+    icon: Calendar
   }
 ] as const;
