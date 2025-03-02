@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 
-import { AppHeader } from './_components/app-header';
-import { TaskSummary } from './_components/task-summary';
-
 import { CustomSuspense } from '@/lib/utils/custom-suspense';
+
+import { AppHeader } from '@/components/app-header';
+import { TaskSummary } from '@/components/task/task-summary';
 
 export const metadata: Metadata = {
   title: 'ダッシュボード'

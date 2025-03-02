@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
-import { Header } from './_components/header';
-import { SignInForm } from './_components/signin-form';
-import { SignUpForm } from './_components/signup-form';
+import { Header } from '../../components/auth/header';
+import { SignInForm } from '../../components/auth/signin-form';
+import { SignUpForm } from '../../components/auth/signup-form';
 
 export type SearchParams = {
   type?: 'signin' | 'signup';

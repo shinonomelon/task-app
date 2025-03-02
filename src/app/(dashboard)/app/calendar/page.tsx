@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 
-import { AppHeader } from '../_components/app-header';
-import { TaskCalendarView } from '../_components/task-calendar-view';
-
 import { CustomSuspense } from '@/lib/utils/custom-suspense';
+
+import { AppHeader } from '@/components/app-header';
+import { TaskCalendarView } from '@/components/task/task-calendar-view';
 
 import { getTaskList } from '@/actions/api/task';
 

@@ -1,9 +1,9 @@
-import { AppHeader } from '../../_components/app-header';
-import { TaskListView } from '../../_components/task-list-view';
-
 import type { Metadata } from 'next';
 
 import { CustomSuspense } from '@/lib/utils/custom-suspense';
+
+import { AppHeader } from '@/components/app-header';
+import { TaskListView } from '@/components/task/task-list-view';
 
 import { getTagById } from '@/actions/api/tag';
 import { getTaskList } from '@/actions/api/task';

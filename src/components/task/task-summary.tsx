@@ -1,5 +1,5 @@
-import { OverAllSummary } from './over-all-summary';
-import TodaySummary from './today-task-summary';
+import { OverAllSummary } from '../dashboard/over-all-summary';
+import TodaySummary from '../dashboard/today-task-summary';
 
 import { getTaskSummary } from '@/actions/api/task';
 

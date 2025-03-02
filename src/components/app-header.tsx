@@ -3,7 +3,7 @@
 import { Menu, Plus, Search } from 'lucide-react';
 import { useState } from 'react';
 
-import { AddTaskDialog } from './add-task-dialog';
+import { AddTaskDialog } from './task/add-task-dialog';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

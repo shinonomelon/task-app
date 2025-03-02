@@ -10,7 +10,7 @@ import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-import { addTag } from '@/actions/task/add-tag';
+import { addTag } from '@/actions/tag/add-tag';
 
 export const TagSelect = ({
   defaultValue
