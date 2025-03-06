@@ -9,14 +9,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useSidebar } from '@/components/ui/sidebar';
 
-import { useSearchStore } from '@/hooks/use-search';
+import { useLocalSearchStore } from '@/hooks/use-local-search';
 
 export const AppHeader = ({ title }: { title: string }) => {
   const { toggleSidebar } = useSidebar();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
 
-  const { searchQuery, setSearchQuery } = useSearchStore();
+  const { searchQuery, setSearchQuery } = useLocalSearchStore();
 
   return (
     <header className="mb-4 flex items-center justify-between">

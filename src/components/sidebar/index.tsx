@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { UserMenu } from '../user-memu';
+import { SearchDialog } from './search-dialog';
+import { UserMenu } from './user-memu';
 
 import { DisplayTag } from '@/types/task';
 
@@ -26,9 +27,11 @@ import {
 
 import { NAV_ITEMS } from '@/constants/nav';
 
-export function Sidebar() {
+export const Sidebar = () => {
   const [tags, setTags] = useState<DisplayTag[]>([]);
+
   const pathname = usePathname();
+
   useEffect(() => {
     const fetchTags = async () => {
       const supabase = createClient();
@@ -47,6 +50,11 @@ export function Sidebar() {
       <SidebarContent className="flex h-full flex-col pt-2">
         <SidebarGroup>
           <SidebarMenu>
+            <SidebarMenuItem key="検索">
+              <SidebarMenuButton asChild>
+                <SearchDialog />
+              </SidebarMenuButton>
+            </SidebarMenuItem>
             <SidebarMenuItem key="ダッシュボード">
               <SidebarMenuButton asChild>
                 <Link
@@ -126,4 +134,4 @@ export function Sidebar() {
       </SidebarFooter>
     </ShadcnSidebar>
   );
-}
+};

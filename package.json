@@ -12,7 +12,7 @@
     "fix": "pnpm run fix:lint && pnpm run fix:prettier",
     "fix:lint": "next lint --fix",
     "fix:prettier": "prettier --write .",
-    "gen-types": "pnpm supabase gen types typescript --local > src/types/database.ts",
+    "gen-types": "pnpm supabase gen types typescript --local > src/types/supabase/database.ts",
     "migrate": "pnpm supabase db diff --schema public -f",
     "prepare": "husky"
   },
@@ -41,6 +41,7 @@
     "react": "^19.0.0",
     "react-day-picker": "8.10.1",
     "react-dom": "^19.0.0",
+    "react-use": "^17.6.0",
     "server-only": "^0.0.1",
     "sonner": "^1.7.4",
     "tailwind-merge": "^2.6.0",

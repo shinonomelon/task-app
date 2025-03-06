@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
-import { Database } from '@/types/database';
+import { Database } from '@/types/supabase/database';
 
 export const createFetch =
   (options: Pick<RequestInit, 'next' | 'cache'>) =>

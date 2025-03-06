@@ -1,4 +1,4 @@
-import type { Database } from './database';
+import type { Database } from '@/types/supabase/database';
 
 export type Task = Database['public']['Tables']['tasks']['Row'];
 

@@ -15,7 +15,6 @@ import {
   Dialog,
   DialogContent,
   DialogFooter,
-  DialogHeader,
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
@@ -66,10 +65,8 @@ export const AddTaskDialog = ({
       <DialogTrigger asChild>{children}</DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px]">
+        <DialogTitle className="sr-only">タスクを追加</DialogTitle>
         <form action={action}>
-          <DialogHeader className="mb-4">
-            <DialogTitle>タスクを追加</DialogTitle>
-          </DialogHeader>
           <div className="mb-4 flex flex-col gap-6">
             <div className="flex flex-col gap-2">
               <Input

@@ -13,7 +13,7 @@ import { getTitle } from '@/lib/utils/get-title';
 
 import { Button } from '@/components/ui/button';
 
-import { useSearchStore } from '@/hooks/use-search';
+import { useLocalSearchStore } from '@/hooks/use-local-search';
 import { useTask } from '@/hooks/use-task';
 
 export const TaskListView = ({
@@ -33,7 +33,7 @@ export const TaskListView = ({
     setSelectedTaskIdList
   } = useTask(tasks);
 
-  const { searchQuery } = useSearchStore();
+  const { searchQuery } = useLocalSearchStore();
 
   return (
     <>

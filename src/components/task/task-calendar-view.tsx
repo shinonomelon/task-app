@@ -12,14 +12,14 @@ import { formatDate } from '@/lib/utils/date-formatter';
 
 import { Button } from '@/components/ui/button';
 
-import { useSearchStore } from '@/hooks/use-search';
+import { useLocalSearchStore } from '@/hooks/use-local-search';
 import { useTask } from '@/hooks/use-task';
 
 const DAYS_OF_WEEK = ['日', '月', '火', '水', '木', '金', '土'];
 
 export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
   const { optimisticTaskList } = useTask(tasks);
-  const { searchQuery } = useSearchStore();
+  const { searchQuery } = useLocalSearchStore();
 
   const [date, setDate] = useState<Date>(new Date());
 

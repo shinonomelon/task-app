@@ -146,6 +146,12 @@ export type Database = {
         };
         Returns: undefined;
       };
+      full_text_search: {
+        Args: {
+          query: string;
+        };
+        Returns: Database['public']['CompositeTypes']['search_result'];
+      };
       get_task_summary: {
         Args: Record<PropertyKey, never>;
         Returns: Json;
@@ -656,6 +662,18 @@ export type Database = {
         weigths: number[] | null;
         scorers: string[] | null;
         indexname: string | null;
+      };
+      search_result: {
+        tasks: Database['public']['CompositeTypes']['search_task'][] | null;
+        tags: Database['public']['CompositeTypes']['search_tag'][] | null;
+      };
+      search_tag: {
+        id: string | null;
+        name: string | null;
+      };
+      search_task: {
+        id: string | null;
+        title: string | null;
       };
     };
   };

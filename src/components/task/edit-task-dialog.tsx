@@ -18,7 +18,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
@@ -70,9 +69,7 @@ export const EditTaskDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-screen-md">
-        <DialogHeader>
-          <DialogTitle>タスクの詳細</DialogTitle>
-        </DialogHeader>
+        <DialogTitle className="sr-only">タスクの詳細</DialogTitle>
         <form action={action}>
           <div className="grid grid-cols-[1fr,240px] gap-6">
             <input type="hidden" name="id" value={task.id} />
