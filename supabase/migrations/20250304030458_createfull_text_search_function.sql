@@ -1,10 +1,17 @@
-CREATE INDEX pgroonga_index_tags_name ON public.tags USING pgroonga (name) WITH (tokenizer='TokenBigram');
+CREATE TYPE public.search_task AS (
+  id text,
+  title text
+);
 
-CREATE INDEX pgroonga_index_tasks_description ON public.tasks USING pgroonga (description) WITH (tokenizer='TokenBigram');
+CREATE TYPE public.search_tag AS (
+  id text,
+  name text
+);
 
-CREATE INDEX pgroonga_index_tasks_title ON public.tasks USING pgroonga (title) WITH (tokenizer='TokenBigram');
-
-set check_function_bodies = off;
+CREATE TYPE public.search_result AS (
+  tasks search_task[],
+  tags search_tag[]
+);
 
 CREATE OR REPLACE FUNCTION public.full_text_search(query text)
  RETURNS search_result
@@ -31,13 +38,17 @@ BEGIN
 
   RETURN result;
 END;
-$function$
-;
-
-create type "public"."search_result" as ("tasks" search_task[], "tags" search_tag[]);
-
-create type "public"."search_tag" as ("id" text, "name" text);
-
-create type "public"."search_task" as ("id" text, "title" text);
+$function$;
 
 
+CREATE INDEX pgroonga_index_tags_name
+  ON public.tags USING pgroonga (name)
+  WITH (tokenizer='TokenBigram');
+
+CREATE INDEX pgroonga_index_tasks_description
+  ON public.tasks USING pgroonga (description)
+  WITH (tokenizer='TokenBigram');
+
+CREATE INDEX pgroonga_index_tasks_title
+  ON public.tasks USING pgroonga (title)
+  WITH (tokenizer='TokenBigram');
