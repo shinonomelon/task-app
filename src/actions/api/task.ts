@@ -13,7 +13,7 @@ export const getTaskList = async () => {
     revalidate: 60,
     tags: [taskListTag]
   });
-  const { data, error } = await supabase
+  const { data: taskList, error } = await supabase
     .from('tasks')
     .select(
       'id, title, description, completed, deadline, priority, include_time, tags(id, name)'
@@ -22,7 +22,7 @@ export const getTaskList = async () => {
 
   if (error) throw error;
 
-  return { data };
+  return taskList;
 };
 
 export const revalidateTaskList = () => revalidateTag(taskListTag);

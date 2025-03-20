@@ -1,6 +1,7 @@
 'use client';
 
 import { Trash2 } from 'lucide-react';
+import { use } from 'react';
 
 import { TaskForm } from './task-form';
 import { TaskItem } from './task-item';
@@ -17,12 +18,18 @@ import { useLocalSearchStore } from '@/hooks/use-local-search';
 import { useTask } from '@/hooks/use-task';
 
 export const TaskListView = ({
-  tasks,
-  filterByList
+  promiseTaskList,
+  filterByList,
+  filterByTagId
 }: {
-  tasks: DisplayTask[];
+  promiseTaskList: Promise<DisplayTask[]>;
   filterByList: FilterBy[];
+  filterByTagId?: string;
 }) => {
+  const taskList = use(promiseTaskList).filter((task) =>
+    filterByTagId ? task.tags.some((tag) => tag.id === filterByTagId) : true
+  );
+
   const {
     optimisticTaskList,
     handleToggleTask,
@@ -31,18 +38,17 @@ export const TaskListView = ({
     handleDeleteTaskList,
     selectedTaskIdList,
     setSelectedTaskIdList
-  } = useTask(tasks);
+  } = useTask(taskList);
 
   const { searchQuery } = useLocalSearchStore();
 
   return (
-    <>
+    <div className="flex-1 overflow-auto">
       <TaskNav
         handleDeleteTaskList={handleDeleteTaskList}
         selectedTaskIdList={selectedTaskIdList}
         setSelectedTaskIdList={setSelectedTaskIdList}
       />
-
       {filterByList.map((filterKey) => {
         if (!filterConfig[filterKey]) return null;
 
@@ -73,7 +79,7 @@ export const TaskListView = ({
           </TaskWrapper>
         );
       })}
-    </>
+    </div>
   );
 };
 
