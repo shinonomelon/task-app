@@ -6,7 +6,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="flex h-screen">
       <SidebarProvider>
         <Sidebar />
-        <main className="flex-1 p-4">{children}</main>
+        <main className="h-screen flex-1">{children}</main>
       </SidebarProvider>
     </div>
   );

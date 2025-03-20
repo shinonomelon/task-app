@@ -13,7 +13,7 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = (await params).id;
+  const { id } = await params;
 
   const { data: tag } = await getTagById(id);
 
@@ -22,33 +22,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function Page({
-  params
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function Page({ params }: Props) {
   const { id } = await params;
   const { data: tag } = await getTagById(id);
 
+  const promiseTaskList = getTaskList();
+
   return (
-    <>
+    <div className="p-2">
       <AppHeader title={`# ${tag.name}`} />
       <CustomSuspense height={100} width="100%">
-        <TaskView id={id} />
+        <TaskListView
+          promiseTaskList={promiseTaskList}
+          filterByList={['all']}
+          filterByTagId={id}
+        />
       </CustomSuspense>
-    </>
+    </div>
   );
 }
-
-const TaskView = async ({ id }: { id: string }) => {
-  const { data: tasks } = await getTaskList();
-
-  return (
-    <TaskListView
-      tasks={tasks.filter((task) =>
-        task.tags.map((tag) => tag.id).includes(id)
-      )}
-      filterByList={['all', 'completed']}
-    />
-  );
-};

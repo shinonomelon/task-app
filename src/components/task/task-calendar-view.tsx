@@ -1,7 +1,7 @@
 'use client';
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { use, useState } from 'react';
 
 import { EditTaskDialog } from './edit-task-dialog';
 
@@ -17,8 +17,13 @@ import { useTask } from '@/hooks/use-task';
 
 const DAYS_OF_WEEK = ['日', '月', '火', '水', '木', '金', '土'];
 
-export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
-  const { optimisticTaskList } = useTask(tasks);
+export const TaskCalendarView = ({
+  promiseTaskList
+}: {
+  promiseTaskList: Promise<DisplayTask[]>;
+}) => {
+  const taskList = use(promiseTaskList);
+  const { optimisticTaskList } = useTask(taskList);
   const { searchQuery } = useLocalSearchStore();
 
   const [date, setDate] = useState<Date>(new Date());
@@ -56,7 +61,7 @@ export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
   };
 
   return (
-    <>
+    <div className="flex-1 overflow-auto">
       <div className="sticky top-0 z-10 mb-4 bg-white pt-4">
         <div className="flex items-center justify-between">
           <div className="font-medium">{monthLabel}</div>
@@ -135,7 +140,7 @@ export const TaskCalendarView = ({ tasks }: { tasks: DisplayTask[] }) => {
           );
         })}
       </div>
-    </>
+    </div>
   );
 };
 
