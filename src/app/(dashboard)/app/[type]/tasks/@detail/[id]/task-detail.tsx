@@ -4,7 +4,7 @@ import { AlertCircle, LoaderCircle } from 'lucide-react';
 import { useActionState, useState } from 'react';
 import { toast } from 'sonner';
 
-import { ActionResponse, EditTask } from '@/types/task';
+import { ActionResponse, DisplayTask, EditTask } from '@/types/task';
 
 import { cn } from '@/lib/utils/cn';
 
@@ -20,7 +20,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { editTask } from '@/actions/task/edit-task';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
-export const TaskDetailView = ({ task }) => {
+export const TaskDetailView = ({ task }: { task: DisplayTask }) => {
   const [checked, setChecked] = useState(task.completed);
   const [state, action, isPending] = useActionState<
     ActionResponse<EditTask>,
